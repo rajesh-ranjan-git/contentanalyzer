@@ -5,6 +5,7 @@ export type Article = {
   url: string;
   publishDate: string;
   content: string;
+  similarity?: number;
 };
 
 export type Competitor = {
@@ -14,6 +15,12 @@ export type Competitor = {
   articles: string;
   lastUpdated: string;
   articleList: Article[];
+};
+
+export type AnalysisResults = {
+  articles: Article[];
+  competitorId: string;
+  competitorName: string;
 };
 
 export type HTMLInputTypeRangeElement = HTMLInputElement & {

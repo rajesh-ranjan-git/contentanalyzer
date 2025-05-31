@@ -20,7 +20,7 @@ import {
 } from "lucide-react";
 import { sitemapUrls } from "@/config/config";
 import { formatDate, getSimilarityColor } from "@/helpers/helpers";
-import { Article, Competitor } from "@/types/types";
+import { AnalysisResults, Article, Competitor } from "@/types/types";
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
@@ -28,7 +28,7 @@ const CompetitiveContentAnalyzer = () => {
   const [inputValue, setInputValue] = useState("");
   const [inputType, setInputType] = useState("url");
   const [isAnalyzing, setIsAnalyzing] = useState(false);
-  const [results, setResults] = useState(null);
+  const [results, setResults] = useState<AnalysisResults[] | null>(null);
   const [competitors, setCompetitors] = useState<Competitor[]>([]);
   const [selectedCompetitors, setSelectedCompetitors] = useState<string[]>([]);
   const [filters, setFilters] = useState({
@@ -261,15 +261,13 @@ const CompetitiveContentAnalyzer = () => {
       });
     }
 
-    console.log("analysisResults : ", analysisResults);
-
     setResults(analysisResults);
     setIsAnalyzing(false);
     setActiveTab("results"); // Switch to results tab after analysis
   };
 
   // Filtered articles for display in the overview tab
-  const filteredCompetitorArticles = (competitorId) => {
+  const filteredCompetitorArticles = (competitorId: string) => {
     const competitor = competitors.find((c) => c.id === competitorId);
     if (!competitor || !competitor.articleList) return [];
 
@@ -280,7 +278,10 @@ const CompetitiveContentAnalyzer = () => {
         cutoffDate.setDate(cutoffDate.getDate() - parseInt(filters.dateRange));
         return articleDate >= cutoffDate;
       })
-      .sort((a, b) => new Date(b.publishDate) - new Date(a.publishDate));
+      .sort(
+        (a, b) =>
+          new Date(b.publishDate).getTime() - new Date(a.publishDate).getTime()
+      );
   };
 
   useEffect(() => {
@@ -744,7 +745,10 @@ const CompetitiveContentAnalyzer = () => {
                         ) : (
                           <div className="relative [&::-webkit-scrollbar-thumb]:bg-gray-300 [&::-webkit-scrollbar-track]:bg-gray-100 pl-4 border-gray-200 border-l-2 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:rounded-full [&::-webkit-scrollbar]:w-2 max-h-40 overflow-y-scroll">
                             {compResult.articles
-                              .sort((a, b) => b.similarity - a.similarity) // Sort by similarity descending
+                              .sort(
+                                (a, b) =>
+                                  (b.similarity ?? 0) - (a.similarity ?? 0)
+                              ) // Sort by similarity descending
                               .map((article, index) => (
                                 <div
                                   key={article.id}
