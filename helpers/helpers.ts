@@ -1,10 +1,13 @@
-export const formatDate = (dateString) => {
+export const formatDate = (dateString: string) => {
   if (!dateString) return "N/A";
-  const options = { year: "numeric", month: "short", day: "numeric" };
-  return new Date(dateString).toLocaleDateString(undefined, options);
+  return new Date(dateString).toLocaleDateString(undefined, {
+    year: "numeric",
+    month: "short",
+    day: "numeric",
+  });
 };
 
-export const getSimilarityColor = (similarity) => {
+export const getSimilarityColor = (similarity: number) => {
   if (similarity >= 80) return "bg-red-100 text-red-800";
   if (similarity >= 60) return "bg-orange-100 text-orange-800";
   if (similarity >= 40) return "bg-yellow-100 text-yellow-800";
