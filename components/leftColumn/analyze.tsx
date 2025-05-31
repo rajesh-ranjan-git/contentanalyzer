@@ -1,5 +1,5 @@
-import { AnalyzeProps } from "@/types/types";
 import { RefreshCw, TrendingUp } from "lucide-react";
+import { AnalyzeProps } from "@/types/propTypes";
 
 const Analyze = ({
   handleAnalyze,

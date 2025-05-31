@@ -1,14 +1,15 @@
-import { API_BASE_URL, sitemapUrls } from "@/config/config";
-import { Article, LeftColumnProps } from "@/types/types";
-import { Globe, RefreshCw, Search } from "lucide-react";
 import { useCallback, useEffect, useState } from "react";
-import InputToggle from "@/components/inputToggle/inputToggle";
-import InputField from "@/components/inputField/inputField";
-import SelectCompetitors from "@/components/selectCompetitors/selectCompetitors";
-import Filters from "@/components/filters/filters";
-import Analyze from "../analyze/analyze";
+import { Globe, RefreshCw, Search } from "lucide-react";
+import { API_BASE_URL, sitemapUrls } from "@/config/config";
+import { Article } from "@/types/types";
+import { LeftContainerProps } from "@/types/propTypes";
+import InputToggle from "@/components/leftColumn/inputToggle";
+import InputField from "@/components/leftColumn/inputField";
+import SelectCompetitors from "@/components/leftColumn/selectCompetitors";
+import Filters from "@/components/leftColumn/filters";
+import Analyze from "@/components/leftColumn/analyze";
 
-const LeftColumn = ({
+const LeftContainer = ({
   inputValue,
   setInputValue,
   inputType,
@@ -28,7 +29,7 @@ const LeftColumn = ({
   setSitemapsLoadTime,
   setAnalysisLoadTime,
   setUserContent,
-}: LeftColumnProps) => {
+}: LeftContainerProps) => {
   const [errorMessage, setErrorMessage] = useState("");
 
   const fetchSitemapAndArticles = useCallback(async () => {
@@ -314,4 +315,4 @@ const LeftColumn = ({
   );
 };
 
-export default LeftColumn;
+export default LeftContainer;

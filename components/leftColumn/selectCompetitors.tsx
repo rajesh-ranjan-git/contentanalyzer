@@ -1,5 +1,5 @@
-import { SelectCompetitorsProps } from "@/types/types";
 import { RefreshCw } from "lucide-react";
+import { SelectCompetitorsProps } from "@/types/propTypes";
 
 const SelectCompetitors = ({
   competitors,

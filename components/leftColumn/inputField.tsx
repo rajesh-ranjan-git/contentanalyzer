@@ -1,5 +1,5 @@
-import { InputFieldProps } from "@/types/types";
 import { AlertCircle } from "lucide-react";
+import { InputFieldProps } from "@/types/propTypes";
 
 const InputField = ({
   inputType,

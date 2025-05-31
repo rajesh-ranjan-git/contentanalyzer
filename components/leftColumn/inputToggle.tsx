@@ -1,5 +1,5 @@
-import { InputToggleProps } from "@/types/types";
 import { BookOpen, Link } from "lucide-react";
+import { InputToggleProps } from "@/types/propTypes";
 
 const InputToggle = ({ inputType, setInputType }: InputToggleProps) => {
   return (

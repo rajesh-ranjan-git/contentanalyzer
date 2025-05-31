@@ -1,5 +1,5 @@
-import { FiltersProps } from "@/types/types";
 import { Filter } from "lucide-react";
+import { FiltersProps } from "@/types/propTypes";
 
 const Filters = ({ filters, setFilters }: FiltersProps) => {
   const handleFilterChange = (e: any) => {

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect } from "react";
 import {
   Link,
   BarChart3,
@@ -11,10 +11,10 @@ import {
   Eye,
   Timer,
 } from "lucide-react";
-import { formatDate, getSimilarityColor } from "@/helpers/helpers";
 import { AnalysisResults, Competitor, Filters } from "@/types/types";
+import { formatDate, getSimilarityColor } from "@/helpers/helpers";
 import Header from "@/components/header/header";
-import LeftColumn from "@/components/leftColumn/leftColumn";
+import LeftContainer from "@/components/leftColumn/leftContainer";
 
 const CompetitiveContentAnalyzer = () => {
   const [inputValue, setInputValue] = useState<string>("");
@@ -70,7 +70,7 @@ const CompetitiveContentAnalyzer = () => {
       {/* Main Content Area */}
       <main className="flex-grow gap-4 grid grid-cols-1 lg:grid-cols-3">
         {/* Left Column - Input & Controls */}
-        <LeftColumn
+        <LeftContainer
           inputValue={inputValue}
           setInputValue={setInputValue}
           inputType={inputType}
