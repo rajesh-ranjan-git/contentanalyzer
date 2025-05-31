@@ -1,6 +1,6 @@
-import { AnalysisResults, Competitor, Filters } from "@/types/types";
+import { Article, AnalysisResults, Competitor, Filters } from "@/types/types";
 
-export type LeftContainerProps = {
+export interface LeftContainerProps {
   inputValue: string;
   setInputValue: (value: string) => void;
   inputType: "url" | "text";
@@ -20,35 +20,77 @@ export type LeftContainerProps = {
   setSitemapsLoadTime: (value: number) => void;
   setAnalysisLoadTime: (value: number) => void;
   setUserContent: (value: string) => void;
-};
+}
 
-export type InputToggleProps = {
+export interface InputToggleProps {
   inputType: "url" | "text";
   setInputType: (value: "url" | "text") => void;
-};
+}
 
-export type InputFieldProps = {
+export interface InputFieldProps {
   inputType: "url" | "text";
   inputValue: string;
   setInputValue: (value: string) => void;
   errorMessage: string;
-};
+}
 
-export type SelectCompetitorsProps = {
+export interface SelectCompetitorsProps {
   competitors: Competitor[];
   loadingSitemaps: boolean;
   selectedCompetitors: string[];
   setSelectedCompetitors: (value: string[]) => void;
-};
+}
 
-export type FiltersProps = {
+export interface FiltersProps {
   filters: Filters;
   setFilters: (value: Filters) => void;
-};
+}
 
-export type AnalyzeProps = {
+export interface AnalyzeProps {
   handleAnalyze: () => void;
   selectedCompetitors: string[];
   inputValue: string;
   isAnalyzing: boolean;
-};
+}
+
+export interface RightContainerProps {
+  activeTab: "overview" | "results";
+  setActiveTab: (value: "overview" | "results") => void;
+  loadingSitemaps: boolean;
+  sitemapsLoadTime: number;
+  isAnalyzing: boolean;
+  analysisLoadTime: number;
+  competitors: Competitor[];
+  filters: Filters;
+  results: AnalysisResults[] | null;
+  inputType: "url" | "text";
+  inputValue: string;
+  userContent: string;
+}
+
+export interface RightTabsProps {
+  activeTab: "overview" | "results";
+  setActiveTab: (value: "overview" | "results") => void;
+  loadingSitemaps: boolean;
+  sitemapsLoadTime: number;
+  isAnalyzing: boolean;
+  analysisLoadTime: number;
+}
+
+export interface OverviewProps {
+  competitors: Competitor[];
+  loadingSitemaps: boolean;
+  filters: Filters;
+}
+
+export interface ResultsProps {
+  isAnalyzing: boolean;
+  results: AnalysisResults[] | null;
+  inputType: "url" | "text";
+  inputValue: string;
+  userContent: string;
+}
+
+export interface SingleArticleProp {
+  article: Article;
+}
