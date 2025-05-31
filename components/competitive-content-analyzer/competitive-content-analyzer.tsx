@@ -2,44 +2,38 @@
 
 import { useState, useEffect, useCallback } from "react";
 import {
-  Search,
   Link,
-  TrendingUp,
   BarChart3,
-  Globe,
   RefreshCw,
   AlertCircle,
   CheckCircle,
   Clock,
   Eye,
-  BookOpen,
-  Filter,
-  Download,
-  Settings,
   Timer,
 } from "lucide-react";
 import { formatDate, getSimilarityColor } from "@/helpers/helpers";
-import { AnalysisResults, Article, Competitor, Filters } from "@/types/types";
+import { AnalysisResults, Competitor, Filters } from "@/types/types";
 import Header from "@/components/header/header";
-import LeftColumn from "@/components/leftColumn/LeftColumn";
+import LeftColumn from "@/components/leftColumn/leftColumn";
 
 const CompetitiveContentAnalyzer = () => {
-  const [inputValue, setInputValue] = useState("");
-  const [inputType, setInputType] = useState("url");
-  const [isAnalyzing, setIsAnalyzing] = useState(false);
+  const [inputValue, setInputValue] = useState<string>("");
+  const [inputType, setInputType] = useState<"url" | "text">("url");
+  const [isAnalyzing, setIsAnalyzing] = useState<boolean>(false);
   const [results, setResults] = useState<AnalysisResults[] | null>(null);
   const [competitors, setCompetitors] = useState<Competitor[]>([]);
   const [selectedCompetitors, setSelectedCompetitors] = useState<string[]>([]);
   const [filters, setFilters] = useState<Filters>({
     similarity: 30,
     dateRange: "365", // Default to 1 year
-    contentType: "all",
   });
-  const [activeTab, setActiveTab] = useState("overview");
-  const [loadingSitemaps, setLoadingSitemaps] = useState(false);
-  const [sitemapsLoadTime, setSitemapsLoadTime] = useState(0);
-  const [analysisLoadTime, setAnalysisLoadTime] = useState(0);
-  const [userContent, setUserContent] = useState(""); // Stores the content of the user's input URL/text
+  const [activeTab, setActiveTab] = useState<"overview" | "results">(
+    "overview"
+  );
+  const [loadingSitemaps, setLoadingSitemaps] = useState<boolean>(false);
+  const [sitemapsLoadTime, setSitemapsLoadTime] = useState<number>(0);
+  const [analysisLoadTime, setAnalysisLoadTime] = useState<number>(0);
+  const [userContent, setUserContent] = useState<string>(""); // Stores the content of the user's input URL/text
 
   // Filtered articles for display in the overview tab
   const filteredCompetitorArticles = (competitorId: string) => {

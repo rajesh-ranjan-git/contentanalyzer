@@ -46,6 +46,7 @@ const Filters = ({ filters, setFilters }: FiltersProps) => {
             onChange={handleFilterChange}
             className="px-2 py-1 border border-gray-300 focus:border-blue-500 rounded-md focus:ring-blue-500 w-full text-gray-900"
           >
+            <option value="1">Last 1 day</option>
             <option value="7">Last 7 days</option>
             <option value="30">Last 30 days</option>
             <option value="90">Last 90 days</option>

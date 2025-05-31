@@ -25,15 +25,14 @@ export type AnalysisResults = {
 
 export type Filters = {
   similarity: number;
-  dateRange: string;
-  contentType: string;
+  dateRange: "0" | "1" | "7" | "30" | "90" | "365";
 };
 
 export type LeftColumnProps = {
   inputValue: string;
   setInputValue: (value: string) => void;
-  inputType: string;
-  setInputType: (value: string) => void;
+  inputType: "url" | "text";
+  setInputType: (value: "url" | "text") => void;
   isAnalyzing: boolean;
   setIsAnalyzing: (value: boolean) => void;
   setResults: (value: AnalysisResults[] | null) => void;
@@ -43,7 +42,7 @@ export type LeftColumnProps = {
   setSelectedCompetitors: (value: string[]) => void;
   filters: Filters;
   setFilters: (value: Filters) => void;
-  setActiveTab: (value: string) => void;
+  setActiveTab: (value: "overview" | "results") => void;
   loadingSitemaps: boolean;
   setLoadingSitemaps: (value: boolean) => void;
   setSitemapsLoadTime: (value: number) => void;
@@ -52,12 +51,12 @@ export type LeftColumnProps = {
 };
 
 export type InputToggleProps = {
-  inputType: string;
-  setInputType: (value: string) => void;
+  inputType: "url" | "text";
+  setInputType: (value: "url" | "text") => void;
 };
 
 export type InputFieldProps = {
-  inputType: string;
+  inputType: "url" | "text";
   inputValue: string;
   setInputValue: (value: string) => void;
   errorMessage: string;
