@@ -11,7 +11,9 @@ CORS(app) # Enable CORS for all routes
 
 # Load the pre-trained SentenceTransformer model
 try:
-    model = SentenceTransformer('all-MiniLM-L6-v2')
+    # model = SentenceTransformer('all-MiniLM-L6-v2')
+    model = SentenceTransformer('all-mpnet-base-v2')
+    # model = SentenceTransformer('all-distilroberta-v1')
     print("SentenceTransformer model loaded successfully.")
 except Exception as e:
     print(f"Error loading SentenceTransformer model: {e}")
