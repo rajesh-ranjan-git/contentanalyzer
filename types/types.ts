@@ -22,7 +22,3 @@ export type AnalysisResults = {
   competitorId: string;
   competitorName: string;
 };
-
-export type HTMLInputTypeRangeElement = HTMLInputElement & {
-  type: "range";
-};
