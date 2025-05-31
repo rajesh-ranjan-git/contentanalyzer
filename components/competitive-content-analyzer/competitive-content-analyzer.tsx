@@ -39,13 +39,16 @@ const CompetitiveContentAnalyzer = () => {
   const [activeTab, setActiveTab] = useState("overview");
   const [loadingSitemaps, setLoadingSitemaps] = useState(false);
   const [sitemapsLoadTime, setSitemapsLoadTime] = useState(0);
+  const [analysisLoadTime, setAnalysisLoadTime] = useState(0);
   const [errorMessage, setErrorMessage] = useState("");
   const [userContent, setUserContent] = useState(""); // Stores the content of the user's input URL/text
 
   const fetchSitemapAndArticles = useCallback(async () => {
-    let initialTime = performance.now();
     setLoadingSitemaps(true);
     setErrorMessage("");
+    setSitemapsLoadTime(0);
+
+    let initialTime = performance.now();
     const fetchedCompetitors = [];
 
     for (const sitemapUrl of sitemapUrls) {
@@ -209,6 +212,9 @@ const CompetitiveContentAnalyzer = () => {
     setIsAnalyzing(true);
     setErrorMessage("");
     setResults(null);
+    setAnalysisLoadTime(0);
+
+    let initialTime = performance.now();
 
     let mainContent = inputValue;
     if (inputType === "url") {
@@ -264,6 +270,10 @@ const CompetitiveContentAnalyzer = () => {
     setResults(analysisResults);
     setIsAnalyzing(false);
     setActiveTab("results"); // Switch to results tab after analysis
+    if (initialTime) {
+      const endTime = performance.now();
+      setAnalysisLoadTime(endTime - initialTime);
+    }
   };
 
   // Filtered articles for display in the overview tab
@@ -488,7 +498,11 @@ const CompetitiveContentAnalyzer = () => {
             {/* Analyze Button */}
             <button
               onClick={handleAnalyze}
-              className="flex justify-center items-center bg-blue-600 hover:bg-blue-700 shadow-lg px-6 py-2 rounded-md w-full font-semibold text-white text-lg transition-colors"
+              className={`flex justify-center items-center bg-blue-600 hover:bg-blue-700 shadow-lg px-6 py-2 rounded-md w-full font-semibold text-white text-lg transition-colors ${
+                selectedCompetitors.length === 0 || !inputValue.trim()
+                  ? "opacity-50 cursor-not-allowed"
+                  : "cursor-pointer"
+              } ${isAnalyzing && "opacity-50 cursor-progress"}`}
               disabled={
                 isAnalyzing ||
                 selectedCompetitors.length === 0 ||
@@ -535,18 +549,43 @@ const CompetitiveContentAnalyzer = () => {
                 Analysis Results
               </button>
             </nav>
-            {loadingSitemaps ? (
-              <div className="flex justify-center items-center gap-2 font-semibold text-blue-600 text-sm">
-                <span>Please be patient while we are fetching sitemaps</span>{" "}
-                <RefreshCw
-                  className={`w-4 h-4 ${loadingSitemaps ? "animate-spin" : ""}`}
-                />
-              </div>
-            ) : sitemapsLoadTime ? (
-              <div className="flex justify-center items-center gap-2 font-semibold text-blue-600 text-sm">
-                <Timer className="w-4 h-4" />
-                Time taken : {(sitemapsLoadTime / 1000).toFixed(0)}s
-              </div>
+
+            {activeTab === "overview" ? (
+              loadingSitemaps ? (
+                <div className="flex justify-center items-center gap-2 font-semibold text-blue-600 text-sm">
+                  <span>Please be patient while we are fetching sitemaps</span>{" "}
+                  <RefreshCw
+                    className={`w-4 h-4 ${
+                      loadingSitemaps ? "animate-spin" : ""
+                    }`}
+                  />
+                </div>
+              ) : sitemapsLoadTime ? (
+                <div className="flex justify-center items-center gap-2 font-semibold text-blue-600 text-sm">
+                  <Timer className="w-4 h-4" />
+                  Time taken to load articles :{" "}
+                  {(sitemapsLoadTime / 1000).toFixed(0)}s
+                </div>
+              ) : null
+            ) : null}
+
+            {activeTab === "results" ? (
+              isAnalyzing ? (
+                <div className="flex justify-center items-center gap-2 font-semibold text-blue-600 text-sm">
+                  <span>
+                    Please be patient while we are fetching analysis results
+                  </span>{" "}
+                  <RefreshCw
+                    className={`w-4 h-4 ${isAnalyzing ? "animate-spin" : ""}`}
+                  />
+                </div>
+              ) : analysisLoadTime ? (
+                <div className="flex justify-center items-center gap-2 font-semibold text-blue-600 text-sm">
+                  <Timer className="w-4 h-4" />
+                  Time taken to analyze : {(analysisLoadTime / 1000).toFixed(0)}
+                  s
+                </div>
+              ) : null
             ) : null}
           </div>
 
