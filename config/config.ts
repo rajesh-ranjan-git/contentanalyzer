@@ -1,3 +1,5 @@
+export const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
+
 export const sitemapUrls = [
   "https://www.indiatoday.in/news-it-sitemap.xml",
   "https://www.ndtv.com/sitemap/google-news-sitemap",
