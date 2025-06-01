@@ -1,8 +1,12 @@
 import { AlertCircle, Eye, RefreshCw } from "lucide-react";
-import { OverviewProps } from "@/types/propTypes";
+import { useAppStore } from "@/store/store";
 import FilteredArticles from "@/components/rightColumn/filteredArticles";
 
-const Overview = ({ competitors, loadingSitemaps, filters }: OverviewProps) => {
+const Overview = () => {
+  const filters = useAppStore((state) => state.filters);
+  const loadingSitemaps = useAppStore((state) => state.loadingSitemaps);
+  const competitors = useAppStore((state) => state.competitors);
+
   // Filtered articles for display in the overview tab
   const filteredCompetitorArticles = (competitorId: string) => {
     const competitor = competitors.find((c) => c.id === competitorId);

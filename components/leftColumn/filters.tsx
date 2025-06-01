@@ -1,7 +1,10 @@
 import { Filter } from "lucide-react";
-import { FiltersProps } from "@/types/propTypes";
+import { useAppStore } from "@/store/store";
 
-const Filters = ({ filters, setFilters }: FiltersProps) => {
+const Filters = () => {
+  const filters = useAppStore((state) => state.filters);
+  const setFilters = useAppStore((state) => state.setFilters);
+
   const handleFilterChange = (e: any) => {
     const { name, value } = e.target;
     setFilters({ ...filters, [name]: value });

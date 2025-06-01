@@ -11,12 +11,8 @@ import Analyze from "@/components/leftColumn/analyze";
 
 const LeftContainer = () => {
   const inputValue = useAppStore((state) => state.inputValue);
-  const setInputValue = useAppStore((state) => state.setInputValue);
   const inputType = useAppStore((state) => state.inputType);
-  const setInputType = useAppStore((state) => state.setInputType);
   const filters = useAppStore((state) => state.filters);
-  const setFilters = useAppStore((state) => state.setFilters);
-  const isAnalyzing = useAppStore((state) => state.isAnalyzing);
   const setIsAnalyzing = useAppStore((state) => state.setIsAnalyzing);
   const loadingSitemaps = useAppStore((state) => state.loadingSitemaps);
   const competitors = useAppStore((state) => state.competitors);
@@ -28,9 +24,6 @@ const LeftContainer = () => {
   const setUserContent = useAppStore((state) => state.setUserContent);
   const setActiveTab = useAppStore((state) => state.setActiveTab);
   const selectedCompetitors = useAppStore((state) => state.selectedCompetitors);
-  const setSelectedCompetitors = useAppStore(
-    (state) => state.setSelectedCompetitors
-  );
 
   const [errorMessage, setErrorMessage] = useState("");
 
@@ -262,15 +255,10 @@ const LeftContainer = () => {
         </h2>
 
         {/* Input Type Toggle */}
-        <InputToggle inputType={inputType} setInputType={setInputType} />
+        <InputToggle />
 
         {/* Input Field */}
-        <InputField
-          inputType={inputType}
-          inputValue={inputValue}
-          setInputValue={setInputValue}
-          errorMessage={errorMessage}
-        />
+        <InputField errorMessage={errorMessage} />
 
         {/* Competitor Selection */}
         <div className="mb-2">
@@ -292,26 +280,16 @@ const LeftContainer = () => {
               {loadingSitemaps ? "Loading..." : "Refresh Sitemaps"}
             </button>
           </div>
-          <SelectCompetitors
-            competitors={competitors}
-            loadingSitemaps={loadingSitemaps}
-            selectedCompetitors={selectedCompetitors}
-            setSelectedCompetitors={setSelectedCompetitors}
-          />
+          <SelectCompetitors />
         </div>
       </div>
 
       <div className="flex flex-col justify-between gap-2">
         {/* Filters */}
-        <Filters filters={filters} setFilters={setFilters} />
+        <Filters />
 
         {/* Analyze Button */}
-        <Analyze
-          handleAnalyze={handleAnalyze}
-          selectedCompetitors={selectedCompetitors}
-          inputValue={inputValue}
-          isAnalyzing={isAnalyzing}
-        />
+        <Analyze handleAnalyze={handleAnalyze} />
       </div>
     </section>
   );

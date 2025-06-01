@@ -1,12 +1,12 @@
 import { AlertCircle } from "lucide-react";
 import { InputFieldProps } from "@/types/propTypes";
+import { useAppStore } from "@/store/store";
 
-const InputField = ({
-  inputType,
-  inputValue,
-  setInputValue,
-  errorMessage,
-}: InputFieldProps) => {
+const InputField = ({ errorMessage }: InputFieldProps) => {
+  const inputValue = useAppStore((state) => state.inputValue);
+  const setInputValue = useAppStore((state) => state.setInputValue);
+  const inputType = useAppStore((state) => state.inputType);
+
   return (
     <div className="mb-2">
       <label
