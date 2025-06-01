@@ -1,12 +1,14 @@
+import { useAppStore } from "@/store/store";
 import { RefreshCw } from "lucide-react";
-import { SelectCompetitorsProps } from "@/types/propTypes";
 
-const SelectCompetitors = ({
-  competitors,
-  loadingSitemaps,
-  selectedCompetitors,
-  setSelectedCompetitors,
-}: SelectCompetitorsProps) => {
+const SelectCompetitors = () => {
+  const loadingSitemaps = useAppStore((state) => state.loadingSitemaps);
+  const competitors = useAppStore((state) => state.competitors);
+  const selectedCompetitors = useAppStore((state) => state.selectedCompetitors);
+  const setSelectedCompetitors = useAppStore(
+    (state) => state.setSelectedCompetitors
+  );
+
   const handleCompetitorSelect = (competitorId: string) => {
     setSelectedCompetitors(
       selectedCompetitors.includes(competitorId)

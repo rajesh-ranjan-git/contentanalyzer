@@ -1,12 +1,12 @@
 import { RefreshCw, TrendingUp } from "lucide-react";
 import { AnalyzeProps } from "@/types/propTypes";
+import { useAppStore } from "@/store/store";
 
-const Analyze = ({
-  handleAnalyze,
-  selectedCompetitors,
-  inputValue,
-  isAnalyzing,
-}: AnalyzeProps) => {
+const Analyze = ({ handleAnalyze }: AnalyzeProps) => {
+  const inputValue = useAppStore((state) => state.inputValue);
+  const selectedCompetitors = useAppStore((state) => state.selectedCompetitors);
+  const isAnalyzing = useAppStore((state) => state.isAnalyzing);
+
   return (
     <button
       onClick={handleAnalyze}

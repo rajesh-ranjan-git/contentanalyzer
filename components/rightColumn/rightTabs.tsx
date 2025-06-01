@@ -1,14 +1,14 @@
 import { RefreshCw, Timer } from "lucide-react";
-import { RightTabsProps } from "@/types/propTypes";
+import { useAppStore } from "@/store/store";
 
-const RightTabs = ({
-  activeTab,
-  setActiveTab,
-  loadingSitemaps,
-  sitemapsLoadTime,
-  isAnalyzing,
-  analysisLoadTime,
-}: RightTabsProps) => {
+const RightTabs = () => {
+  const activeTab = useAppStore((state) => state.activeTab);
+  const setActiveTab = useAppStore((state) => state.setActiveTab);
+  const isAnalyzing = useAppStore((state) => state.isAnalyzing);
+  const loadingSitemaps = useAppStore((state) => state.loadingSitemaps);
+  const sitemapsLoadTime = useAppStore((state) => state.sitemapsLoadTime);
+  const analysisLoadTime = useAppStore((state) => state.analysisLoadTime);
+
   return (
     <>
       {/* Tabs */}

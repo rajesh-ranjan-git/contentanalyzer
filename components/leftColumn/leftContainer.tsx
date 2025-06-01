@@ -2,34 +2,29 @@ import { useCallback, useEffect, useState } from "react";
 import { Globe, RefreshCw, Search } from "lucide-react";
 import { API_BASE_URL, sitemapUrls } from "@/config/config";
 import { Article } from "@/types/types";
-import { LeftContainerProps } from "@/types/propTypes";
+import { useAppStore } from "@/store/store";
 import InputToggle from "@/components/leftColumn/inputToggle";
 import InputField from "@/components/leftColumn/inputField";
 import SelectCompetitors from "@/components/leftColumn/selectCompetitors";
 import Filters from "@/components/leftColumn/filters";
 import Analyze from "@/components/leftColumn/analyze";
 
-const LeftContainer = ({
-  inputValue,
-  setInputValue,
-  inputType,
-  setInputType,
-  isAnalyzing,
-  setIsAnalyzing,
-  setResults,
-  competitors,
-  setCompetitors,
-  selectedCompetitors,
-  setSelectedCompetitors,
-  filters,
-  setFilters,
-  setActiveTab,
-  loadingSitemaps,
-  setLoadingSitemaps,
-  setSitemapsLoadTime,
-  setAnalysisLoadTime,
-  setUserContent,
-}: LeftContainerProps) => {
+const LeftContainer = () => {
+  const inputValue = useAppStore((state) => state.inputValue);
+  const inputType = useAppStore((state) => state.inputType);
+  const filters = useAppStore((state) => state.filters);
+  const setIsAnalyzing = useAppStore((state) => state.setIsAnalyzing);
+  const loadingSitemaps = useAppStore((state) => state.loadingSitemaps);
+  const competitors = useAppStore((state) => state.competitors);
+  const setCompetitors = useAppStore((state) => state.setCompetitors);
+  const setLoadingSitemaps = useAppStore((state) => state.setLoadingSitemaps);
+  const setSitemapsLoadTime = useAppStore((state) => state.setSitemapsLoadTime);
+  const setResults = useAppStore((state) => state.setResults);
+  const setAnalysisLoadTime = useAppStore((state) => state.setAnalysisLoadTime);
+  const setUserContent = useAppStore((state) => state.setUserContent);
+  const setActiveTab = useAppStore((state) => state.setActiveTab);
+  const selectedCompetitors = useAppStore((state) => state.selectedCompetitors);
+
   const [errorMessage, setErrorMessage] = useState("");
 
   const fetchSitemapAndArticles = useCallback(async () => {
@@ -260,15 +255,10 @@ const LeftContainer = ({
         </h2>
 
         {/* Input Type Toggle */}
-        <InputToggle inputType={inputType} setInputType={setInputType} />
+        <InputToggle />
 
         {/* Input Field */}
-        <InputField
-          inputType={inputType}
-          inputValue={inputValue}
-          setInputValue={setInputValue}
-          errorMessage={errorMessage}
-        />
+        <InputField errorMessage={errorMessage} />
 
         {/* Competitor Selection */}
         <div className="mb-2">
@@ -290,26 +280,16 @@ const LeftContainer = ({
               {loadingSitemaps ? "Loading..." : "Refresh Sitemaps"}
             </button>
           </div>
-          <SelectCompetitors
-            competitors={competitors}
-            loadingSitemaps={loadingSitemaps}
-            selectedCompetitors={selectedCompetitors}
-            setSelectedCompetitors={setSelectedCompetitors}
-          />
+          <SelectCompetitors />
         </div>
       </div>
 
       <div className="flex flex-col justify-between gap-2">
         {/* Filters */}
-        <Filters filters={filters} setFilters={setFilters} />
+        <Filters />
 
         {/* Analyze Button */}
-        <Analyze
-          handleAnalyze={handleAnalyze}
-          selectedCompetitors={selectedCompetitors}
-          inputValue={inputValue}
-          isAnalyzing={isAnalyzing}
-        />
+        <Analyze handleAnalyze={handleAnalyze} />
       </div>
     </section>
   );

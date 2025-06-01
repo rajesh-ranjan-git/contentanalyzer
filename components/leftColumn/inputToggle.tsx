@@ -1,7 +1,10 @@
 import { BookOpen, Link } from "lucide-react";
-import { InputToggleProps } from "@/types/propTypes";
+import { useAppStore } from "@/store/store";
 
-const InputToggle = ({ inputType, setInputType }: InputToggleProps) => {
+const InputToggle = () => {
+  const inputType = useAppStore((state) => state.inputType);
+  const setInputType = useAppStore((state) => state.setInputType);
+
   return (
     <div className="flex space-x-2 bg-gray-100 mb-2 p-1 rounded-lg">
       <button
