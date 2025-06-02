@@ -19,8 +19,12 @@ const CompetitiveContentAnalyzer = () => {
     });
   }, [isAnalyzing]);
 
+  useEffect(() => {
+    console.log("window.innerHeight : ", window.innerHeight);
+  }, []);
+
   return (
-    <div className="flex flex-col bg-gray-100 p-4 sm:p-4 min-h-screen font-sans">
+    <>
       {/* Header */}
       <Header />
 
@@ -32,7 +36,7 @@ const CompetitiveContentAnalyzer = () => {
         {/* Right Column - Results & Overview */}
         <RightContainer />
       </main>
-    </div>
+    </>
   );
 };
 
