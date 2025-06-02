@@ -18,7 +18,7 @@ const SelectCompetitors = () => {
   };
 
   return (
-    <div className="space-y-1 [&::-webkit-scrollbar-thumb]:bg-gray-300 [&::-webkit-scrollbar-track]:bg-gray-100 p-1 border border-slate-300 rounded-md [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:rounded-full [&::-webkit-scrollbar]:w-2 min-h-24 overflow-y-scroll">
+    <div className="flex flex-col flex-1 [&::-webkit-scrollbar-thumb]:bg-gray-300 [&::-webkit-scrollbar-track]:bg-gray-100 p-1 border border-slate-300 rounded-md [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:rounded-full [&::-webkit-scrollbar]:w-2 max-h-[12vh] overflow-y-scroll">
       {competitors.length === 0 && !loadingSitemaps && (
         <p className="text-gray-600 text-sm">
           No competitors loaded. Check sitemap URLs or refresh.
@@ -37,12 +37,14 @@ const SelectCompetitors = () => {
           >
             <input
               type="checkbox"
-              className="rounded focus:ring-blue-500 w-5 h-5 text-blue-600 form-checkbox"
+              className="rounded focus:ring-blue-500 w-3 h-3 text-blue-600 form-checkbox"
               checked={selectedCompetitors.includes(comp.id)}
               onChange={() => handleCompetitorSelect(comp.id)}
             />
-            <span className="ml-3 font-medium text-gray-800">{comp.name}</span>
-            <span className="ml-auto text-gray-600 text-sm">
+            <span className="ml-3 font-medium text-gray-800 text-sm">
+              {comp.name}
+            </span>
+            <span className="ml-auto text-gray-600 text-xs">
               {comp.articles} articles
             </span>
           </label>

@@ -248,8 +248,8 @@ const LeftContainer = () => {
   }, []); // Run only once on initial load
 
   return (
-    <section className="top-6 sticky flex flex-col justify-between lg:col-span-1 bg-white shadow-md p-4 rounded-lg max-h-dvh">
-      <div className="flex flex-col justify-between gap-2">
+    <section className="top-6 sticky flex flex-col justify-between lg:col-span-1 bg-white shadow-md p-4 rounded-lg max-h-[85vh]">
+      <div className="flex flex-col justify-between">
         <h2 className="flex items-center mb-2 font-medium text-gray-800 text-xl">
           <Search className="mr-2 w-5 h-5 text-blue-600" /> Analyze Content
         </h2>
@@ -259,29 +259,28 @@ const LeftContainer = () => {
 
         {/* Input Field */}
         <InputField errorMessage={errorMessage} />
+      </div>
 
-        {/* Competitor Selection */}
-        <div className="mb-2">
-          <div className="flex justify-between items-center mb-2">
-            <h3 className="flex items-center font-medium text-gray-800 text-lg">
-              <Globe className="mr-2 w-5 h-5 text-blue-600" /> Select
-              Competitors
-            </h3>
-            <button
-              onClick={fetchSitemapAndArticles}
-              className="flex items-center text-blue-600 hover:text-blue-800 text-sm"
-              disabled={loadingSitemaps}
-            >
-              <RefreshCw
-                className={`w-4 h-4 mr-1 ${
-                  loadingSitemaps ? "animate-spin" : ""
-                }`}
-              />
-              {loadingSitemaps ? "Loading..." : "Refresh Sitemaps"}
-            </button>
-          </div>
-          <SelectCompetitors />
+      {/* Competitor Selection */}
+      <div className="flex flex-col flex-1 flex-start gap-1 mb-2">
+        <div className="flex justify-between items-center">
+          <h3 className="flex items-center font-medium text-gray-800 text-lg">
+            <Globe className="mr-2 w-5 h-5 text-blue-600" /> Select Competitors
+          </h3>
+          <button
+            onClick={fetchSitemapAndArticles}
+            className="flex items-center text-blue-600 hover:text-blue-800 text-sm"
+            disabled={loadingSitemaps}
+          >
+            <RefreshCw
+              className={`w-4 h-4 mr-1 ${
+                loadingSitemaps ? "animate-spin" : ""
+              }`}
+            />
+            {loadingSitemaps ? "Loading..." : "Refresh Sitemaps"}
+          </button>
         </div>
+        <SelectCompetitors />
       </div>
 
       <div className="flex flex-col justify-between gap-2">

@@ -21,7 +21,9 @@ const Filters = () => {
             htmlFor="similarity"
             className="block font-medium text-gray-700 text-sm"
           >
-            Minimum Similarity (%)
+            Minimum Similarity (
+            <span className="text-gray-600 text-sm">{filters.similarity}%</span>
+            )
           </label>
           <input
             type="range"
@@ -33,7 +35,6 @@ const Filters = () => {
             onChange={handleFilterChange}
             className="bg-gray-200 rounded-lg w-full h-1 accent-blue-600 appearance-none cursor-pointer"
           />
-          <span className="text-gray-600 text-sm">{filters.similarity}%</span>
         </div>
         <div>
           <label

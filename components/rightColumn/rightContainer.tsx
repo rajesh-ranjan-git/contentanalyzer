@@ -7,7 +7,7 @@ const RightContainer = () => {
   const activeTab = useAppStore((state) => state.activeTab);
 
   return (
-    <section className="lg:col-span-2 bg-white shadow-md px-4 py-1 rounded-lg max-h-dvh overflow-hidden">
+    <section className="lg:col-span-2 bg-white shadow-md px-4 py-1 rounded-lg max-h-[85vh] overflow-hidden">
       <RightTabs />
 
       {/* Tab Content */}
