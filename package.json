@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "backend-cca": "python backend/competitive-content-analyzer.py",
-    "backend-cs": "python backend/comment-summarizer.py",
+    "backend-cs": "python backend/comments-summarizer.py",
     "frontend": "next dev",
     "dev": "concurrently \"npm run backend-cca\" \"npm run backend-cs\" \"npm run frontend\"",
     "build": "next build",

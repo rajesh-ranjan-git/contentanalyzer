@@ -1,8 +1,9 @@
 "use client";
 
 import { useEffect } from "react";
-import Header from "@/components/header/header";
+import { appNames } from "@/config/config";
 import { useAppStore } from "@/store/store";
+import Header from "@/components/header/header";
 import LeftContainer from "@/components/leftColumn/leftContainer";
 import RightContainer from "@/components/rightColumn/rightContainer";
 
@@ -26,7 +27,7 @@ const CompetitiveContentAnalyzer = () => {
   return (
     <>
       {/* Header */}
-      <Header />
+      <Header title={appNames.cca} />
 
       {/* Main Content Area */}
       <main className="flex-grow gap-4 grid grid-cols-1 lg:grid-cols-3">
