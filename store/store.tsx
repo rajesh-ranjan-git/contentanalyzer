@@ -55,8 +55,8 @@ export const useCommentsSummarizerAppStore = create<CommentsSummarizerAppState>(
     inputType: "url",
     setInputType: (type) => set({ inputType: type }),
 
-    isAnalyzing: false,
-    setIsAnalyzing: (value) => set({ isAnalyzing: value }),
+    isSummarizing: false,
+    setIsSummarizing: (value) => set({ isSummarizing: value }),
 
     results: null,
     setResults: (results) => set({ results }),
@@ -73,7 +73,7 @@ export const useCommentsSummarizerAppStore = create<CommentsSummarizerAppState>(
     },
     setFilters: (filters) => set({ filters }),
 
-    activeTab: "overview",
+    activeTab: "summary",
     setActiveTab: (tab) => set({ activeTab: tab }),
 
     loadingSitemaps: false,
@@ -82,10 +82,10 @@ export const useCommentsSummarizerAppStore = create<CommentsSummarizerAppState>(
     sitemapsLoadTime: 0,
     setSitemapsLoadTime: (time) => set({ sitemapsLoadTime: time }),
 
-    analysisLoadTime: 0,
-    setAnalysisLoadTime: (time) => set({ analysisLoadTime: time }),
+    summaryLoadTime: 0,
+    setSummaryLoadTime: (time) => set({ summaryLoadTime: time }),
 
-    userContent: "",
-    setUserContent: (content) => set({ userContent: content }),
+    commentsSummary: "",
+    setCommentsSummary: (content) => set({ commentsSummary: content }),
   })
 );

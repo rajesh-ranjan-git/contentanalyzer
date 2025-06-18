@@ -73,8 +73,8 @@ export type CommentsSummarizerAppState = {
   inputType: "url" | "post";
   setInputType: (type: "url" | "post") => void;
 
-  isAnalyzing: boolean;
-  setIsAnalyzing: (value: boolean) => void;
+  isSummarizing: boolean;
+  setIsSummarizing: (value: boolean) => void;
 
   results: AnalysisResults[] | null;
   setResults: (results: AnalysisResults[] | null) => void;
@@ -88,8 +88,10 @@ export type CommentsSummarizerAppState = {
   filters: Filters;
   setFilters: (filters: Filters) => void;
 
-  activeTab: "overview" | "results";
-  setActiveTab: (tab: "overview" | "results") => void;
+  activeTab: "summary" | "sentiments" | "theme" | "frequent-keywords";
+  setActiveTab: (
+    tab: "summary" | "sentiments" | "theme" | "frequent-keywords"
+  ) => void;
 
   loadingSitemaps: boolean;
   setLoadingSitemaps: (value: boolean) => void;
@@ -97,9 +99,9 @@ export type CommentsSummarizerAppState = {
   sitemapsLoadTime: number;
   setSitemapsLoadTime: (time: number) => void;
 
-  analysisLoadTime: number;
-  setAnalysisLoadTime: (time: number) => void;
+  summaryLoadTime: number;
+  setSummaryLoadTime: (time: number) => void;
 
-  userContent: string;
-  setUserContent: (content: string) => void;
+  commentsSummary: string;
+  setCommentsSummary: (content: string) => void;
 };

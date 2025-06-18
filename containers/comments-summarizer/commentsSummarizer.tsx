@@ -5,11 +5,13 @@ import { appNames } from "@/config/config";
 import { useContentAnalyzerAppStore } from "@/store/store";
 import Header from "@/components/header/header";
 import LeftContainer from "@/components/leftColumnCs/leftContainer";
-import RightContainer from "@/components/rightColumn/rightContainer";
+import RightContainer from "@/components/rightColumnCs/rightContainer";
 
 const CommentsSummarizer = () => {
   const isAnalyzing = useContentAnalyzerAppStore((state) => state.isAnalyzing);
-  const setActiveTab = useContentAnalyzerAppStore((state) => state.setActiveTab);
+  const setActiveTab = useContentAnalyzerAppStore(
+    (state) => state.setActiveTab
+  );
 
   useEffect(() => {
     if (!isAnalyzing) return;

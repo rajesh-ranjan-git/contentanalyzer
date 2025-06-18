@@ -22,10 +22,6 @@ const CompetitiveContentAnalyzer = () => {
     });
   }, [isAnalyzing]);
 
-  useEffect(() => {
-    console.log("window.innerHeight : ", window.innerHeight);
-  }, []);
-
   return (
     <>
       {/* Header */}

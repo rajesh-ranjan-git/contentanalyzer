@@ -1,7 +1,7 @@
 import { Article } from "@/types/types";
 
 export interface HeaderProps {
-  title: { name: string, url: string };
+  title: { name: string; url: string };
 }
 
 export interface InputFieldProps {
@@ -16,3 +16,6 @@ export interface SingleArticleProp {
   article: Article;
 }
 
+export interface SummarizeProps {
+  handleSummarize: () => void;
+}
