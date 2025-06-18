@@ -3,9 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "backend": "python backend/app.py",
+    "backend-cca": "python backend/competitive-content-analyzer.py",
+    "backend-cs": "python backend/comment-summarizer.py",
     "frontend": "next dev",
-    "dev": "concurrently \"npm run backend\" \"npm run frontend\"",
+    "dev": "concurrently \"npm run backend-cca\" \"npm run backend-cs\" \"npm run frontend\"",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"

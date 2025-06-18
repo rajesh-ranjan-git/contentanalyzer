@@ -174,5 +174,10 @@ def fetch_article_content_api():
         return jsonify({'content': content})
     return jsonify({'error': 'Could not fetch content from the URL'}), 500
 
+# --- Default Endpoint ---
+@app.route('/', methods=['GET'])
+def default_endpoint():
+    return jsonify({"status": "ok", "message": "Competitive Content Analyzer App running"}), 200
+
 if __name__ == '__main__':
     app.run(debug=True, port=5000, threaded=True)
