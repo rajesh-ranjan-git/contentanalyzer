@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 import { Globe, RefreshCw, Search } from "lucide-react";
-import { API_BASE_URL, sitemapUrls } from "@/config/config";
+import { API_CCA_URL, sitemapUrls } from "@/config/config";
 import { Article } from "@/types/types";
 import { useAppStore } from "@/store/store";
 import InputToggle from "@/components/leftColumn/inputToggle";
@@ -43,7 +43,7 @@ const LeftContainer = () => {
       const name = domain.replace(".com", "").replace(".in", "").split(".")[0];
 
       try {
-        const response = await fetch(`${API_BASE_URL}/fetch_sitemap`, {
+        const response = await fetch(`${API_CCA_URL}/fetch_sitemap`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -182,7 +182,7 @@ const LeftContainer = () => {
     if (!text1 || !text2) return 0;
 
     try {
-      const response = await fetch(`${API_BASE_URL}/calculate_similarity`, {
+      const response = await fetch(`${API_CCA_URL}/calculate_similarity`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -204,7 +204,7 @@ const LeftContainer = () => {
 
   const fetchContentFromUrl = useCallback(async (url: string) => {
     try {
-      const response = await fetch(`${API_BASE_URL}/fetch_article_content`, {
+      const response = await fetch(`${API_CCA_URL}/fetch_article_content`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

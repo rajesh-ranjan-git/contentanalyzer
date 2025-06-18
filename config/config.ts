@@ -1,4 +1,5 @@
-export const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
+export const API_CCA_URL = process.env.NEXT_PUBLIC_API_CCA_URL;
+export const API_CS_URL = process.env.NEXT_PUBLIC_API_CS_URL;
 
 export const sitemapUrls = [
   "https://www.indiatoday.in/news-it-sitemap.xml",
