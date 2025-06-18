@@ -1,13 +1,13 @@
 import { BarChart3, CheckCircle, Link, RefreshCw } from "lucide-react";
-import { useAppStore } from "@/store/store";
+import { useContentAnalyzerAppStore } from "@/store/store";
 import SampleArticles from "@/components/rightColumn/sampleArticles";
 
 const Results = () => {
-  const isAnalyzing = useAppStore((state) => state.isAnalyzing);
-  const results = useAppStore((state) => state.results);
-  const inputType = useAppStore((state) => state.inputType);
-  const inputValue = useAppStore((state) => state.inputValue);
-  const userContent = useAppStore((state) => state.userContent);
+  const isAnalyzing = useContentAnalyzerAppStore((state) => state.isAnalyzing);
+  const results = useContentAnalyzerAppStore((state) => state.results);
+  const inputType = useContentAnalyzerAppStore((state) => state.inputType);
+  const inputValue = useContentAnalyzerAppStore((state) => state.inputValue);
+  const userContent = useContentAnalyzerAppStore((state) => state.userContent);
 
   return (
     <div className="[&::-webkit-scrollbar-thumb]:bg-transparent [&::-webkit-scrollbar-track]:bg-transparent hover:[&::-webkit-scrollbar-thumb]:bg-gray-300 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:rounded-full [&::-webkit-scrollbar]:w-1 max-h-[82vh] overflow-y-scroll transition-all ease-in-out">

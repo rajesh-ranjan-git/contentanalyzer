@@ -1,11 +1,11 @@
 import { AlertCircle, Eye, RefreshCw } from "lucide-react";
-import { useAppStore } from "@/store/store";
+import { useContentAnalyzerAppStore } from "@/store/store";
 import FilteredArticles from "@/components/rightColumn/filteredArticles";
 
 const Overview = () => {
-  const filters = useAppStore((state) => state.filters);
-  const loadingSitemaps = useAppStore((state) => state.loadingSitemaps);
-  const competitors = useAppStore((state) => state.competitors);
+  const filters = useContentAnalyzerAppStore((state) => state.filters);
+  const loadingSitemaps = useContentAnalyzerAppStore((state) => state.loadingSitemaps);
+  const competitors = useContentAnalyzerAppStore((state) => state.competitors);
 
   // Filtered articles for display in the overview tab
   const filteredCompetitorArticles = (competitorId: string) => {

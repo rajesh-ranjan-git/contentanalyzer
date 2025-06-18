@@ -1,13 +1,13 @@
 import { RefreshCw, Timer } from "lucide-react";
-import { useAppStore } from "@/store/store";
+import { useContentAnalyzerAppStore } from "@/store/store";
 
 const RightTabs = () => {
-  const activeTab = useAppStore((state) => state.activeTab);
-  const setActiveTab = useAppStore((state) => state.setActiveTab);
-  const isAnalyzing = useAppStore((state) => state.isAnalyzing);
-  const loadingSitemaps = useAppStore((state) => state.loadingSitemaps);
-  const sitemapsLoadTime = useAppStore((state) => state.sitemapsLoadTime);
-  const analysisLoadTime = useAppStore((state) => state.analysisLoadTime);
+  const activeTab = useContentAnalyzerAppStore((state) => state.activeTab);
+  const setActiveTab = useContentAnalyzerAppStore((state) => state.setActiveTab);
+  const isAnalyzing = useContentAnalyzerAppStore((state) => state.isAnalyzing);
+  const loadingSitemaps = useContentAnalyzerAppStore((state) => state.loadingSitemaps);
+  const sitemapsLoadTime = useContentAnalyzerAppStore((state) => state.sitemapsLoadTime);
+  const analysisLoadTime = useContentAnalyzerAppStore((state) => state.analysisLoadTime);
 
   return (
     <>

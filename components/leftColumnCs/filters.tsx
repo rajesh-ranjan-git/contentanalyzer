@@ -1,9 +1,9 @@
 import { Filter } from "lucide-react";
-import { useContentAnalyzerAppStore } from "@/store/store";
+import { useCommentsSummarizerAppStore } from "@/store/store";
 
 const Filters = () => {
-  const filters = useContentAnalyzerAppStore((state) => state.filters);
-  const setFilters = useContentAnalyzerAppStore((state) => state.setFilters);
+  const filters = useCommentsSummarizerAppStore((state) => state.filters);
+  const setFilters = useCommentsSummarizerAppStore((state) => state.setFilters);
 
   const handleFilterChange = (e: any) => {
     const { name, value } = e.target;

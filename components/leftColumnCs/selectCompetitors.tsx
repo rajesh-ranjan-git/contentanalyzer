@@ -1,11 +1,11 @@
-import { useContentAnalyzerAppStore } from "@/store/store";
 import { RefreshCw } from "lucide-react";
+import { useCommentsSummarizerAppStore } from "@/store/store";
 
 const SelectCompetitors = () => {
-  const loadingSitemaps = useContentAnalyzerAppStore((state) => state.loadingSitemaps);
-  const competitors = useContentAnalyzerAppStore((state) => state.competitors);
-  const selectedCompetitors = useContentAnalyzerAppStore((state) => state.selectedCompetitors);
-  const setSelectedCompetitors = useContentAnalyzerAppStore(
+  const loadingSitemaps = useCommentsSummarizerAppStore((state) => state.loadingSitemaps);
+  const competitors = useCommentsSummarizerAppStore((state) => state.competitors);
+  const selectedCompetitors = useCommentsSummarizerAppStore((state) => state.selectedCompetitors);
+  const setSelectedCompetitors = useCommentsSummarizerAppStore(
     (state) => state.setSelectedCompetitors
   );
 

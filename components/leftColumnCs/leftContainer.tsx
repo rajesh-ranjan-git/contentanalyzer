@@ -1,29 +1,47 @@
 import { useCallback, useEffect, useState } from "react";
-import { Globe, RefreshCw, Search } from "lucide-react";
+import { Proportions } from "lucide-react";
 import { API_CCA_URL, sitemapUrls } from "@/config/config";
 import { Article } from "@/types/types";
-import { useContentAnalyzerAppStore } from "@/store/store";
-import InputToggle from "@/components/leftColumn/inputToggle";
-import InputField from "@/components/leftColumn/inputField";
-import SelectCompetitors from "@/components/leftColumn/selectCompetitors";
-import Filters from "@/components/leftColumn/filters";
-import Analyze from "@/components/leftColumn/analyze";
+import { useCommentsSummarizerAppStore } from "@/store/store";
+import InputToggle from "@/components/leftColumnCs/inputToggle";
+import InputField from "@/components/leftColumnCs/inputField";
+import Summarize from "@/components/leftColumnCs/summarize";
 
 const LeftContainer = () => {
-  const inputValue = useContentAnalyzerAppStore((state) => state.inputValue);
-  const inputType = useContentAnalyzerAppStore((state) => state.inputType);
-  const filters = useContentAnalyzerAppStore((state) => state.filters);
-  const setIsAnalyzing = useContentAnalyzerAppStore((state) => state.setIsAnalyzing);
-  const loadingSitemaps = useContentAnalyzerAppStore((state) => state.loadingSitemaps);
-  const competitors = useContentAnalyzerAppStore((state) => state.competitors);
-  const setCompetitors = useContentAnalyzerAppStore((state) => state.setCompetitors);
-  const setLoadingSitemaps = useContentAnalyzerAppStore((state) => state.setLoadingSitemaps);
-  const setSitemapsLoadTime = useContentAnalyzerAppStore((state) => state.setSitemapsLoadTime);
-  const setResults = useContentAnalyzerAppStore((state) => state.setResults);
-  const setAnalysisLoadTime = useContentAnalyzerAppStore((state) => state.setAnalysisLoadTime);
-  const setUserContent = useContentAnalyzerAppStore((state) => state.setUserContent);
-  const setActiveTab = useContentAnalyzerAppStore((state) => state.setActiveTab);
-  const selectedCompetitors = useContentAnalyzerAppStore((state) => state.selectedCompetitors);
+  const inputValue = useCommentsSummarizerAppStore((state) => state.inputValue);
+  const inputType = useCommentsSummarizerAppStore((state) => state.inputType);
+  const filters = useCommentsSummarizerAppStore((state) => state.filters);
+  const setIsAnalyzing = useCommentsSummarizerAppStore(
+    (state) => state.setIsAnalyzing
+  );
+  const loadingSitemaps = useCommentsSummarizerAppStore(
+    (state) => state.loadingSitemaps
+  );
+  const competitors = useCommentsSummarizerAppStore(
+    (state) => state.competitors
+  );
+  const setCompetitors = useCommentsSummarizerAppStore(
+    (state) => state.setCompetitors
+  );
+  const setLoadingSitemaps = useCommentsSummarizerAppStore(
+    (state) => state.setLoadingSitemaps
+  );
+  const setSitemapsLoadTime = useCommentsSummarizerAppStore(
+    (state) => state.setSitemapsLoadTime
+  );
+  const setResults = useCommentsSummarizerAppStore((state) => state.setResults);
+  const setAnalysisLoadTime = useCommentsSummarizerAppStore(
+    (state) => state.setAnalysisLoadTime
+  );
+  const setUserContent = useCommentsSummarizerAppStore(
+    (state) => state.setUserContent
+  );
+  const setActiveTab = useCommentsSummarizerAppStore(
+    (state) => state.setActiveTab
+  );
+  const selectedCompetitors = useCommentsSummarizerAppStore(
+    (state) => state.selectedCompetitors
+  );
 
   const [errorMessage, setErrorMessage] = useState("");
 
@@ -119,7 +137,7 @@ const LeftContainer = () => {
     let initialTime = performance.now();
 
     let mainContent = inputValue;
-    if (inputType === "url") {
+    if (inputType === "commentsJson") {
       const fetchedMainContent = await fetchContentFromUrl(inputValue);
       if (!fetchedMainContent) {
         setIsAnalyzing(false);
@@ -231,7 +249,7 @@ const LeftContainer = () => {
       setErrorMessage("Input value cannot be empty.");
       return false;
     }
-    if (inputType === "url") {
+    if (inputType === "commentsJson") {
       try {
         new URL(inputValue); // Basic URL validation
       } catch (_) {
@@ -249,9 +267,10 @@ const LeftContainer = () => {
 
   return (
     <section className="top-6 sticky flex flex-col justify-between lg:col-span-1 bg-white shadow-md p-4 rounded-lg max-h-[85vh]">
-      <div className="flex flex-col justify-between">
+      <div className="flex flex-col justify-start h-full">
         <h2 className="flex items-center mb-2 font-medium text-gray-800 text-xl">
-          <Search className="mr-2 w-5 h-5 text-blue-600" /> Analyze Content
+          <Proportions className="mr-2 w-5 h-5 text-blue-600" /> Summarize
+          Content
         </h2>
 
         {/* Input Type Toggle */}
@@ -261,34 +280,9 @@ const LeftContainer = () => {
         <InputField errorMessage={errorMessage} />
       </div>
 
-      {/* Competitor Selection */}
-      <div className="flex flex-col flex-1 flex-start gap-1 mb-2">
-        <div className="flex justify-between items-center">
-          <h3 className="flex items-center font-medium text-gray-800 text-lg">
-            <Globe className="mr-2 w-5 h-5 text-blue-600" /> Select Competitors
-          </h3>
-          <button
-            onClick={fetchSitemapAndArticles}
-            className="flex items-center text-blue-600 hover:text-blue-800 text-sm"
-            disabled={loadingSitemaps}
-          >
-            <RefreshCw
-              className={`w-4 h-4 mr-1 ${
-                loadingSitemaps ? "animate-spin" : ""
-              }`}
-            />
-            {loadingSitemaps ? "Loading..." : "Refresh Sitemaps"}
-          </button>
-        </div>
-        <SelectCompetitors />
-      </div>
-
       <div className="flex flex-col justify-between gap-2">
-        {/* Filters */}
-        <Filters />
-
         {/* Analyze Button */}
-        <Analyze handleAnalyze={handleAnalyze} />
+        <Summarize handleAnalyze={handleAnalyze} />
       </div>
     </section>
   );

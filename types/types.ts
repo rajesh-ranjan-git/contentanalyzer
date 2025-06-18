@@ -65,3 +65,41 @@ export type ContentAnalyzerAppState = {
   userContent: string;
   setUserContent: (content: string) => void;
 };
+
+export type CommentsSummarizerAppState = {
+  inputValue: string;
+  setInputValue: (value: string) => void;
+
+  inputType: "url" | "post";
+  setInputType: (type: "url" | "post") => void;
+
+  isAnalyzing: boolean;
+  setIsAnalyzing: (value: boolean) => void;
+
+  results: AnalysisResults[] | null;
+  setResults: (results: AnalysisResults[] | null) => void;
+
+  competitors: Competitor[];
+  setCompetitors: (list: Competitor[]) => void;
+
+  selectedCompetitors: string[];
+  setSelectedCompetitors: (list: string[]) => void;
+
+  filters: Filters;
+  setFilters: (filters: Filters) => void;
+
+  activeTab: "overview" | "results";
+  setActiveTab: (tab: "overview" | "results") => void;
+
+  loadingSitemaps: boolean;
+  setLoadingSitemaps: (value: boolean) => void;
+
+  sitemapsLoadTime: number;
+  setSitemapsLoadTime: (time: number) => void;
+
+  analysisLoadTime: number;
+  setAnalysisLoadTime: (time: number) => void;
+
+  userContent: string;
+  setUserContent: (content: string) => void;
+};

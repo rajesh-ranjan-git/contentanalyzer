@@ -18,11 +18,11 @@ const Header = ({ title }: HeaderProps) => {
       </h1>
       <div className="flex items-center space-x-4">
         <Link
-          href={`${BASE_URL}\\${appNames.cs.url}`}
+          href={`${BASE_URL}\\${title.name === appNames.cca.name ? appNames.cs.url : appNames.cca.url}`}
           target="_blank"
           className="flex items-center text-gray-600 hover:text-blue-600 transition-colors cursor-pointer"
         >
-          <SquareArrowOutUpRight className="mr-1 w-5 h-5" /> Go To {title.name}
+          <SquareArrowOutUpRight className="mr-1 w-5 h-5" /> Go To {title.name === appNames.cca.name ? appNames.cs.name : appNames.cca.name}
         </Link>
         <button className="flex items-center text-gray-600 hover:text-blue-600 transition-colors cursor-pointer">
           <Download className="mr-1 w-5 h-5" /> Export

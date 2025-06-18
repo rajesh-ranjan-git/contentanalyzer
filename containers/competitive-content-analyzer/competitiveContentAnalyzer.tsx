@@ -2,14 +2,16 @@
 
 import { useEffect } from "react";
 import { appNames } from "@/config/config";
-import { useAppStore } from "@/store/store";
+import { useContentAnalyzerAppStore } from "@/store/store";
 import Header from "@/components/header/header";
 import LeftContainer from "@/components/leftColumn/leftContainer";
 import RightContainer from "@/components/rightColumn/rightContainer";
 
 const CompetitiveContentAnalyzer = () => {
-  const isAnalyzing = useAppStore((state) => state.isAnalyzing);
-  const setActiveTab = useAppStore((state) => state.setActiveTab);
+  const isAnalyzing = useContentAnalyzerAppStore((state) => state.isAnalyzing);
+  const setActiveTab = useContentAnalyzerAppStore(
+    (state) => state.setActiveTab
+  );
 
   useEffect(() => {
     if (!isAnalyzing) return;

@@ -1,11 +1,11 @@
 import { RefreshCw, TrendingUp } from "lucide-react";
 import { AnalyzeProps } from "@/types/propTypes";
-import { useContentAnalyzerAppStore } from "@/store/store";
+import { useCommentsSummarizerAppStore } from "@/store/store";
 
-const Analyze = ({ handleAnalyze }: AnalyzeProps) => {
-  const inputValue = useContentAnalyzerAppStore((state) => state.inputValue);
-  const selectedCompetitors = useContentAnalyzerAppStore((state) => state.selectedCompetitors);
-  const isAnalyzing = useContentAnalyzerAppStore((state) => state.isAnalyzing);
+const Summarize = ({ handleAnalyze }: AnalyzeProps) => {
+  const inputValue = useCommentsSummarizerAppStore((state) => state.inputValue);
+  const selectedCompetitors = useCommentsSummarizerAppStore((state) => state.selectedCompetitors);
+  const isAnalyzing = useCommentsSummarizerAppStore((state) => state.isAnalyzing);
 
   return (
     <button
@@ -21,15 +21,15 @@ const Analyze = ({ handleAnalyze }: AnalyzeProps) => {
     >
       {isAnalyzing ? (
         <>
-          <RefreshCw className="mr-2 w-5 h-5 animate-spin" /> Analyzing...
+          <RefreshCw className="mr-2 w-5 h-5 animate-spin" /> Summarizing...
         </>
       ) : (
         <>
-          <TrendingUp className="mr-2 w-5 h-5" /> Start Analysis
+          <TrendingUp className="mr-2 w-5 h-5" /> Summarize
         </>
       )}
     </button>
   );
 };
 
-export default Analyze;
+export default Summarize;
