@@ -81,14 +81,15 @@ const LeftContainer = () => {
         let data = await response.json();
         if (response.status === 200) {
           if (data.length > 0) {
-            return data;
+            const comments = data.map(
+              (commentsData: any) => commentsData.message
+            );
+            return comments;
           }
         } else {
-          // throw new Error(
-          //   data.error || `HTTP error! status: ${response.status}`
-          // );
-          data = test_comments;
-          return data;
+          throw new Error(
+            data.error || `HTTP error! status: ${response.status}`
+          );
         }
       } catch (error) {
         console.error(`Error fetching content from ${url}:`, error);
@@ -101,7 +102,7 @@ const LeftContainer = () => {
     []
   );
 
-  const fetchCommentsSummary = useCallback(async (commentsData: string) => {
+  const fetchCommentsSummary = useCallback(async (commentsData: string[]) => {
     try {
       const response = await fetch(`${API_CS_URL}/analyze_comments`, {
         method: "POST",
