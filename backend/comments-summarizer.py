@@ -74,7 +74,7 @@ def load_nlp_models():
 
     # Summarization Model (BART)
     try:
-        summarizer = pipeline("summarization", model="facebook/bart-large-cnn", device=device)
+        summarizer = pipeline("summarization", model="facebook/bart-large-cnn", tokenizer="facebook/bart-large-cnn", device=device)
         logger.info("BART summarization model loaded successfully.")
     except Exception as e:
         logger.error(f"Failed to load BART model: {e}")
@@ -118,20 +118,22 @@ def preprocess_text(text):
         logger.warning("NLTK components not loaded, skipping stopword removal and lemmatization.")
         tokens = [word for word in tokens if len(word) > 2]
     return " ".join(tokens)
-
-def get_summary(text):
-    """Generates a summary using the BART model."""
+    
+def get_summary(text, max_length = 200, min_length = 150):
+    logger.info("Generating summary...")
+    
     if not summarizer:
         logger.error("Summarization model not loaded.")
         return "Summarization service unavailable."
-    try:
+
+    try:            
         summary_output = summarizer(
             text,
-            max_length=200,
-            min_length=50,
+            max_length=max_length,
+            min_length=min_length,
             do_sample=False,
-            truncation=True # Important for handling inputs longer than model's max length
         )
+
         return summary_output[0]['summary_text']
     except Exception as e:
         logger.error(f"Error during summarization: {e}")
@@ -209,17 +211,19 @@ def get_frequent_keywords(text, num_keywords=10):
     except Exception as e:
         logger.error(f"Error extracting frequent keywords: {e}")
         return []
+    
+def split_comments(comments_list, chunk_size = 10):
+  result = []
 
+  for i in range(0, len(comments_list), chunk_size):
+    result.append(comments_list[i:i + chunk_size])
+
+  return result
 
 # --- API Endpoint (unchanged from previous version) ---
 
 @app.route('/analyze_comments', methods=['POST'])
 def analyze_comments_endpoint():
-    """
-    API endpoint to analyze a list of comments.
-    Expects a JSON payload with a 'comments' key,
-    where 'comments' is a list of strings.
-    """
     if not request.is_json:
         return jsonify({"error": "Request must be JSON"}), 400
 
@@ -231,15 +235,22 @@ def analyze_comments_endpoint():
 
     if not comments:
         return jsonify({"error": "No comments provided for analysis."}), 400
-
-    # Concatenate all comments for holistic summary, theme, and keyword analysis
+    
     full_comments_text = "\n".join(comments)
+
+    if(len(comments) > 10):
+        splitted_comments_list = split_comments(comments)
+        concatenated_comments_list = ["\n".join(comments_list) for comments_list in splitted_comments_list]
+        final_concatenated_comments_list = [get_summary(comment, 200, 150) for comment in concatenated_comments_list]
+        summary = get_summary(final_concatenated_comments_list, 500, 300)
+    else:
+        summary = get_summary(full_comments_text)
 
     # Preprocess text once for keyword and theme extraction
     full_preprocessed_text = preprocess_text(full_comments_text)
 
     # Perform analysis
-    summary = get_summary(full_comments_text)
+    # summary = get_summary(full_comments_text)
     sentiment_breakdown = get_sentiment_breakdown(comments)
     key_themes = get_key_themes(full_preprocessed_text)
     frequent_keywords = get_frequent_keywords(full_comments_text) # Use original for TextBlob noun phrases
