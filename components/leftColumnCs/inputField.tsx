@@ -3,39 +3,99 @@ import { InputFieldProps } from "@/types/propTypes";
 import { useCommentsSummarizerAppStore } from "@/store/store";
 
 const InputField = ({ errorMessage }: InputFieldProps) => {
-  const inputValue = useCommentsSummarizerAppStore((state) => state.inputValue);
-  const setInputValue = useCommentsSummarizerAppStore(
-    (state) => state.setInputValue
+  const inputUrl = useCommentsSummarizerAppStore((state) => state.inputUrl);
+  const setInputUrl = useCommentsSummarizerAppStore(
+    (state) => state.setInputUrl
+  );
+  const inputHostName = useCommentsSummarizerAppStore(
+    (state) => state.inputHostName
+  );
+  const setInputHostName = useCommentsSummarizerAppStore(
+    (state) => state.setInputHostName
+  );
+  const inputPostId = useCommentsSummarizerAppStore(
+    (state) => state.inputPostId
+  );
+  const setInputPostId = useCommentsSummarizerAppStore(
+    (state) => state.setInputPostId
+  );
+  const inputContentType = useCommentsSummarizerAppStore(
+    (state) => state.inputContentType
+  );
+  const setInputContentType = useCommentsSummarizerAppStore(
+    (state) => state.setInputContentType
   );
   const inputType = useCommentsSummarizerAppStore((state) => state.inputType);
 
   return (
     <div className="mb-2 pb-6 h-full">
-      <label
-        htmlFor="contentInput"
-        className="block mb-1 font-medium text-gray-700 text-sm"
-      >
-        Enter {inputType === "url" ? "URL" : "Post ID"}
-      </label>
       {inputType === "url" ? (
-        <input
-          id="contentInput"
-          className="px-4 py-2 border border-gray-300 focus:border-blue-500 rounded-md focus:ring-blue-500 w-full text-gray-900"
-          placeholder="Paste your comments JSON url here..."
-          value={inputValue}
-          onChange={(e) => setInputValue(e.target.value)}
-        />
+        <div>
+          <label
+            htmlFor="url"
+            className="block mb-1 font-medium text-gray-700 text-sm"
+          >
+            Enter URL
+          </label>
+          <textarea
+            id="url"
+            className="px-4 py-2 border border-gray-300 focus:border-blue-500 rounded-md focus:ring-blue-500 w-full min-h-40 text-gray-900"
+            placeholder="Paste your URL here..."
+            value={inputUrl}
+            onChange={(e) => setInputUrl(e.target.value)}
+          />
+        </div>
       ) : (
-        <input
-          id="contentInput"
-          className="px-4 py-2 border border-gray-300 focus:border-blue-500 rounded-md focus:ring-blue-500 w-full text-gray-900"
-          placeholder="Paste your post ID here..."
-          value={inputValue}
-          onChange={(e) => setInputValue(e.target.value)}
-        />
+        <div className="flex flex-col gap-2">
+          <div>
+            <label
+              htmlFor="hostName"
+              className="block mb-1 font-medium text-gray-700 text-sm"
+            >
+              Enter Host Name
+            </label>
+            <input
+              id="hostName"
+              className="px-4 py-2 border border-gray-300 focus:border-blue-500 rounded-md focus:ring-blue-500 w-full text-gray-900"
+              placeholder="Paste your Host Name here..."
+              value={inputHostName}
+              onChange={(e) => setInputHostName(e.target.value)}
+            />
+          </div>
+          <div>
+            <label
+              htmlFor="postId"
+              className="block mb-1 font-medium text-gray-700 text-sm"
+            >
+              Enter Post ID
+            </label>
+            <input
+              id="postId "
+              className="px-4 py-2 border border-gray-300 focus:border-blue-500 rounded-md focus:ring-blue-500 w-full text-gray-900"
+              placeholder="Paste your Post ID here..."
+              value={inputPostId}
+              onChange={(e) => setInputPostId(e.target.value)}
+            />
+          </div>
+          <div>
+            <label
+              htmlFor="contentType"
+              className="block mb-1 font-medium text-gray-700 text-sm"
+            >
+              Enter Content Type
+            </label>
+            <input
+              id="contentType"
+              className="px-4 py-2 border border-gray-300 focus:border-blue-500 rounded-md focus:ring-blue-500 w-full text-gray-900"
+              placeholder="Paste your Content Type here..."
+              value={inputContentType}
+              onChange={(e) => setInputContentType(e.target.value)}
+            />
+          </div>
+        </div>
       )}
       {errorMessage && (
-        <p className="flex items-center mt-2 text-red-600 text-sm">
+        <p className="flex items-center mt-2 text-red-600 text-sm break-words">
           <AlertCircle className="mr-1 w-4 h-4" /> {errorMessage}
         </p>
       )}

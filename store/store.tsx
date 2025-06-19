@@ -49,8 +49,17 @@ export const useContentAnalyzerAppStore = create<ContentAnalyzerAppState>(
 
 export const useCommentsSummarizerAppStore = create<CommentsSummarizerAppState>(
   (set) => ({
-    inputValue: "",
-    setInputValue: (value) => set({ inputValue: value }),
+    inputUrl: "",
+    setInputUrl: (value) => set({ inputUrl: value }),
+
+    inputHostName: "",
+    setInputHostName: (value) => set({ inputHostName: value }),
+
+    inputPostId: "",
+    setInputPostId: (value) => set({ inputPostId: value }),
+
+    inputContentType: "",
+    setInputContentType: (value) => set({ inputContentType: value }),
 
     inputType: "url",
     setInputType: (type) => set({ inputType: type }),
@@ -58,29 +67,8 @@ export const useCommentsSummarizerAppStore = create<CommentsSummarizerAppState>(
     isSummarizing: false,
     setIsSummarizing: (value) => set({ isSummarizing: value }),
 
-    results: null,
-    setResults: (results) => set({ results }),
-
-    competitors: [],
-    setCompetitors: (list) => set({ competitors: list }),
-
-    selectedCompetitors: [],
-    setSelectedCompetitors: (list) => set({ selectedCompetitors: list }),
-
-    filters: {
-      similarity: 30,
-      dateRange: "365",
-    },
-    setFilters: (filters) => set({ filters }),
-
     activeTab: "summary",
     setActiveTab: (tab) => set({ activeTab: tab }),
-
-    loadingSitemaps: false,
-    setLoadingSitemaps: (value) => set({ loadingSitemaps: value }),
-
-    sitemapsLoadTime: 0,
-    setSitemapsLoadTime: (time) => set({ sitemapsLoadTime: time }),
 
     summaryLoadTime: 0,
     setSummaryLoadTime: (time) => set({ summaryLoadTime: time }),

@@ -2,6 +2,7 @@ import { CheckCircle, Sparkle, RefreshCw } from "lucide-react";
 import { useCommentsSummarizerAppStore } from "@/store/store";
 
 const Summary = () => {
+  const inputType = useCommentsSummarizerAppStore((state) => state.inputType);
   const commentsSummary = useCommentsSummarizerAppStore(
     (state) => state.commentsSummary
   );
@@ -25,7 +26,8 @@ const Summary = () => {
             </div>
             <div className="ml-3">
               <p className="text-sm">
-                Enter your URL/Post ID to start the summarizing.
+                Enter your {inputType === "url" ? "URL" : "Post Details"} to
+                start summarizing.
               </p>
             </div>
           </div>

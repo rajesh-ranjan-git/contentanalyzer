@@ -7,12 +7,20 @@ import InputField from "@/components/leftColumnCs/inputField";
 import Summarize from "@/components/leftColumnCs/summarize";
 
 const LeftContainer = () => {
-  const inputValue = useCommentsSummarizerAppStore((state) => state.inputValue);
+  const inputUrl = useCommentsSummarizerAppStore((state) => state.inputUrl);
+  const inputHostName = useCommentsSummarizerAppStore(
+    (state) => state.inputHostName
+  );
+  const inputPostId = useCommentsSummarizerAppStore(
+    (state) => state.inputPostId
+  );
+  const inputContentType = useCommentsSummarizerAppStore(
+    (state) => state.inputContentType
+  );
   const inputType = useCommentsSummarizerAppStore((state) => state.inputType);
   const setIsSummarizing = useCommentsSummarizerAppStore(
     (state) => state.setIsSummarizing
   );
-  const setResults = useCommentsSummarizerAppStore((state) => state.setResults);
   const setSummaryLoadTime = useCommentsSummarizerAppStore(
     (state) => state.setSummaryLoadTime
   );
@@ -32,32 +40,28 @@ const LeftContainer = () => {
 
     setIsSummarizing(true);
     setErrorMessage("");
-    setResults(null);
     setSummaryLoadTime(0);
 
     let initialTime = performance.now();
 
-    let commentsSummary = "";
+    let commentsData = [];
     if (inputType === "url") {
-      const commentsData = await fetchCommentsJSON(
+      commentsData = await fetchCommentsJSON(fetchCommentsApi, inputUrl);
+    } else if (inputType === "post") {
+      commentsData = await fetchCommentsJSON(
         fetchCommentsApi,
-        inputValue
+        inputHostName,
+        inputPostId,
+        inputContentType
       );
-
-      if (!commentsData || commentsData.length <= 0) {
-        setIsSummarizing(false);
-      }
-
-      const commentsSummaryData = await fetchCommentsSummary(commentsData);
-
-      if (!commentsSummaryData) {
-        setIsSummarizing(false);
-      }
-
-      commentsSummary = commentsSummaryData;
     }
 
-    setCommentsSummary(commentsSummary);
+    const commentsSummary = await fetchCommentsSummary(commentsData);
+
+    if (!commentsSummary) {
+      setCommentsSummary(commentsSummary);
+    }
+
     setIsSummarizing(false);
     setActiveTab("summary");
 
@@ -68,14 +72,25 @@ const LeftContainer = () => {
   };
 
   const fetchCommentsJSON = useCallback(
-    async (url: string, inputUrl: string) => {
+    async (
+      url: string,
+      inputUrl: string = "",
+      inputHostName: string = "",
+      inputPostId: string = "",
+      inputContentType: string = ""
+    ) => {
       try {
         const response = await fetch(url, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ url: inputUrl }),
+          body: JSON.stringify({
+            url: inputUrl,
+            hostname: inputHostName,
+            postId: inputPostId,
+            contentType: inputContentType,
+          }),
         });
 
         let data = await response.json();
@@ -113,8 +128,6 @@ const LeftContainer = () => {
       });
       const data = await response.json();
 
-      console.log("rajesh data : ", data);
-
       if (response.ok) {
         return data.summary;
       } else {
@@ -131,19 +144,19 @@ const LeftContainer = () => {
   }, []);
 
   const validateInput = () => {
-    if (!inputValue.trim()) {
+    if (!inputUrl.trim()) {
       setErrorMessage("Input value cannot be empty.");
       return false;
     }
     if (inputType === "url") {
       try {
-        new URL(inputValue);
+        new URL(inputUrl);
       } catch (_) {
         setErrorMessage("Please enter a valid URL.");
         return false;
       }
     } else if (inputType === "post") {
-      if (!Number(inputValue)) {
+      if (!Number(inputUrl)) {
         setErrorMessage("Please enter a valid post ID.");
         return false;
       }

@@ -1,4 +1,4 @@
-import { BookOpen, Link } from "lucide-react";
+import { Link, ScrollText } from "lucide-react";
 import { useCommentsSummarizerAppStore } from "@/store/store";
 
 const InputToggle = () => {
@@ -27,7 +27,7 @@ const InputToggle = () => {
         }`}
         onClick={() => setInputType("post")}
       >
-        <BookOpen className="inline-block mr-1 w-4 h-4" /> Post
+        <ScrollText className="inline-block mr-1 w-4 h-4" /> Post
       </button>
     </div>
   );

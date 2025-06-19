@@ -67,8 +67,17 @@ export type ContentAnalyzerAppState = {
 };
 
 export type CommentsSummarizerAppState = {
-  inputValue: string;
-  setInputValue: (value: string) => void;
+  inputUrl: string;
+  setInputUrl: (value: string) => void;
+
+  inputHostName: string;
+  setInputHostName: (value: string) => void;
+
+  inputPostId: string;
+  setInputPostId: (value: string) => void;
+
+  inputContentType: string;
+  setInputContentType: (value: string) => void;
 
   inputType: "url" | "post";
   setInputType: (type: "url" | "post") => void;
@@ -76,28 +85,10 @@ export type CommentsSummarizerAppState = {
   isSummarizing: boolean;
   setIsSummarizing: (value: boolean) => void;
 
-  results: AnalysisResults[] | null;
-  setResults: (results: AnalysisResults[] | null) => void;
-
-  competitors: Competitor[];
-  setCompetitors: (list: Competitor[]) => void;
-
-  selectedCompetitors: string[];
-  setSelectedCompetitors: (list: string[]) => void;
-
-  filters: Filters;
-  setFilters: (filters: Filters) => void;
-
   activeTab: "summary" | "sentiments" | "theme" | "frequent-keywords";
   setActiveTab: (
     tab: "summary" | "sentiments" | "theme" | "frequent-keywords"
   ) => void;
-
-  loadingSitemaps: boolean;
-  setLoadingSitemaps: (value: boolean) => void;
-
-  sitemapsLoadTime: number;
-  setSitemapsLoadTime: (time: number) => void;
 
   summaryLoadTime: number;
   setSummaryLoadTime: (time: number) => void;
