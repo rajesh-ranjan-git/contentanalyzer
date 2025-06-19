@@ -44,7 +44,7 @@ const RightTabs = () => {
           >
             Sentiment Analysis
           </button>
-          <button
+          {/* <button
             onClick={() => setActiveTab("theme")}
             className={`whitespace-nowrap py-2 px-1 border-b-2 font-medium text-sm transition-colors ${
               activeTab === "theme"
@@ -63,7 +63,7 @@ const RightTabs = () => {
             }`}
           >
             Frequent Keywords
-          </button>
+          </button> */}
         </nav>
 
         {activeTab === "summary" ? (

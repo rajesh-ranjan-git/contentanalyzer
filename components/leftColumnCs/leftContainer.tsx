@@ -54,8 +54,6 @@ const LeftContainer = () => {
         setIsSummarizing(false);
       }
 
-      console.log("rajesh commentsSummaryData : ", commentsSummaryData);
-
       commentsSummary = commentsSummaryData;
     }
 

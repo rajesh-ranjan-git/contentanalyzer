@@ -127,7 +127,7 @@ def get_summary(text):
     try:
         summary_output = summarizer(
             text,
-            max_length=150,
+            max_length=200,
             min_length=50,
             do_sample=False,
             truncation=True # Important for handling inputs longer than model's max length

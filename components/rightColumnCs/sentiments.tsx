@@ -1,6 +1,5 @@
 import { BarChart3, CheckCircle, Link, RefreshCw } from "lucide-react";
 import { useCommentsSummarizerAppStore } from "@/store/store";
-import SampleArticles from "@/components/rightColumnCs/sampleArticles";
 
 const Sentiments = () => {
   const isSummarizing = useCommentsSummarizerAppStore(
@@ -9,9 +8,6 @@ const Sentiments = () => {
   const results = useCommentsSummarizerAppStore((state) => state.results);
   const inputType = useCommentsSummarizerAppStore((state) => state.inputType);
   const inputValue = useCommentsSummarizerAppStore((state) => state.inputValue);
-  const userContent = useCommentsSummarizerAppStore(
-    (state) => state.userContent
-  );
 
   return (
     <div className="[&::-webkit-scrollbar-thumb]:bg-transparent [&::-webkit-scrollbar-track]:bg-transparent hover:[&::-webkit-scrollbar-thumb]:bg-gray-300 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:rounded-full [&::-webkit-scrollbar]:w-1 max-h-[82vh] overflow-y-scroll transition-all ease-in-out">
@@ -61,7 +57,7 @@ const Sentiments = () => {
               </a>
             ) : (
               <p className="max-h-40 overflow-y-auto text-gray-700 text-sm">
-                {userContent.substring(0, 500)}...
+                {/* {userContent.substring(0, 500)}... */}
               </p>
             )}
           </div>
@@ -87,7 +83,8 @@ const Sentiments = () => {
                     {compResult.articles
                       .sort((a, b) => (b.similarity ?? 0) - (a.similarity ?? 0)) // Sort by similarity descending
                       .map((article) => (
-                        <SampleArticles article={article} key={article.id} />
+                        // <SampleArticles article={article} key={article.id} />
+                        <></>
                       ))}
                   </div>
                 )}
