@@ -1,10 +1,6 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useState } from "react";
 import { Proportions } from "lucide-react";
-import {
-  API_CS_URL,
-  AUTHORIZATION_TOKEN,
-  test_comments,
-} from "@/config/config";
+import { API_CS_URL, fetchCommentsApi, test_comments } from "@/config/config";
 import { useCommentsSummarizerAppStore } from "@/store/store";
 import InputToggle from "@/components/leftColumnCs/inputToggle";
 import InputField from "@/components/leftColumnCs/inputField";
@@ -41,28 +37,31 @@ const LeftContainer = () => {
 
     let initialTime = performance.now();
 
-    let commentsSummary = inputValue;
+    let commentsSummary = "";
     if (inputType === "url") {
-      const commentsData = await fetchCommentsJSON(inputValue);
+      const commentsData = await fetchCommentsJSON(
+        fetchCommentsApi,
+        inputValue
+      );
 
       if (!commentsData || commentsData.length <= 0) {
         setIsSummarizing(false);
-        return; // Error message already set by fetchCommentsJSON
       }
 
       const commentsSummaryData = await fetchCommentsSummary(commentsData);
 
       if (!commentsSummaryData) {
         setIsSummarizing(false);
-        return; // Error message already set by fetchContentFromUrl
       }
+
+      console.log("rajesh commentsSummaryData : ", commentsSummaryData);
 
       commentsSummary = commentsSummaryData;
     }
 
-    setCommentsSummary(commentsSummary); // Store the content for display/reuse
+    setCommentsSummary(commentsSummary);
     setIsSummarizing(false);
-    setActiveTab("summary"); // Switch to results tab after analysis
+    setActiveTab("summary");
 
     if (initialTime) {
       const endTime = performance.now();
@@ -70,35 +69,39 @@ const LeftContainer = () => {
     }
   };
 
-  const fetchCommentsJSON = useCallback(async (url: string) => {
-    try {
-      const response = await fetch(url, {
-        method: "GET",
-        headers: {
-          Authorization: `bearer ${AUTHORIZATION_TOKEN}`,
-          "Content-Type": "application/json",
-          "Access-Control-Allow-Origin": "*",
-        },
-      });
+  const fetchCommentsJSON = useCallback(
+    async (url: string, inputUrl: string) => {
+      try {
+        const response = await fetch(url, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ url: inputUrl }),
+        });
 
-      let data = await response.json();
-      if (response.status === 200) {
-        if (data.length > 0) {
-          return data;
+        let data = await response.json();
+        if (response.status === 200) {
+          if (data.length > 0) {
+            return data;
+          }
         } else {
+          // throw new Error(
+          //   data.error || `HTTP error! status: ${response.status}`
+          // );
           data = test_comments;
+          return data;
         }
-      } else {
-        throw new Error(data.error || `HTTP error! status: ${response.status}`);
+      } catch (error) {
+        console.error(`Error fetching content from ${url}:`, error);
+        setErrorMessage(
+          `Failed to fetch comments from ${url}. Please check the URL.`
+        );
+        return null;
       }
-    } catch (error) {
-      console.error(`Error fetching content from ${url}:`, error);
-      setErrorMessage(
-        `Failed to fetch comments from ${url}. Please check the URL.`
-      );
-      return null;
-    }
-  }, []);
+    },
+    []
+  );
 
   const fetchCommentsSummary = useCallback(async (commentsData: string) => {
     try {
@@ -110,8 +113,9 @@ const LeftContainer = () => {
         body: JSON.stringify({ comments: commentsData }),
       });
       const data = await response.json();
+
       if (response.ok) {
-        return data.content;
+        return data.summary;
       } else {
         throw new Error(data.error || `HTTP error! status: ${response.status}`);
       }
@@ -132,7 +136,7 @@ const LeftContainer = () => {
     }
     if (inputType === "url") {
       try {
-        new URL(inputValue); // Basic URL validation
+        new URL(inputValue);
       } catch (_) {
         setErrorMessage("Please enter a valid URL.");
         return false;
@@ -155,15 +159,12 @@ const LeftContainer = () => {
           Content
         </h2>
 
-        {/* Input Type Toggle */}
         <InputToggle />
 
-        {/* Input Field */}
         <InputField errorMessage={errorMessage} />
       </div>
 
       <div className="flex flex-col justify-between gap-2">
-        {/* Analyze Button */}
         <Summarize handleSummarize={handleSummarize} />
       </div>
     </section>

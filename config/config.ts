@@ -19,6 +19,8 @@ export const appNames = {
   cs: { name: "Comments Summarizer", url: "/comments-summarizer" },
 };
 
+export const fetchCommentsApi = "/api/fetch-comments";
+
 export const test_comments = [
   "Absolutely loving this new laptop! The speed is incredible and the display is stunningly vibrant. Best purchase this year.",
   "The customer service was a nightmare. Waited on hold for over an hour and the agent was completely unhelpful. Very frustrating experience.",

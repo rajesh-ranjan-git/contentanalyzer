@@ -1,4 +1,5 @@
 from flask import Flask, request, jsonify
+from flask_cors import CORS
 import torch
 from transformers import pipeline, AutoTokenizer, AutoModelForSequenceClassification
 from nltk.corpus import stopwords
@@ -16,6 +17,7 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 app = Flask(__name__)
+CORS(app) # Enable CORS for all routes
 
 # --- Global Model and NLTK Data Loading (Load once at startup) ---
 # This ensures models are loaded only when the Flask app starts,
