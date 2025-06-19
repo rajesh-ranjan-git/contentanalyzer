@@ -3,27 +3,45 @@ import { Globe, RefreshCw, Search } from "lucide-react";
 import { API_CCA_URL, sitemapUrls } from "@/config/config";
 import { Article } from "@/types/types";
 import { useContentAnalyzerAppStore } from "@/store/store";
-import InputToggle from "@/components/leftColumn/inputToggle";
-import InputField from "@/components/leftColumn/inputField";
-import SelectCompetitors from "@/components/leftColumn/selectCompetitors";
-import Filters from "@/components/leftColumn/filters";
-import Analyze from "@/components/leftColumn/analyze";
+import InputToggle from "@/components/leftContentAnalyzer/inputToggle";
+import InputField from "@/components/leftContentAnalyzer/inputField";
+import SelectCompetitors from "@/components/leftContentAnalyzer/selectCompetitors";
+import Filters from "@/components/leftContentAnalyzer/filters";
+import Analyze from "@/components/leftContentAnalyzer/analyze";
 
 const LeftContainer = () => {
   const inputValue = useContentAnalyzerAppStore((state) => state.inputValue);
   const inputType = useContentAnalyzerAppStore((state) => state.inputType);
   const filters = useContentAnalyzerAppStore((state) => state.filters);
-  const setIsAnalyzing = useContentAnalyzerAppStore((state) => state.setIsAnalyzing);
-  const loadingSitemaps = useContentAnalyzerAppStore((state) => state.loadingSitemaps);
+  const setIsAnalyzing = useContentAnalyzerAppStore(
+    (state) => state.setIsAnalyzing
+  );
+  const loadingSitemaps = useContentAnalyzerAppStore(
+    (state) => state.loadingSitemaps
+  );
   const competitors = useContentAnalyzerAppStore((state) => state.competitors);
-  const setCompetitors = useContentAnalyzerAppStore((state) => state.setCompetitors);
-  const setLoadingSitemaps = useContentAnalyzerAppStore((state) => state.setLoadingSitemaps);
-  const setSitemapsLoadTime = useContentAnalyzerAppStore((state) => state.setSitemapsLoadTime);
+  const setCompetitors = useContentAnalyzerAppStore(
+    (state) => state.setCompetitors
+  );
+  const setLoadingSitemaps = useContentAnalyzerAppStore(
+    (state) => state.setLoadingSitemaps
+  );
+  const setSitemapsLoadTime = useContentAnalyzerAppStore(
+    (state) => state.setSitemapsLoadTime
+  );
   const setResults = useContentAnalyzerAppStore((state) => state.setResults);
-  const setAnalysisLoadTime = useContentAnalyzerAppStore((state) => state.setAnalysisLoadTime);
-  const setUserContent = useContentAnalyzerAppStore((state) => state.setUserContent);
-  const setActiveTab = useContentAnalyzerAppStore((state) => state.setActiveTab);
-  const selectedCompetitors = useContentAnalyzerAppStore((state) => state.selectedCompetitors);
+  const setAnalysisLoadTime = useContentAnalyzerAppStore(
+    (state) => state.setAnalysisLoadTime
+  );
+  const setUserContent = useContentAnalyzerAppStore(
+    (state) => state.setUserContent
+  );
+  const setActiveTab = useContentAnalyzerAppStore(
+    (state) => state.setActiveTab
+  );
+  const selectedCompetitors = useContentAnalyzerAppStore(
+    (state) => state.selectedCompetitors
+  );
 
   const [errorMessage, setErrorMessage] = useState("");
 

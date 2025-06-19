@@ -2,9 +2,9 @@ import { useCallback, useState } from "react";
 import { Proportions } from "lucide-react";
 import { API_CS_URL, fetchCommentsApi, test_comments } from "@/config/config";
 import { useCommentsSummarizerAppStore } from "@/store/store";
-import InputToggle from "@/components/leftColumnCs/inputToggle";
-import InputField from "@/components/leftColumnCs/inputField";
-import Summarize from "@/components/leftColumnCs/summarize";
+import InputToggle from "@/components/leftCommentsSummarizer/inputToggle";
+import InputField from "@/components/leftCommentsSummarizer/inputField";
+import Summarize from "@/components/leftCommentsSummarizer/summarize";
 
 const LeftContainer = () => {
   const inputUrl = useCommentsSummarizerAppStore((state) => state.inputUrl);

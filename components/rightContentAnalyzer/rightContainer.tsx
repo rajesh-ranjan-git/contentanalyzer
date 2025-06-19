@@ -1,7 +1,7 @@
 import { useContentAnalyzerAppStore } from "@/store/store";
-import RightTabs from "@/components/rightColumn/rightTabs";
-import Overview from "@/components/rightColumn/overview";
-import Results from "@/components/rightColumn/results";
+import RightTabs from "@/components/rightContentAnalyzer/rightTabs";
+import Overview from "@/components/rightContentAnalyzer/overview";
+import Results from "@/components/rightContentAnalyzer/results";
 
 const RightContainer = () => {
   const activeTab = useContentAnalyzerAppStore((state) => state.activeTab);

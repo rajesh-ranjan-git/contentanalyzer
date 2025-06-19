@@ -1,7 +1,7 @@
 import { useCommentsSummarizerAppStore } from "@/store/store";
-import RightTabs from "@/components/rightColumnCs/rightTabs";
-import Summary from "@/components/rightColumnCs/summary";
-import Sentiments from "@/components/rightColumnCs/sentiments";
+import RightTabs from "@/components/rightCommentsSummarizer/rightTabs";
+import Summary from "@/components/rightCommentsSummarizer/summary";
+import Sentiments from "@/components/rightCommentsSummarizer/sentiments";
 
 const RightContainer = () => {
   const activeTab = useCommentsSummarizerAppStore((state) => state.activeTab);

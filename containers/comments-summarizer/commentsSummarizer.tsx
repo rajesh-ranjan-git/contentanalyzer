@@ -4,8 +4,8 @@ import { useEffect } from "react";
 import { appNames } from "@/config/config";
 import { useContentAnalyzerAppStore } from "@/store/store";
 import Header from "@/components/header/header";
-import LeftContainer from "@/components/leftColumnCs/leftContainer";
-import RightContainer from "@/components/rightColumnCs/rightContainer";
+import LeftContainer from "@/components/leftCommentsSummarizer/leftContainer";
+import RightContainer from "@/components/rightCommentsSummarizer/rightContainer";
 
 const CommentsSummarizer = () => {
   const isAnalyzing = useContentAnalyzerAppStore((state) => state.isAnalyzing);

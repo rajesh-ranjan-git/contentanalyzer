@@ -1,6 +1,6 @@
 import { BarChart3, CheckCircle, Link, RefreshCw } from "lucide-react";
 import { useContentAnalyzerAppStore } from "@/store/store";
-import SampleArticles from "@/components/rightColumn/sampleArticles";
+import SampleArticles from "@/components/rightContentAnalyzer/sampleArticles";
 
 const Results = () => {
   const isAnalyzing = useContentAnalyzerAppStore((state) => state.isAnalyzing);

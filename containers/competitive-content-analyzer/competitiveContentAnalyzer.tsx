@@ -4,8 +4,8 @@ import { useEffect } from "react";
 import { appNames } from "@/config/config";
 import { useContentAnalyzerAppStore } from "@/store/store";
 import Header from "@/components/header/header";
-import LeftContainer from "@/components/leftColumn/leftContainer";
-import RightContainer from "@/components/rightColumn/rightContainer";
+import LeftContainer from "@/components/leftContentAnalyzer/leftContainer";
+import RightContainer from "@/components/rightContentAnalyzer/rightContainer";
 
 const CompetitiveContentAnalyzer = () => {
   const isAnalyzing = useContentAnalyzerAppStore((state) => state.isAnalyzing);
