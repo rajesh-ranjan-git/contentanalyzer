@@ -21,6 +21,36 @@ export const appNames = {
 
 export const fetchCommentsApi = "/api/fetch-comments";
 
+export const hostNameUrls = [
+  {
+    name: "India Today (Alpha)",
+    url: "https://alpha-opinion.intoday.in/new/comment/getbypostid",
+  },
+  {
+    name: "India Today (Live)",
+    url: "https://opinion.intoday.in/new/comment/getbypostid",
+  },
+  {
+    name: "Business Today (Alpha)",
+    url: "https://alpha-opinion.businesstoday.in/new/comment/getbypostid",
+  },
+  {
+    name: "Business Today (Live)",
+    url: "https://opinion.businesstoday.in/new/comment/getbypostid",
+  },
+];
+
+export const contentTypes = [
+  {
+    name: "Story",
+    value: "story",
+  },
+  {
+    name: "Video",
+    value: "video",
+  },
+];
+
 export const test_comments = [
   "Absolutely loving this new laptop! The speed is incredible and the display is stunningly vibrant. Best purchase this year.",
   "The customer service was a nightmare. Waited on hold for over an hour and the agent was completely unhelpful. Very frustrating experience.",

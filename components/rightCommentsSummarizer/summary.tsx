@@ -1,5 +1,6 @@
 import { CheckCircle, Sparkle, RefreshCw } from "lucide-react";
 import { useCommentsSummarizerAppStore } from "@/store/store";
+import { useEffect } from "react";
 
 const Summary = () => {
   const inputType = useCommentsSummarizerAppStore((state) => state.inputType);

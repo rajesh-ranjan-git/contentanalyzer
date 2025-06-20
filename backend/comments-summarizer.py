@@ -139,7 +139,7 @@ def get_summary(text, max_length = 200, min_length = 150):
         logger.error(f"Error during summarization: {e}")
         return "Error generating summary."
 
-def get_sentiment_breakdown(comments_list):
+def get_sentiment_analysis(comments_list):
     """Analyzes sentiment for each comment and provides a breakdown."""
     if not sentiment_classifier:
         logger.error("Sentiment analysis model not loaded.")
@@ -251,15 +251,15 @@ def analyze_comments_endpoint():
 
     # Perform analysis
     # summary = get_summary(full_comments_text)
-    sentiment_breakdown = get_sentiment_breakdown(comments)
-    key_themes = get_key_themes(full_preprocessed_text)
-    frequent_keywords = get_frequent_keywords(full_comments_text) # Use original for TextBlob noun phrases
+    sentiment = get_sentiment_analysis(comments)
+    themes = get_key_themes(full_preprocessed_text)
+    keywords = get_frequent_keywords(full_comments_text) # Use original for TextBlob noun phrases
 
     response_data = {
         "summary": summary,
-        "sentiment_breakdown": sentiment_breakdown,
-        "key_themes": key_themes,
-        "frequent_keywords": frequent_keywords
+        "sentiment": sentiment,
+        "themes": themes,
+        "keywords": keywords
     }
     
     return jsonify(response_data), 200

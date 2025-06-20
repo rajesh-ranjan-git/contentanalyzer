@@ -52,20 +52,23 @@ export const useCommentsSummarizerAppStore = create<CommentsSummarizerAppState>(
     inputUrl: "",
     setInputUrl: (value) => set({ inputUrl: value }),
 
-    inputHostName: "",
-    setInputHostName: (value) => set({ inputHostName: value }),
-
     inputPostId: "",
     setInputPostId: (value) => set({ inputPostId: value }),
-
-    inputContentType: "",
-    setInputContentType: (value) => set({ inputContentType: value }),
 
     inputType: "url",
     setInputType: (type) => set({ inputType: type }),
 
+    filters: {
+      contentType: { name: "Story", value: "story" },
+      hostName: {
+        name: "India Today (Alpha)",
+        url: "https://alpha-opinion.intoday.in/new/comment/getbypostid",
+      },
+    },
+    setFilters: (filters) => set({ filters }),
+
     isSummarizing: false,
-    setIsSummarizing: (value) => set({ isSummarizing: value }),
+    setIsSummarizing: (type) => set({ isSummarizing: type }),
 
     activeTab: "summary",
     setActiveTab: (tab) => set({ activeTab: tab }),
@@ -75,5 +78,15 @@ export const useCommentsSummarizerAppStore = create<CommentsSummarizerAppState>(
 
     commentsSummary: "",
     setCommentsSummary: (content) => set({ commentsSummary: content }),
+
+    commentsSentiments: "",
+    setCommentsSentiments: (content) => set({ commentsSentiments: content }),
+
+    commentsTheme: "",
+    setCommentsTheme: (content) => set({ commentsTheme: content }),
+
+    commentsFrequentKeywords: "",
+    setCommentsFrequentKeywords: (content) =>
+      set({ commentsFrequentKeywords: content }),
   })
 );

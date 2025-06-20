@@ -8,15 +8,10 @@ import Summarize from "@/components/leftCommentsSummarizer/summarize";
 
 const LeftContainer = () => {
   const inputUrl = useCommentsSummarizerAppStore((state) => state.inputUrl);
-  const inputHostName = useCommentsSummarizerAppStore(
-    (state) => state.inputHostName
-  );
   const inputPostId = useCommentsSummarizerAppStore(
     (state) => state.inputPostId
   );
-  const inputContentType = useCommentsSummarizerAppStore(
-    (state) => state.inputContentType
-  );
+  const filters = useCommentsSummarizerAppStore((state) => state.filters);
   const inputType = useCommentsSummarizerAppStore((state) => state.inputType);
   const setIsSummarizing = useCommentsSummarizerAppStore(
     (state) => state.setIsSummarizing
@@ -26,6 +21,15 @@ const LeftContainer = () => {
   );
   const setCommentsSummary = useCommentsSummarizerAppStore(
     (state) => state.setCommentsSummary
+  );
+  const setCommentsSentiments = useCommentsSummarizerAppStore(
+    (state) => state.setCommentsSentiments
+  );
+  const setCommentsTheme = useCommentsSummarizerAppStore(
+    (state) => state.setCommentsTheme
+  );
+  const setCommentsFrequentKeywords = useCommentsSummarizerAppStore(
+    (state) => state.setCommentsFrequentKeywords
   );
   const setActiveTab = useCommentsSummarizerAppStore(
     (state) => state.setActiveTab
@@ -50,16 +54,19 @@ const LeftContainer = () => {
     } else if (inputType === "post") {
       commentsData = await fetchCommentsJSON(
         fetchCommentsApi,
-        inputHostName,
+        filters.hostName.url,
         inputPostId,
-        inputContentType
+        filters.contentType.value
       );
     }
 
-    const commentsSummary = await fetchCommentsSummary(commentsData);
+    const commentsSummaryData = await fetchCommentsSummary(commentsData);
 
-    if (!commentsSummary) {
-      setCommentsSummary(commentsSummary);
+    if (commentsSummaryData) {
+      setCommentsSummary(commentsSummaryData.summary);
+      setCommentsSentiments(commentsSummaryData.sentiment);
+      setCommentsTheme(commentsSummaryData.theme);
+      setCommentsFrequentKeywords(commentsSummaryData.keywords);
     }
 
     setIsSummarizing(false);
@@ -129,7 +136,7 @@ const LeftContainer = () => {
       const data = await response.json();
 
       if (response.ok) {
-        return data.summary;
+        return data;
       } else {
         throw new Error(data.error || `HTTP error! status: ${response.status}`);
       }
@@ -144,11 +151,12 @@ const LeftContainer = () => {
   }, []);
 
   const validateInput = () => {
-    if (!inputUrl.trim()) {
-      setErrorMessage("Input value cannot be empty.");
-      return false;
-    }
     if (inputType === "url") {
+      if (!inputUrl.trim()) {
+        setErrorMessage("Input value cannot be empty.");
+        return false;
+      }
+
       try {
         new URL(inputUrl);
       } catch (_) {
@@ -156,7 +164,7 @@ const LeftContainer = () => {
         return false;
       }
     } else if (inputType === "post") {
-      if (!Number(inputUrl)) {
+      if (!Number(inputPostId)) {
         setErrorMessage("Please enter a valid post ID.");
         return false;
       }

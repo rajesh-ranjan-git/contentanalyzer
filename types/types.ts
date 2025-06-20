@@ -28,6 +28,21 @@ export type Filters = {
   dateRange: "0" | "1" | "7" | "30" | "90" | "365";
 };
 
+export type ContentType = {
+  name: string;
+  value: string;
+};
+
+export type HostName = {
+  name: string;
+  url: string;
+};
+
+export type CommentSummarizerFilters = {
+  contentType: ContentType;
+  hostName: HostName;
+};
+
 export type ContentAnalyzerAppState = {
   inputValue: string;
   setInputValue: (value: string) => void;
@@ -70,17 +85,14 @@ export type CommentsSummarizerAppState = {
   inputUrl: string;
   setInputUrl: (value: string) => void;
 
-  inputHostName: string;
-  setInputHostName: (value: string) => void;
-
   inputPostId: string;
   setInputPostId: (value: string) => void;
 
-  inputContentType: string;
-  setInputContentType: (value: string) => void;
-
   inputType: "url" | "post";
   setInputType: (type: "url" | "post") => void;
+
+  filters: CommentSummarizerFilters;
+  setFilters: (filters: CommentSummarizerFilters) => void;
 
   isSummarizing: boolean;
   setIsSummarizing: (value: boolean) => void;
@@ -95,4 +107,13 @@ export type CommentsSummarizerAppState = {
 
   commentsSummary: string;
   setCommentsSummary: (content: string) => void;
+
+  commentsSentiments: string;
+  setCommentsSentiments: (content: string) => void;
+
+  commentsTheme: string;
+  setCommentsTheme: (content: string) => void;
+
+  commentsFrequentKeywords: string;
+  setCommentsFrequentKeywords: (content: string) => void;
 };

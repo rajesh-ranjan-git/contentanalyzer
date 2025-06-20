@@ -1,29 +1,18 @@
 import { AlertCircle } from "lucide-react";
 import { InputFieldProps } from "@/types/propTypes";
 import { useCommentsSummarizerAppStore } from "@/store/store";
+import Filters from "@/components/leftCommentsSummarizer/filters";
 
 const InputField = ({ errorMessage }: InputFieldProps) => {
   const inputUrl = useCommentsSummarizerAppStore((state) => state.inputUrl);
   const setInputUrl = useCommentsSummarizerAppStore(
     (state) => state.setInputUrl
   );
-  const inputHostName = useCommentsSummarizerAppStore(
-    (state) => state.inputHostName
-  );
-  const setInputHostName = useCommentsSummarizerAppStore(
-    (state) => state.setInputHostName
-  );
   const inputPostId = useCommentsSummarizerAppStore(
     (state) => state.inputPostId
   );
   const setInputPostId = useCommentsSummarizerAppStore(
     (state) => state.setInputPostId
-  );
-  const inputContentType = useCommentsSummarizerAppStore(
-    (state) => state.inputContentType
-  );
-  const setInputContentType = useCommentsSummarizerAppStore(
-    (state) => state.setInputContentType
   );
   const inputType = useCommentsSummarizerAppStore((state) => state.inputType);
 
@@ -49,21 +38,6 @@ const InputField = ({ errorMessage }: InputFieldProps) => {
         <div className="flex flex-col gap-2">
           <div>
             <label
-              htmlFor="hostName"
-              className="block mb-1 font-medium text-gray-700 text-sm"
-            >
-              Enter Host Name
-            </label>
-            <input
-              id="hostName"
-              className="px-4 py-2 border border-gray-300 focus:border-blue-500 rounded-md focus:ring-blue-500 w-full text-gray-900"
-              placeholder="Paste your Host Name here..."
-              value={inputHostName}
-              onChange={(e) => setInputHostName(e.target.value)}
-            />
-          </div>
-          <div>
-            <label
               htmlFor="postId"
               className="block mb-1 font-medium text-gray-700 text-sm"
             >
@@ -77,21 +51,7 @@ const InputField = ({ errorMessage }: InputFieldProps) => {
               onChange={(e) => setInputPostId(e.target.value)}
             />
           </div>
-          <div>
-            <label
-              htmlFor="contentType"
-              className="block mb-1 font-medium text-gray-700 text-sm"
-            >
-              Enter Content Type
-            </label>
-            <input
-              id="contentType"
-              className="px-4 py-2 border border-gray-300 focus:border-blue-500 rounded-md focus:ring-blue-500 w-full text-gray-900"
-              placeholder="Paste your Content Type here..."
-              value={inputContentType}
-              onChange={(e) => setInputContentType(e.target.value)}
-            />
-          </div>
+          <Filters />
         </div>
       )}
       {errorMessage && (
