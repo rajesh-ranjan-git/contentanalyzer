@@ -1,5 +1,5 @@
-import { useCommentsSummarizerAppStore } from "@/store/store";
 import { contentTypes, hostNameUrls } from "@/config/config";
+import { useCommentsSummarizerAppStore } from "@/store/store";
 
 const Filters = () => {
   const filters = useCommentsSummarizerAppStore((state) => state.filters);

@@ -1,9 +1,8 @@
 import { AlertCircle } from "lucide-react";
-import { InputFieldProps } from "@/types/propTypes";
 import { useCommentsSummarizerAppStore } from "@/store/store";
 import Filters from "@/components/leftCommentsSummarizer/filters";
 
-const InputField = ({ errorMessage }: InputFieldProps) => {
+const InputField = () => {
   const inputUrl = useCommentsSummarizerAppStore((state) => state.inputUrl);
   const setInputUrl = useCommentsSummarizerAppStore(
     (state) => state.setInputUrl
@@ -15,6 +14,9 @@ const InputField = ({ errorMessage }: InputFieldProps) => {
     (state) => state.setInputPostId
   );
   const inputType = useCommentsSummarizerAppStore((state) => state.inputType);
+  const errorMessage = useCommentsSummarizerAppStore(
+    (state) => state.errorMessage
+  );
 
   return (
     <div className="mb-2 pb-6 h-full">

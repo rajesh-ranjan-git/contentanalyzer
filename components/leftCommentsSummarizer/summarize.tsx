@@ -1,4 +1,4 @@
-import { LetterText, RefreshCw, TrendingUp } from "lucide-react";
+import { LetterText, RefreshCw } from "lucide-react";
 import { SummarizeProps } from "@/types/propTypes";
 import { useCommentsSummarizerAppStore } from "@/store/store";
 

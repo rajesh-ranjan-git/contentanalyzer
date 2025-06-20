@@ -2,6 +2,8 @@ import { useCommentsSummarizerAppStore } from "@/store/store";
 import RightTabs from "@/components/rightCommentsSummarizer/rightTabs";
 import Summary from "@/components/rightCommentsSummarizer/summary";
 import Sentiments from "@/components/rightCommentsSummarizer/sentiments";
+import FrequentKeywords from "@/components/rightCommentsSummarizer/frequentKeywords";
+import KeyTheme from "@/components/rightCommentsSummarizer/keyTheme";
 
 const RightContainer = () => {
   const activeTab = useCommentsSummarizerAppStore((state) => state.activeTab);
@@ -12,8 +14,9 @@ const RightContainer = () => {
 
       {/* Tab Content */}
       {activeTab === "summary" && <Summary />}
-
       {activeTab === "sentiments" && <Sentiments />}
+      {activeTab === "theme" && <KeyTheme />}
+      {activeTab === "frequent-keywords" && <FrequentKeywords />}
     </section>
   );
 };

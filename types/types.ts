@@ -43,6 +43,17 @@ export type CommentSummarizerFilters = {
   hostName: HostName;
 };
 
+export type CommentSummaryResult = {
+  summary: string;
+  sentiment: {
+    negative: number;
+    neutral: number;
+    positive: number;
+  };
+  themes: string[];
+  keywords: string[];
+};
+
 export type ContentAnalyzerAppState = {
   inputValue: string;
   setInputValue: (value: string) => void;
@@ -105,15 +116,9 @@ export type CommentsSummarizerAppState = {
   summaryLoadTime: number;
   setSummaryLoadTime: (time: number) => void;
 
-  commentsSummary: string;
-  setCommentsSummary: (content: string) => void;
+  result: CommentSummaryResult | null;
+  setResult: (result: CommentSummaryResult | null) => void;
 
-  commentsSentiments: string;
-  setCommentsSentiments: (content: string) => void;
-
-  commentsTheme: string;
-  setCommentsTheme: (content: string) => void;
-
-  commentsFrequentKeywords: string;
-  setCommentsFrequentKeywords: (content: string) => void;
+  errorMessage: string;
+  setErrorMessage: (errorMessage: string) => void;
 };

@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Proportions } from "lucide-react";
 import { API_CS_URL, fetchCommentsApi, test_comments } from "@/config/config";
 import { useCommentsSummarizerAppStore } from "@/store/store";
@@ -19,23 +19,16 @@ const LeftContainer = () => {
   const setSummaryLoadTime = useCommentsSummarizerAppStore(
     (state) => state.setSummaryLoadTime
   );
-  const setCommentsSummary = useCommentsSummarizerAppStore(
-    (state) => state.setCommentsSummary
-  );
-  const setCommentsSentiments = useCommentsSummarizerAppStore(
-    (state) => state.setCommentsSentiments
-  );
-  const setCommentsTheme = useCommentsSummarizerAppStore(
-    (state) => state.setCommentsTheme
-  );
-  const setCommentsFrequentKeywords = useCommentsSummarizerAppStore(
-    (state) => state.setCommentsFrequentKeywords
-  );
+  const setResult = useCommentsSummarizerAppStore((state) => state.setResult);
   const setActiveTab = useCommentsSummarizerAppStore(
     (state) => state.setActiveTab
   );
-
-  const [errorMessage, setErrorMessage] = useState("");
+  const errorMessage = useCommentsSummarizerAppStore(
+    (state) => state.errorMessage
+  );
+  const setErrorMessage = useCommentsSummarizerAppStore(
+    (state) => state.setErrorMessage
+  );
 
   const handleSummarize = async () => {
     if (!validateInput()) {
@@ -44,29 +37,42 @@ const LeftContainer = () => {
 
     setIsSummarizing(true);
     setErrorMessage("");
+    setResult(null);
     setSummaryLoadTime(0);
 
     let initialTime = performance.now();
 
     let commentsData = [];
+
     if (inputType === "url") {
       commentsData = await fetchCommentsJSON(fetchCommentsApi, inputUrl);
     } else if (inputType === "post") {
       commentsData = await fetchCommentsJSON(
         fetchCommentsApi,
+        "",
         filters.hostName.url,
         inputPostId,
         filters.contentType.value
       );
     }
 
-    const commentsSummaryData = await fetchCommentsSummary(commentsData);
+    let commentsSummaryResults = {
+      summary: "",
+      sentiment: {
+        negative: 0,
+        neutral: 0,
+        positive: 0,
+      },
+      themes: [],
+      keywords: [],
+    };
 
-    if (commentsSummaryData) {
-      setCommentsSummary(commentsSummaryData.summary);
-      setCommentsSentiments(commentsSummaryData.sentiment);
-      setCommentsTheme(commentsSummaryData.theme);
-      setCommentsFrequentKeywords(commentsSummaryData.keywords);
+    if (commentsData) {
+      commentsSummaryResults = await fetchCommentsSummary(commentsData);
+    }
+
+    if (commentsSummaryResults) {
+      setResult(commentsSummaryResults);
     }
 
     setIsSummarizing(false);
@@ -82,9 +88,9 @@ const LeftContainer = () => {
     async (
       url: string,
       inputUrl: string = "",
-      inputHostName: string = "",
-      inputPostId: string = "",
-      inputContentType: string = ""
+      hostName: string = "",
+      postId: string = "",
+      contentType: string = ""
     ) => {
       try {
         const response = await fetch(url, {
@@ -94,9 +100,9 @@ const LeftContainer = () => {
           },
           body: JSON.stringify({
             url: inputUrl,
-            hostname: inputHostName,
-            postId: inputPostId,
-            contentType: inputContentType,
+            hostName: hostName,
+            postId: postId,
+            contentType: contentType,
           }),
         });
 
@@ -107,17 +113,18 @@ const LeftContainer = () => {
               (commentsData: any) => commentsData.message
             );
             return comments;
+          } else {
+            setErrorMessage(`No comments found!`);
+            // return test_comments;
+            return;
           }
         } else {
-          throw new Error(
-            data.error || `HTTP error! status: ${response.status}`
-          );
+          console.error(data.error || `HTTP error! status: ${response.status}`);
+          setErrorMessage("Unable to fetch comments!");
         }
       } catch (error) {
-        console.error(`Error fetching content from ${url}:`, error);
-        setErrorMessage(
-          `Failed to fetch comments from ${url}. Please check the URL.`
-        );
+        console.error(`Error fetching comments : `, error);
+        setErrorMessage(`Failed to fetch comments!`);
         return null;
       }
     },
@@ -138,14 +145,12 @@ const LeftContainer = () => {
       if (response.ok) {
         return data;
       } else {
-        throw new Error(data.error || `HTTP error! status: ${response.status}`);
+        setErrorMessage(data.error || `HTTP error! status: ${response.status}`);
+        return;
       }
     } catch (error) {
-      console.error(
-        `Error fetching comments summary for ${commentsData}:`,
-        error
-      );
-      setErrorMessage("Failed to fetch comments summary.");
+      console.error(`Error fetching comments summary :`, error);
+      setErrorMessage("Failed to fetch comments summary!");
       return null;
     }
   }, []);
@@ -183,7 +188,7 @@ const LeftContainer = () => {
 
         <InputToggle />
 
-        <InputField errorMessage={errorMessage} />
+        <InputField />
       </div>
 
       <div className="flex flex-col justify-between gap-2">

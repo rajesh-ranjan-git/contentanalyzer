@@ -1,8 +1,23 @@
 import { NextRequest, NextResponse } from "next/server";
-import { AUTHORIZATION_TOKEN, COMMENTS_JSON_URL } from "@/config/config";
+import {
+  BT_ALPHA_COMMENTS_JSON_URL,
+  BT_PROD_COMMENTS_JSON_URL,
+  IT_ALPHA_COMMENTS_JSON_URL,
+  IT_PROD_COMMENTS_JSON_URL,
+  BT_ALPHA_COMMENT_AUTHORIZATION_TOKEN,
+  BT_DEV_COMMENT_AUTHORIZATION_TOKEN,
+  BT_PROD_COMMENT_AUTHORIZATION_TOKEN,
+  IT_ALPHA_COMMENT_AUTHORIZATION_TOKEN,
+  IT_DEV_COMMENT_AUTHORIZATION_TOKEN,
+  IT_PROD_COMMENT_AUTHORIZATION_TOKEN,
+} from "@/config/config";
 
 export async function POST(request: NextRequest) {
-  const { url, hostname, postId, contentType } = await request.json();
+  const { url, hostName, postId, contentType } = await request.json();
+
+  if (!url && (!hostName || !postId || !contentType)) {
+    return NextResponse.json({ error: "Invalid request!" }, { status: 400 });
+  }
 
   try {
     let response;
@@ -15,17 +30,45 @@ export async function POST(request: NextRequest) {
       });
     } else {
       const params = new URLSearchParams({
-        hostname: hostname,
-        postId: postId,
-        contentType: contentType,
+        hostName: hostName,
+        postid: postId,
+        contenttype: contentType,
       });
 
-      const urlWithParams = `${COMMENTS_JSON_URL}?${params.toString()}&version=2.10`;
+      const hostUrl =
+        (hostName.includes("alpha") || hostName.includes("dev")) &&
+        hostName.includes("businesstoday")
+          ? BT_ALPHA_COMMENTS_JSON_URL
+          : (hostName.includes("alpha") || hostName.includes("dev")) &&
+            hostName.includes("indiatoday")
+          ? IT_ALPHA_COMMENTS_JSON_URL
+          : hostName.includes("businesstoday")
+          ? BT_PROD_COMMENTS_JSON_URL
+          : hostName.includes("indiatoday")
+          ? IT_PROD_COMMENTS_JSON_URL
+          : null;
+
+      const authorizationToken =
+        hostName.includes("alpha") && hostName.includes("businesstoday")
+          ? BT_ALPHA_COMMENT_AUTHORIZATION_TOKEN
+          : hostName.includes("dev") && hostName.includes("businesstoday")
+          ? BT_DEV_COMMENT_AUTHORIZATION_TOKEN
+          : hostName.includes("alpha") && hostName.includes("indiatoday")
+          ? IT_ALPHA_COMMENT_AUTHORIZATION_TOKEN
+          : hostName.includes("dev") && hostName.includes("indiatoday")
+          ? IT_DEV_COMMENT_AUTHORIZATION_TOKEN
+          : hostName.includes("businesstoday")
+          ? BT_PROD_COMMENT_AUTHORIZATION_TOKEN
+          : hostName.includes("indiatoday")
+          ? IT_PROD_COMMENT_AUTHORIZATION_TOKEN
+          : null;
+
+      const urlWithParams = `${hostUrl}?${params.toString()}&version=2.10`;
 
       response = await fetch(urlWithParams, {
         method: "GET",
         headers: {
-          Authorization: `Bearer ${AUTHORIZATION_TOKEN}`,
+          Authorization: `bearer ${authorizationToken}`,
           "Content-Type": "application/json",
         },
       });

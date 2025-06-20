@@ -61,8 +61,8 @@ export const useCommentsSummarizerAppStore = create<CommentsSummarizerAppState>(
     filters: {
       contentType: { name: "Story", value: "story" },
       hostName: {
-        name: "India Today (Alpha)",
-        url: "https://alpha-opinion.intoday.in/new/comment/getbypostid",
+        name: "Business Today (Alpha)",
+        url: "alpha-businesstoday.intoday.in",
       },
     },
     setFilters: (filters) => set({ filters }),
@@ -76,17 +76,10 @@ export const useCommentsSummarizerAppStore = create<CommentsSummarizerAppState>(
     summaryLoadTime: 0,
     setSummaryLoadTime: (time) => set({ summaryLoadTime: time }),
 
-    commentsSummary: "",
-    setCommentsSummary: (content) => set({ commentsSummary: content }),
+    result: null,
+    setResult: (result) => set({ result }),
 
-    commentsSentiments: "",
-    setCommentsSentiments: (content) => set({ commentsSentiments: content }),
-
-    commentsTheme: "",
-    setCommentsTheme: (content) => set({ commentsTheme: content }),
-
-    commentsFrequentKeywords: "",
-    setCommentsFrequentKeywords: (content) =>
-      set({ commentsFrequentKeywords: content }),
+    errorMessage: "",
+    setErrorMessage: (errorMessage) => set({ errorMessage }),
   })
 );

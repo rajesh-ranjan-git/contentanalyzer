@@ -1,28 +1,31 @@
-import { BarChart3, CheckCircle, Link, RefreshCw } from "lucide-react";
+import {
+  CheckCircle,
+  RefreshCw,
+  Gauge,
+  Smile,
+  Frown,
+  Meh,
+  ShieldAlert,
+} from "lucide-react";
 import { useCommentsSummarizerAppStore } from "@/store/store";
+import ProgressBar from "./progressBar";
 
 const Sentiments = () => {
+  const inputType = useCommentsSummarizerAppStore((state) => state.inputType);
+  const result = useCommentsSummarizerAppStore((state) => state.result);
   const isSummarizing = useCommentsSummarizerAppStore(
     (state) => state.isSummarizing
   );
-  const results = useCommentsSummarizerAppStore((state) => state.results);
-  const inputType = useCommentsSummarizerAppStore((state) => state.inputType);
-  const inputValue = useCommentsSummarizerAppStore((state) => state.inputValue);
+  const errorMessage = useCommentsSummarizerAppStore(
+    (state) => state.errorMessage
+  );
 
   return (
-    <div className="[&::-webkit-scrollbar-thumb]:bg-transparent [&::-webkit-scrollbar-track]:bg-transparent hover:[&::-webkit-scrollbar-thumb]:bg-gray-300 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:rounded-full [&::-webkit-scrollbar]:w-1 max-h-[82vh] overflow-y-scroll transition-all ease-in-out">
+    <div className="[&::-webkit-scrollbar-thumb]:bg-transparent [&::-webkit-scrollbar-track]:bg-transparent hover:[&::-webkit-scrollbar-thumb]:bg-gray-300 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:rounded-full [&::-webkit-scrollbar]:w-1 min-h-[82vh] max-h-[82vh] overflow-y-scroll transition-all ease-in-out">
       <h2 className="flex items-center mb-2 font-medium text-gray-800 text-xl">
-        <BarChart3 className="mr-2 w-5 h-5 text-blue-600" /> Analysis Results
+        <Gauge className="mr-2 w-5 h-5 text-blue-600" /> Sentiments Analysis
       </h2>
-
-      {isSummarizing && (
-        <div className="flex justify-center items-center p-4 text-blue-600">
-          <RefreshCw className="mr-2 w-5 h-5 animate-spin" />
-          <p>Analyzing content and calculating similarities...</p>
-        </div>
-      )}
-
-      {results === null && !isSummarizing && (
+      {!result && !isSummarizing && (
         <div className="bg-blue-50 p-2 px-4 border-blue-400 border-l-4 rounded-md text-blue-800">
           <div className="flex">
             <div className="flex-shrink-0">
@@ -33,65 +36,98 @@ const Sentiments = () => {
             </div>
             <div className="ml-3">
               <p className="text-sm">
-                Enter your URL/Post ID to start the sentiment analysis.
+                Enter your {inputType === "url" ? "URL" : "Post Details"} to
+                start summarizing.
               </p>
             </div>
           </div>
         </div>
       )}
 
-      {results && results.length > 0 && (
-        <div>
-          <div className="bg-gray-50 shadow-inner mb-2 px-3 py-2 rounded-lg">
-            <h3 className="mb-1 font-semibold text-gray-800 text-lg">
-              Your Input Content:
-            </h3>
-            {inputType === "url" ? (
-              <a
-                href={inputValue}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center text-blue-600 text-sm hover:underline"
-              >
-                <Link className="mr-1 w-4 h-4" /> {inputValue}
-              </a>
-            ) : (
-              <p className="max-h-40 overflow-y-auto text-gray-700 text-sm">
-                {/* {userContent.substring(0, 500)}... */}
-              </p>
-            )}
-          </div>
+      {isSummarizing && (
+        <div className="flex justify-center items-center p-4 text-blue-600">
+          <RefreshCw className="mr-2 w-5 h-5 animate-spin" />
+          <p>Summarizing comments...</p>
+        </div>
+      )}
 
-          {results.map((compResult) => (
-            <div
-              key={compResult.competitorId}
-              className="mb-2 border border-gray-200 rounded-lg max-h-96 overflow-hidden"
-            >
-              <div className="bg-gray-50 p-2 px-4">
-                <h3 className="font-semibold text-gray-800 text-lg">
-                  {compResult.competitorName}
-                </h3>
+      {!isSummarizing &&
+      result &&
+      result.sentiment &&
+      result.sentiment.positive !== 0 &&
+      result.sentiment.neutral &&
+      result.sentiment.negative ? (
+        <div className="[&::-webkit-scrollbar-thumb]:bg-transparent [&::-webkit-scrollbar-track]:bg-transparent hover:[&::-webkit-scrollbar-thumb]:bg-gray-300 mb-2 border border-gray-200 rounded-lg [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:rounded-full [&::-webkit-scrollbar]:w-1 max-h-[68vh] overflow-y-scroll transition-all ease-in-out">
+          <div className="p-2 px-4">
+            <div className="flex flex-col justify-between items-start gap-2">
+              <div className="flex items-center gap-2 mb-1 w-full text-gray-700">
+                <div className="bg-green-500 rounded-full w-6 h-5.5">
+                  &nbsp;
+                </div>
+                <Smile size={24} className="text-green-700" />
+                <div className="flex items-center gap-2 w-full">
+                  Positive :{" "}
+                  <span className="font-semibold">
+                    {result.sentiment.positive?.toFixed(2) || 0}%
+                  </span>
+                  <ProgressBar
+                    percentage={result.sentiment.positive || 0}
+                    color="bg-green-500"
+                    hoverColor="bg-green-700"
+                  />
+                </div>
               </div>
-              <div className="p-4">
-                {compResult.articles.length === 0 ? (
-                  <p className="text-gray-600 text-sm">
-                    No highly similar articles found for{" "}
-                    {compResult.competitorName} based on current filters.
-                  </p>
-                ) : (
-                  <div className="relative [&::-webkit-scrollbar-thumb]:bg-gray-300 [&::-webkit-scrollbar-track]:bg-gray-100 pl-4 border-gray-200 border-l-2 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:rounded-full [&::-webkit-scrollbar]:w-2 max-h-40 overflow-y-scroll">
-                    {compResult.articles
-                      .sort((a, b) => (b.similarity ?? 0) - (a.similarity ?? 0)) // Sort by similarity descending
-                      .map((article) => (
-                        // <SampleArticles article={article} key={article.id} />
-                        <></>
-                      ))}
-                  </div>
-                )}
+              <div className="flex gap-2 mb-1 w-full text-gray-700 item-center">
+                <div className="bg-gray-500 rounded-full w-6 h-5.5">&nbsp;</div>
+                <Meh size={24} className="text-gray-700" />
+                <div className="flex items-center gap-2 w-full">
+                  Neutral :{" "}
+                  <span className="font-semibold">
+                    {result.sentiment.neutral?.toFixed(2) || 0}%
+                  </span>
+                  <ProgressBar
+                    percentage={result.sentiment.neutral || 0}
+                    color="bg-gray-500"
+                    hoverColor="bg-gray-700"
+                  />
+                </div>
+              </div>
+              <div className="flex gap-2 mb-1 w-full text-gray-700 item-center">
+                <div className="bg-red-500 rounded-full w-6 h-5.5">&nbsp;</div>
+                <Frown size={24} className="text-red-700" />
+                <span className="flex items-center gap-2 w-full">
+                  Negative :{" "}
+                  <span className="font-semibold">
+                    {result.sentiment.negative?.toFixed(2) || 0}%
+                  </span>
+                  <ProgressBar
+                    percentage={result.sentiment.negative || 0}
+                    color="bg-red-500"
+                    hoverColor="bg-red-700"
+                  />
+                </span>
               </div>
             </div>
-          ))}
+          </div>
         </div>
+      ) : (
+        errorMessage && (
+          <div className="bg-red-50 p-2 px-4 border-red-400 border-l-4 rounded-md text-red-800">
+            <div className="flex">
+              <div className="flex-shrink-0">
+                <ShieldAlert
+                  className="w-5 h-5 text-red-400"
+                  aria-hidden="true"
+                />
+              </div>
+              <div className="ml-3">
+                <p className="text-sm">
+                  Unable to analyze sentiment - {errorMessage}
+                </p>
+              </div>
+            </div>
+          </div>
+        )
       )}
     </div>
   );

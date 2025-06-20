@@ -1,8 +1,28 @@
-export const BASE_URL = process.env.BASE_URL;
+export const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 export const API_CCA_URL = process.env.NEXT_PUBLIC_API_CCA_URL;
 export const API_CS_URL = process.env.NEXT_PUBLIC_API_CS_URL;
-export const COMMENTS_JSON_URL = process.env.COMMENTS_JSON_URL;
-export const AUTHORIZATION_TOKEN = process.env.AUTHORIZATION_TOKEN;
+
+export const BT_ALPHA_COMMENTS_JSON_URL =
+  process.env.BT_ALPHA_COMMENTS_JSON_URL;
+export const BT_PROD_COMMENTS_JSON_URL = process.env.BT_PROD_COMMENTS_JSON_URL;
+
+export const IT_ALPHA_COMMENTS_JSON_URL =
+  process.env.IT_ALPHA_COMMENTS_JSON_URL;
+export const IT_PROD_COMMENTS_JSON_URL = process.env.IT_PROD_COMMENTS_JSON_URL;
+
+export const BT_ALPHA_COMMENT_AUTHORIZATION_TOKEN =
+  process.env.BT_ALPHA_COMMENT_AUTHORIZATION_TOKEN;
+export const BT_DEV_COMMENT_AUTHORIZATION_TOKEN =
+  process.env.BT_DEV_COMMENT_AUTHORIZATION_TOKEN;
+export const BT_PROD_COMMENT_AUTHORIZATION_TOKEN =
+  process.env.BT_PROD_COMMENT_AUTHORIZATION_TOKEN;
+
+export const IT_ALPHA_COMMENT_AUTHORIZATION_TOKEN =
+  process.env.IT_ALPHA_COMMENT_AUTHORIZATION_TOKEN;
+export const IT_DEV_COMMENT_AUTHORIZATION_TOKEN =
+  process.env.IT_DEV_COMMENT_AUTHORIZATION_TOKEN;
+export const IT_PROD_COMMENT_AUTHORIZATION_TOKEN =
+  process.env.IT_PROD_COMMENT_AUTHORIZATION_TOKEN;
 
 export const sitemapUrls = [
   "https://www.indiatoday.in/news-it-sitemap.xml",
@@ -23,20 +43,28 @@ export const fetchCommentsApi = "/api/fetch-comments";
 
 export const hostNameUrls = [
   {
-    name: "India Today (Alpha)",
-    url: "https://alpha-opinion.intoday.in/new/comment/getbypostid",
-  },
-  {
-    name: "India Today (Live)",
-    url: "https://opinion.intoday.in/new/comment/getbypostid",
-  },
-  {
     name: "Business Today (Alpha)",
-    url: "https://alpha-opinion.businesstoday.in/new/comment/getbypostid",
+    url: "alpha-businesstoday.intoday.in",
+  },
+  {
+    name: "Business Today (Dev)",
+    url: "dev-businesstoday.intoday.in",
   },
   {
     name: "Business Today (Live)",
-    url: "https://opinion.businesstoday.in/new/comment/getbypostid",
+    url: "businesstoday.in",
+  },
+  {
+    name: "India Today (Alpha)",
+    url: "alpha-indiatoday.intoday.in",
+  },
+  {
+    name: "India Today (Dev)",
+    url: "dev-indiatoday.intoday.in",
+  },
+  {
+    name: "India Today (Live)",
+    url: "indiatoday.in",
   },
 ];
 
