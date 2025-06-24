@@ -16,7 +16,7 @@ const Summary = () => {
       <h2 className="flex items-center mb-2 font-medium text-gray-800 text-xl">
         <Sparkle className="mr-2 w-5 h-5 text-blue-600" /> Comments Summary
       </h2>
-      {!result && !isSummarizing && (
+      {!result && !isSummarizing && !errorMessage && (
         <div className="bg-blue-50 p-2 px-4 border-blue-400 border-l-4 rounded-md text-blue-800">
           <div className="flex">
             <div className="flex-shrink-0">
