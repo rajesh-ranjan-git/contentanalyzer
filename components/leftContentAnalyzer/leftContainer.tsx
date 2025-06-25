@@ -266,7 +266,7 @@ const LeftContainer = () => {
   }, []); // Run only once on initial load
 
   return (
-    <section className="top-6 sticky flex flex-col justify-between lg:col-span-1 bg-white shadow-md p-4 rounded-lg max-h-[85vh]">
+    <section className="top-6 sticky flex flex-col justify-between lg:col-span-1 bg-white shadow-md p-4 rounded-lg min-h-[85vh] max-h-[85vh]">
       <div className="flex flex-col justify-between">
         <h2 className="flex items-center mb-2 font-medium text-gray-800 text-xl">
           <Search className="mr-2 w-5 h-5 text-blue-600" /> Analyze Content
