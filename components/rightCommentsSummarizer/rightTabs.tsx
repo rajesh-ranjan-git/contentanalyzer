@@ -71,7 +71,7 @@ const RightTabs = () => {
           ) : summaryLoadTime ? (
             <div className="flex justify-center items-center gap-2 font-semibold text-blue-600 text-sm">
               <Timer className="w-4 h-4" />
-              Time taken to summarize comments :{" "}
+              Time taken :{" "}
               {(summaryLoadTime / 1000).toFixed(0)}s
             </div>
           ) : null
@@ -88,7 +88,7 @@ const RightTabs = () => {
           ) : summaryLoadTime ? (
             <div className="flex justify-center items-center gap-2 font-semibold text-blue-600 text-sm">
               <Timer className="w-4 h-4" />
-              Time taken to summarize comments :{" "}
+              Time taken :{" "}
               {(summaryLoadTime / 1000).toFixed(0)}s
             </div>
           ) : null
@@ -105,7 +105,7 @@ const RightTabs = () => {
           ) : summaryLoadTime ? (
             <div className="flex justify-center items-center gap-2 font-semibold text-blue-600 text-sm">
               <Timer className="w-4 h-4" />
-              Time taken to summarize comments :{" "}
+              Time taken :{" "}
               {(summaryLoadTime / 1000).toFixed(0)}s
             </div>
           ) : null
@@ -122,7 +122,7 @@ const RightTabs = () => {
           ) : summaryLoadTime ? (
             <div className="flex justify-center items-center gap-2 font-semibold text-blue-600 text-sm">
               <Timer className="w-4 h-4" />
-              Time taken to summarize comments :{" "}
+              Time taken :{" "}
               {(summaryLoadTime / 1000).toFixed(0)}s
             </div>
           ) : null
