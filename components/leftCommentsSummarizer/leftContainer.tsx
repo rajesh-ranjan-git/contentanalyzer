@@ -1,6 +1,6 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback } from "react";
 import { Proportions } from "lucide-react";
-import { API_CS_URL, fetchCommentsApi, test_comments } from "@/config/config";
+import { API_CS_URL, fetchCommentsApi } from "@/config/config";
 import { useCommentsSummarizerAppStore } from "@/store/store";
 import InputToggle from "@/components/leftCommentsSummarizer/inputToggle";
 import InputField from "@/components/leftCommentsSummarizer/inputField";
@@ -239,7 +239,7 @@ const LeftContainer = () => {
   };
 
   return (
-    <section className="top-6 sticky flex flex-col justify-between lg:col-span-1 bg-white [&::-webkit-scrollbar-thumb]:bg-transparent hover:[&::-webkit-scrollbar-thumb]:bg-gray-300 shadow-md p-4 rounded-lg [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:rounded-full [&::-webkit-scrollbar]:w-1 min-h-[85vh] max-h-[85vh] overflow-y-scroll transition-all ease-in-out [&::-webkit-scrollbar-track]:transparent">
+    <section className="top-6 sticky flex flex-col justify-between lg:col-span-1 bg-white [&::-webkit-scrollbar-thumb]:bg-transparent hover:[&::-webkit-scrollbar-thumb]:bg-gray-300 shadow-md p-4 rounded-lg [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:rounded-full [&::-webkit-scrollbar]:w-1 min-h-[85vh] max-h-[85vh] overflow-y-auto transition-all ease-in-out [&::-webkit-scrollbar-track]:transparent">
       <div className="flex flex-col justify-start h-full">
         <h2 className="flex items-center mb-2 font-medium text-gray-800 text-xl">
           <Proportions className="mr-2 w-5 h-5 text-blue-600" /> Summarize

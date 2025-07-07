@@ -22,7 +22,7 @@ const SelectCompetitors = () => {
   };
 
   return (
-    <div className="flex flex-col flex-1 [&::-webkit-scrollbar-thumb]:bg-gray-300 [&::-webkit-scrollbar-track]:bg-gray-100 p-1 border border-slate-300 rounded-md [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:rounded-full [&::-webkit-scrollbar]:w-2 max-h-[12vh] overflow-y-scroll">
+    <div className="flex flex-col flex-1 [&::-webkit-scrollbar-thumb]:bg-gray-300 [&::-webkit-scrollbar-track]:bg-gray-100 p-1 border border-slate-300 rounded-md [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:rounded-full [&::-webkit-scrollbar]:w-2 max-h-[12vh] overflow-y-auto">
       {competitors.length === 0 && !loadingSitemaps && (
         <p className="text-gray-600 text-sm">
           No competitors loaded. Check sitemap URLs or refresh.

@@ -80,7 +80,7 @@ const Results = () => {
                     {compResult.competitorName} based on current filters.
                   </p>
                 ) : (
-                  <div className="relative [&::-webkit-scrollbar-thumb]:bg-gray-300 [&::-webkit-scrollbar-track]:bg-gray-100 pl-4 border-gray-200 border-l-2 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:rounded-full [&::-webkit-scrollbar]:w-2 max-h-40 overflow-y-scroll">
+                  <div className="relative [&::-webkit-scrollbar-thumb]:bg-gray-300 [&::-webkit-scrollbar-track]:bg-gray-100 pl-4 border-gray-200 border-l-2 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:rounded-full [&::-webkit-scrollbar]:w-2 max-h-40 overflow-y-auto">
                     {compResult.articles
                       .sort((a, b) => (b.similarity ?? 0) - (a.similarity ?? 0)) // Sort by similarity descending
                       .map((article) => (
