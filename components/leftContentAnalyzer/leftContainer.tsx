@@ -1,14 +1,14 @@
 import { useCallback, useEffect, useState } from "react";
 import { Globe, RefreshCw, Search } from "lucide-react";
 import { API_CCA_URL, sitemapUrls } from "@/config/config";
-import { Article, Competitor, CompetitorArticle } from "@/types/types";
+import { Article, Competitor } from "@/types/types";
+import { formatDate } from "@/helpers/helpers";
 import { useContentAnalyzerAppStore } from "@/store/store";
 import InputToggle from "@/components/leftContentAnalyzer/inputToggle";
 import InputField from "@/components/leftContentAnalyzer/inputField";
 import SelectCompetitors from "@/components/leftContentAnalyzer/selectCompetitors";
 import Filters from "@/components/leftContentAnalyzer/filters";
 import Analyze from "@/components/leftContentAnalyzer/analyze";
-import { formatDate } from "@/helpers/helpers";
 
 const LeftContainer = () => {
   const inputValue = useContentAnalyzerAppStore((state) => state.inputValue);
@@ -19,6 +19,9 @@ const LeftContainer = () => {
   );
   const setCountOfArticlesAnalyzing = useContentAnalyzerAppStore(
     (state) => state.setCountOfArticlesAnalyzing
+  );
+  const setIsCalculatingWordCount = useContentAnalyzerAppStore(
+    (state) => state.setIsCalculatingWordCount
   );
   const loadingSitemaps = useContentAnalyzerAppStore(
     (state) => state.loadingSitemaps
@@ -77,23 +80,15 @@ const LeftContainer = () => {
         const fetchedArticles = await response.json();
 
         if (response.ok) {
-          // Take the first 10 articles (or adjust as needed) from the fetched data
-          const sampleArticlesData = await Promise.allSettled(
-            fetchedArticles
-              .slice(0, 10)
-              .map(async (item: Article, index: number) => ({
-                id: `${domain}-${index}`,
-                title: item.title,
-                domain: domain,
-                url: item.url,
-                published_date: item.published_date,
-                content: await getArticleData(item),
-              }))
-          );
-
-          const sampleArticles = sampleArticlesData
-            .filter((result) => result.status === "fulfilled")
-            .map((result) => result.value);
+          const sampleArticles = fetchedArticles
+            .slice(0, 10)
+            .map((article: Article, index: number) => ({
+              id: article.id,
+              title: article.title,
+              domain: article.domain,
+              url: article.url,
+              published_date: article.published_date,
+            }));
 
           fetchedCompetitors.push({
             id: domain,
@@ -128,6 +123,34 @@ const LeftContainer = () => {
     }
   }, [sitemapUrls]); // Keep this dependency if sitemapUrls can change. If truly static, [] is fine.
 
+  const getSampleArticlesWordCount = async () => {
+    setIsCalculatingWordCount(true);
+
+    for (const competitor of competitors) {
+      // Take the first 10 articles (or adjust as needed) from the fetched data
+      const sampleArticles = competitor.sampleArticlesList.slice(0, 10);
+
+      const results = await Promise.allSettled(
+        sampleArticles.map(async (article: Article) => {
+          try {
+            article.content = await getArticleData(article);
+          } catch (err) {
+            console.error(`Error fetching article content:`, err);
+          }
+        })
+      );
+
+      // Optional: Log failed ones
+      results.forEach((result, index) => {
+        if (result.status === "rejected") {
+          console.warn(`Article ${index} failed:`, result.reason);
+        }
+      });
+    }
+
+    setIsCalculatingWordCount(false);
+  };
+
   const getArticleData = async (article: Article) => {
     try {
       const articleResponse = await fetch(`${API_CCA_URL}/fetch_article_data`, {
@@ -161,6 +184,7 @@ const LeftContainer = () => {
     }
 
     setIsAnalyzing(true);
+    setCountOfArticlesAnalyzing(getCountOfArticlesAnalyzing());
     setErrorMessage("");
     setResults(null);
     setAnalysisLoadTime(0);
@@ -172,6 +196,7 @@ const LeftContainer = () => {
       const fetchedMainContent = await fetchContentFromUrl(inputValue);
       if (!fetchedMainContent) {
         setIsAnalyzing(false);
+        setCountOfArticlesAnalyzing(0);
         return; // Error message already set by fetchContentFromUrl
       }
       mainContent =
@@ -190,12 +215,11 @@ const LeftContainer = () => {
       const articlesWithSimilarity = [];
       for (const article of relevantArticles) {
         // Fetch content for competitor article only when analyzing
-        const competitorArticleContent = await fetchContentFromUrl(article.url);
-        if (competitorArticleContent) {
+        const ArticleContent = await fetchContentFromUrl(article.url);
+        if (ArticleContent) {
           const similarity = await calculateSimilarity(
             mainContent,
-            competitorArticleContent.article_heading +
-              competitorArticleContent.article_body
+            ArticleContent.article_heading + ArticleContent.article_body
           );
           if (similarity >= filters.similarity) {
             articlesWithSimilarity.push({ ...article, similarity });
@@ -214,6 +238,7 @@ const LeftContainer = () => {
 
     setResults(analysisResults);
     setIsAnalyzing(false);
+    setCountOfArticlesAnalyzing(0);
     setActiveTab("results"); // Switch to results tab after analysis
 
     if (initialTime) {
@@ -288,7 +313,7 @@ const LeftContainer = () => {
   };
 
   const getRelevantArticlesToAnalyze = (competitor: Competitor) => {
-    return competitor.allArticles.filter((article: CompetitorArticle) => {
+    return competitor.allArticles.filter((article: Article) => {
       const articleDate = new Date(article.published_date);
       const cutoffDate = new Date(); // clone
 
@@ -317,6 +342,10 @@ const LeftContainer = () => {
       selectedCompetitors.includes(competitor.id)
     );
 
+    if (selectedCompetitorObjects.length <= 0) {
+      return 0;
+    }
+
     let countOfRelevantArticles = 0;
 
     for (const competitor of selectedCompetitorObjects) {
@@ -328,8 +357,8 @@ const LeftContainer = () => {
   };
 
   useEffect(() => {
-    setCountOfArticlesAnalyzing(getCountOfArticlesAnalyzing());
-  }, [filters.dateRange]);
+    getSampleArticlesWordCount();
+  }, [competitors]);
 
   useEffect(() => {
     fetchSitemapAndArticles();

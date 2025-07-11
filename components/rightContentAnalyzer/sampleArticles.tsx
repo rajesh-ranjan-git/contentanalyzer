@@ -3,6 +3,8 @@ import { SampleArticleProp } from "@/types/propTypes";
 import { formatDate, getSimilarityColor } from "@/helpers/helpers";
 
 const SampleArticles = ({ article }: SampleArticleProp) => {
+  const date = formatDate(article.published_date).split(", ");
+
   return (
     <div className="relative flex items-center space-x-2 pb-1">
       <div className="z-10 relative flex flex-shrink-0 justify-center items-center bg-blue-600 rounded-full w-8 h-8">
@@ -21,18 +23,28 @@ const SampleArticles = ({ article }: SampleArticleProp) => {
               {article.title}
             </h4>
           </a>
-          <span className="text-gray-600 text-sm">
-            {formatDate(article.published_date)}
+          <span className="min-w-20 text-gray-600 text-sm">
+            {date[0]}, {date[1]}
           </span>
         </div>
-        <p className="mb-1 text-gray-600 text-sm">{article.domain}</p>
-        <span
-          className={`inline-flex px-2 py-1 rounded-full text-xs font-medium ${
-            article.similarity && getSimilarityColor(article.similarity)
-          }`}
-        >
-          {article.similarity}% similar
-        </span>
+        <div className="flex justify-between items-center">
+          <div className="flex items-center gap-4">
+            <span
+              className={`inline-flex px-2 py-1 rounded-full text-xs font-medium ${
+                article.similarity && getSimilarityColor(article.similarity)
+              }`}
+            >
+              {article.similarity}% similar
+            </span>
+            <p className="mb-1 text-gray-600 text-sm">
+              <span className="font-semibold">Domain : </span>
+              {article.domain}
+            </p>
+          </div>
+          <span className="min-w-16 text-gray-600 text-sm">
+            {date[date.length - 1]}
+          </span>
+        </div>
       </div>
     </div>
   );

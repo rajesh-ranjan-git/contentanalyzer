@@ -27,13 +27,20 @@ const InputField = ({ errorMessage }: InputFieldProps) => {
           onChange={(e) => setInputValue(e.target.value)}
         />
       ) : (
-        <input
+        // <input
+        //   id="contentInput"
+        //   className="px-4 py-2 border border-gray-300 focus:border-blue-500 rounded-md focus:ring-blue-500 w-full text-gray-900"
+        //   placeholder="Paste your content here..."
+        //   value={inputValue}
+        //   onChange={(e) => setInputValue(e.target.value)}
+        // />
+        <textarea
           id="contentInput"
-          className="px-4 py-2 border border-gray-300 focus:border-blue-500 rounded-md focus:ring-blue-500 w-full text-gray-900"
+          className="px-4 py-2 border border-gray-300 focus:border-blue-500 rounded-md focus:ring-blue-500 w-full min-h-20 text-gray-900"
           placeholder="Paste your content here..."
           value={inputValue}
           onChange={(e) => setInputValue(e.target.value)}
-        />
+        ></textarea>
       )}
       {errorMessage && (
         <p className="flex items-center mt-2 text-red-600 text-sm">

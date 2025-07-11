@@ -4,7 +4,8 @@ export type Article = {
   domain: string;
   url: string;
   published_date: string;
-  content: {
+  similarity?: number;
+  content?: {
     word_count: number;
     article_heading: string;
     article_body: string;
@@ -17,22 +18,13 @@ export type Competitor = {
   name: string;
   domain: string;
   totalArticlesCount: number;
-  allArticles: CompetitorArticle[];
+  allArticles: Article[];
   lastUpdated: string;
   sampleArticlesList: Article[];
 };
 
-export type CompetitorArticle = {
-  id: string;
-  domain: string;
-  url: string;
-  title: string;
-  published_date: string;
-  similarity?: number;
-};
-
 export type AnalysisResults = {
-  articles: CompetitorArticle[];
+  articles: Article[];
   competitorId: string;
   competitorName: string;
 };
@@ -94,6 +86,9 @@ export type ContentAnalyzerAppState = {
 
   countOfArticlesAnalyzing: number;
   setCountOfArticlesAnalyzing: (count: number) => void;
+
+  isCalculatingWordCount: boolean;
+  setIsCalculatingWordCount: (value: boolean) => void;
 
   results: AnalysisResults[] | null;
   setResults: (results: AnalysisResults[] | null) => void;

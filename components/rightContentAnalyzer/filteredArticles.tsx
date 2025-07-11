@@ -1,8 +1,15 @@
-import { Clock, Link } from "lucide-react";
+import { Clock, Link, RefreshCw } from "lucide-react";
 import { FilteredArticlesProp } from "@/types/propTypes";
+import { useContentAnalyzerAppStore } from "@/store/store";
 import { formatDate } from "@/helpers/helpers";
 
 const FilteredArticles = ({ article }: FilteredArticlesProp) => {
+  const isCalculatingWordCount = useContentAnalyzerAppStore(
+    (state) => state.isCalculatingWordCount
+  );
+
+  const date = formatDate(article.published_date).split(", ");
+
   return (
     <div className="relative flex items-center space-x-2 pb-1">
       <div className="z-10 relative flex flex-shrink-0 justify-center items-center bg-blue-600 rounded-full w-8 h-8">
@@ -21,16 +28,31 @@ const FilteredArticles = ({ article }: FilteredArticlesProp) => {
               {article.title}
             </h4>
           </a>
-          <span className="text-gray-600 text-sm">
-            {formatDate(article.published_date)}
+          <span className="min-w-20 text-gray-600 text-sm">
+            {date[0]}, {date[1]}
           </span>
         </div>
-        <div className="flex gap-4">
-          <p className="mb-1 text-gray-600 text-sm">
-            <span className="font-semibold">Story Word Count : </span>
-            {article.content.word_count}
-          </p>
-          <p className="mb-1 text-gray-600 text-sm"><span className="font-semibold">Domain : </span>{article.domain}</p>
+        <div className="flex justify-between items-center gap-4">
+          <div className="flex gap-4">
+            <p className="flex items-center gap-2 mb-1 text-gray-600 text-sm">
+              <span className="font-semibold">Article's Word Count : </span>
+              {isCalculatingWordCount ? (
+                <>
+                  <RefreshCw className="w-3 h-3 text-blue-600 animate-spin" />{" "}
+                  <span className="text-blue-600">Calculating...</span>
+                </>
+              ) : article.content && article.content?.word_count > 0 ? (
+                article.content?.word_count
+              ) : null}
+            </p>
+            <p className="mb-1 text-gray-600 text-sm">
+              <span className="font-semibold">Domain : </span>
+              {article.domain}
+            </p>
+          </div>
+          <span className="min-w-16 text-gray-600 text-sm">
+            {date[date.length - 1]}
+          </span>
         </div>
       </div>
     </div>

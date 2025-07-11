@@ -47,7 +47,7 @@ const RightTabs = () => {
         {activeTab === "overview" ? (
           loadingSitemaps ? (
             <div className="flex justify-center items-center gap-2 font-semibold text-blue-600 text-sm">
-              <span>Fetching sitemaps with articles : </span>{" "}
+              <span>Fetching sitemap : </span>{" "}
               <RefreshCw
                 className={`w-4 h-4 ${loadingSitemaps ? "animate-spin" : ""}`}
               />
@@ -55,7 +55,7 @@ const RightTabs = () => {
           ) : sitemapsLoadTime ? (
             <div className="flex justify-center items-center gap-2 font-semibold text-blue-600 text-sm">
               <Timer className="w-4 h-4" />
-              Sitemap with articles loaded in :{" "}
+              Fetched Sitemap in :{" "}
               {(sitemapsLoadTime / 1000).toFixed(0)}s
             </div>
           ) : null
