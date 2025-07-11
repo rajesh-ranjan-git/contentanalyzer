@@ -50,11 +50,16 @@ const Filters = () => {
             onChange={handleFilterChange}
             className="px-2 py-1 border border-gray-300 focus:border-blue-500 rounded-md focus:ring-blue-500 w-full text-gray-900"
           >
-            <option value="1">Last 1 day</option>
-            <option value="7">Last 7 days</option>
-            <option value="30">Last 30 days</option>
-            <option value="90">Last 90 days</option>
-            <option value="365">Last year</option>
+            <option value="1h">Last 1 Hour</option>
+            <option value="3h">Last 3 Hours</option>
+            <option value="5h">Last 5 Hours</option>
+            <option value="12h">Last 12 Hours</option>
+            <option value="1d">Today</option>
+            <option value="3d">Last 3 days</option>
+            <option value="7d">Last 7 days</option>
+            <option value="30d">Last 30 days</option>
+            <option value="90d">Last 90 days</option>
+            <option value="365d">Last year</option>
             <option value="0">All time</option>
           </select>
         </div>

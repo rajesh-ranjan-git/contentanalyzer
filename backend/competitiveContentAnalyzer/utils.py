@@ -3,12 +3,14 @@ import os
 import requests
 import xml.etree.ElementTree as ET
 import extruct
+import re
 import logging
 
 from w3lib.html import get_base_url
 from dateutil import parser
 from datetime import datetime
 from bs4 import BeautifulSoup
+from urllib.parse import urlparse
 
 # Local imports
 from backend.competitiveContentAnalyzer.config import NAMESPACES, headers
@@ -107,11 +109,27 @@ def fetch_sitemap_urls(sitemap_url):
 
         root = ET.fromstring(response.content)
 
+        # Extract domain using regex
+        match = re.match(
+            r"^(?:https?:\/\/)?(?:[^@\n]+@)?(?:www\.)?([^:\/\n?]+)",
+            sitemap_url,
+            re.IGNORECASE,
+        )
+        domain = match.group(1) if match else sitemap_url
+
+        # Remove ".com", ".in" and get the first part before "."
+        name = domain.replace(".com", "").replace(".in", "").split(".")[0]
+
+        # Generate Ids
+        idCounter = 0
+
         # Case 1: Standard sitemap with <url> elements
         for url_element in root.findall("s:url", NAMESPACES):
             loc_element = url_element.find("s:loc", NAMESPACES)
             if loc_element is not None and loc_element.text:
                 url = loc_element.text.strip()
+                idCounter += 1
+                id = name + str(idCounter)
                 title = None
                 published_date = None
 
@@ -159,7 +177,7 @@ def fetch_sitemap_urls(sitemap_url):
                         )
 
                 articles_data.append(
-                    {"url": url, "title": title, "published_date": published_date}
+                    {"id": id, "url": url, "domain": domain, "title": title, "published_date": published_date}
                 )
 
                 articles_data.sort(

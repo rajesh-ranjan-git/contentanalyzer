@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { Globe, RefreshCw, Search } from "lucide-react";
 import { API_CCA_URL, sitemapUrls } from "@/config/config";
-import { Article, ArticleSnakeCase } from "@/types/types";
+import { Article, CompetitorArticle } from "@/types/types";
 import { useContentAnalyzerAppStore } from "@/store/store";
 import InputToggle from "@/components/leftContentAnalyzer/inputToggle";
 import InputField from "@/components/leftContentAnalyzer/inputField";
@@ -34,8 +34,8 @@ const LeftContainer = () => {
   const setAnalysisLoadTime = useContentAnalyzerAppStore(
     (state) => state.setAnalysisLoadTime
   );
-  const setUserContent = useContentAnalyzerAppStore(
-    (state) => state.setUserContent
+  const setMainArticleContent = useContentAnalyzerAppStore(
+    (state) => state.setMainArticleContent
   );
   const setActiveTab = useContentAnalyzerAppStore(
     (state) => state.setActiveTab
@@ -69,25 +69,26 @@ const LeftContainer = () => {
           },
           body: JSON.stringify({ sitemap_url: sitemapUrl }),
         });
+
         // The backend now returns an array of objects {url: '...', title: '...', published_date: "..."}
-        const fetchedArticlesResponse = await response.json();
+        const fetchedArticles = await response.json();
 
         if (response.ok) {
           // Take the first 10 articles (or adjust as needed) from the fetched data
-          const fetchedArticlesData = await Promise.allSettled(
-            fetchedArticlesResponse
+          const sampleArticlesData = await Promise.allSettled(
+            fetchedArticles
               .slice(0, 10)
-              .map(async (item: ArticleSnakeCase, index: number) => ({
+              .map(async (item: Article, index: number) => ({
                 id: `${domain}-${index}`,
                 title: item.title,
                 domain: domain,
                 url: item.url,
-                publishedDate: item.published_date,
+                published_date: item.published_date,
                 content: await getArticleData(item),
               }))
           );
 
-          const articles = fetchedArticlesData
+          const sampleArticles = sampleArticlesData
             .filter((result) => result.status === "fulfilled")
             .map((result) => result.value);
 
@@ -95,13 +96,14 @@ const LeftContainer = () => {
             id: domain,
             name: name,
             domain: domain,
-            articles: fetchedArticlesResponse.length,
+            totalArticlesCount: fetchedArticles.length,
+            allArticles: fetchedArticles,
             lastUpdated: formatDate(new Date()),
-            articleList: articles,
+            sampleArticlesList: sampleArticles,
           });
         } else {
           throw new Error(
-            fetchedArticlesResponse.error || "Failed to fetch sitemap URLs."
+            fetchedArticles.error || "Failed to fetch sitemap URLs."
           );
         }
       } catch (error: any) {
@@ -123,7 +125,7 @@ const LeftContainer = () => {
     }
   }, [sitemapUrls]); // Keep this dependency if sitemapUrls can change. If truly static, [] is fine.
 
-  const getArticleData = async (article: ArticleSnakeCase) => {
+  const getArticleData = async (article: Article) => {
     try {
       const articleResponse = await fetch(`${API_CCA_URL}/fetch_article_data`, {
         method: "POST",
@@ -171,7 +173,7 @@ const LeftContainer = () => {
       }
       mainContent = fetchedMainContent;
     }
-    setUserContent(mainContent); // Store the content for display/reuse
+    setMainArticleContent(mainContent); // Store the content for display/reuse
 
     const analysisResults = [];
     const selectedCompetitorObjects = competitors.filter((competitor) =>
@@ -179,13 +181,27 @@ const LeftContainer = () => {
     );
 
     for (const competitor of selectedCompetitorObjects) {
-      const relevantArticles = competitor.articleList.filter(
-        (article: Article) => {
-          const articleDate = new Date(article.publishedDate);
-          const cutoffDate = new Date();
-          cutoffDate.setDate(
-            cutoffDate.getDate() - parseInt(filters.dateRange)
-          );
+      const relevantArticles = competitor.allArticles.filter(
+        (article: CompetitorArticle) => {
+          const articleDate = new Date(article.published_date);
+          const cutoffDate = new Date(); // clone
+
+          const dateRangeValue = filters.dateRange.toString().toLowerCase(); // e.g., "1h", "3d"
+
+          if (dateRangeValue.endsWith("h")) {
+            // Hour-based filtering
+            const hours = parseInt(dateRangeValue);
+            cutoffDate.setHours(cutoffDate.getHours() - hours);
+          } else if (dateRangeValue.endsWith("d")) {
+            // Day-based filtering
+            const days = parseInt(dateRangeValue);
+            cutoffDate.setDate(cutoffDate.getDate() - days);
+          } else {
+            // Default fallback (assume days if no suffix)
+            const days = parseInt(dateRangeValue);
+            cutoffDate.setDate(cutoffDate.getDate() - days);
+          }
+
           return articleDate >= cutoffDate;
         }
       );
@@ -204,6 +220,7 @@ const LeftContainer = () => {
           }
         }
       }
+
       analysisResults.push({
         competitorId: competitor.id,
         competitorName: competitor.name,
@@ -216,6 +233,7 @@ const LeftContainer = () => {
     setResults(analysisResults);
     setIsAnalyzing(false);
     setActiveTab("results"); // Switch to results tab after analysis
+
     if (initialTime) {
       const endTime = performance.now();
       setAnalysisLoadTime(endTime - initialTime);

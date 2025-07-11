@@ -1,4 +1,4 @@
-import { Article } from "@/types/types";
+import { Article, CompetitorArticle } from "@/types/types";
 
 export interface HeaderProps {
   title: { name: string; url: string };
@@ -8,8 +8,12 @@ export interface AnalyzeProps {
   handleAnalyze: () => void;
 }
 
-export interface SingleArticleProp {
+export interface FilteredArticlesProp {
   article: Article;
+}
+
+export interface SampleArticleProp {
+  article: CompetitorArticle;
 }
 
 export interface SummarizeProps {

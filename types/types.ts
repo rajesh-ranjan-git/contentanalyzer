@@ -3,38 +3,43 @@ export type Article = {
   title: string;
   domain: string;
   url: string;
-  publishedDate: string;
+  published_date: string;
   content: {
     word_count: number;
     article_heading: string;
     article_body: string;
     date_modified: string;
   };
-  similarity?: number;
-};
-
-export type ArticleSnakeCase = Omit<Article, 'publishedDate'> & {
-  published_date: string;
 };
 
 export type Competitor = {
   id: string;
   name: string;
   domain: string;
-  articles: number;
+  totalArticlesCount: number;
+  allArticles: CompetitorArticle[];
   lastUpdated: string;
-  articleList: Article[];
+  sampleArticlesList: Article[];
+};
+
+export type CompetitorArticle = {
+  id: string;
+  domain: string;
+  url: string;
+  title: string;
+  published_date: string;
+  similarity?: number;
 };
 
 export type AnalysisResults = {
-  articles: Article[];
+  articles: CompetitorArticle[];
   competitorId: string;
   competitorName: string;
 };
 
 export type Filters = {
   similarity: number;
-  dateRange: "0" | "1" | "7" | "30" | "90" | "365";
+  dateRange: "1h" | "3h" | "5h" | "12h" | "0" | "1d" | "7d" | "30d" | "90d" | "365d";
 };
 
 export type ContentType = {
@@ -101,8 +106,8 @@ export type ContentAnalyzerAppState = {
   analysisLoadTime: number;
   setAnalysisLoadTime: (time: number) => void;
 
-  userContent: string;
-  setUserContent: (content: string) => void;
+  mainArticleContent: string;
+  setMainArticleContent: (content: string) => void;
 };
 
 export type CommentsSummarizerAppState = {

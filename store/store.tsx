@@ -26,7 +26,7 @@ export const useContentAnalyzerAppStore = create<ContentAnalyzerAppState>(
 
     filters: {
       similarity: 30,
-      dateRange: "365",
+      dateRange: "1h",
     },
     setFilters: (filters) => set({ filters }),
 
@@ -42,8 +42,8 @@ export const useContentAnalyzerAppStore = create<ContentAnalyzerAppState>(
     analysisLoadTime: 0,
     setAnalysisLoadTime: (time) => set({ analysisLoadTime: time }),
 
-    userContent: "",
-    setUserContent: (content) => set({ userContent: content }),
+    mainArticleContent: "",
+    setMainArticleContent: (content) => set({ mainArticleContent: content }),
   })
 );
 

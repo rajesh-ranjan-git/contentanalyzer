@@ -1,8 +1,8 @@
 import { Clock, Link } from "lucide-react";
-import { SingleArticleProp } from "@/types/propTypes";
+import { SampleArticleProp } from "@/types/propTypes";
 import { formatDate, getSimilarityColor } from "@/helpers/helpers";
 
-const SampleArticles = ({ article }: SingleArticleProp) => {
+const SampleArticles = ({ article }: SampleArticleProp) => {
   return (
     <div className="relative flex items-center space-x-2 pb-1">
       <div className="z-10 relative flex flex-shrink-0 justify-center items-center bg-blue-600 rounded-full w-8 h-8">
@@ -22,7 +22,7 @@ const SampleArticles = ({ article }: SingleArticleProp) => {
             </h4>
           </a>
           <span className="text-gray-600 text-sm">
-            {formatDate(article.publishedDate)}
+            {formatDate(article.published_date)}
           </span>
         </div>
         <p className="mb-1 text-gray-600 text-sm">{article.domain}</p>

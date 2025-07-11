@@ -7,7 +7,7 @@ const Results = () => {
   const results = useContentAnalyzerAppStore((state) => state.results);
   const inputType = useContentAnalyzerAppStore((state) => state.inputType);
   const inputValue = useContentAnalyzerAppStore((state) => state.inputValue);
-  const userContent = useContentAnalyzerAppStore((state) => state.userContent);
+  const mainArticleContent = useContentAnalyzerAppStore((state) => state.mainArticleContent);
 
   return (
     <div className="[&::-webkit-scrollbar-thumb]:bg-transparent [&::-webkit-scrollbar-track]:bg-transparent hover:[&::-webkit-scrollbar-thumb]:bg-gray-300 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:rounded-full [&::-webkit-scrollbar]:w-1 min-h-[75vh] overflow-y-auto transition-all ease-in-out">
@@ -58,7 +58,7 @@ const Results = () => {
               </a>
             ) : (
               <p className="max-h-40 overflow-y-auto text-gray-700 text-sm">
-                {userContent.substring(0, 500)}...
+                {mainArticleContent.substring(0, 500)}...
               </p>
             )}
           </div>

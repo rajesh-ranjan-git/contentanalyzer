@@ -49,7 +49,7 @@ const SelectCompetitors = () => {
               {competitor.name}
             </span>
             <span className="ml-auto text-gray-600 text-xs">
-              {competitor.articles} articles
+              {competitor.totalArticlesCount} articles
             </span>
           </label>
         ))

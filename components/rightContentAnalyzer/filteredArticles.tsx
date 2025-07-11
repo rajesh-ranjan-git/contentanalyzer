@@ -1,8 +1,8 @@
 import { Clock, Link } from "lucide-react";
-import { SingleArticleProp } from "@/types/propTypes";
+import { FilteredArticlesProp } from "@/types/propTypes";
 import { formatDate } from "@/helpers/helpers";
 
-const FilteredArticles = ({ article }: SingleArticleProp) => {
+const FilteredArticles = ({ article }: FilteredArticlesProp) => {
   return (
     <div className="relative flex items-center space-x-2 pb-1">
       <div className="z-10 relative flex flex-shrink-0 justify-center items-center bg-blue-600 rounded-full w-8 h-8">
@@ -22,7 +22,7 @@ const FilteredArticles = ({ article }: SingleArticleProp) => {
             </h4>
           </a>
           <span className="text-gray-600 text-sm">
-            {formatDate(article.publishedDate)}
+            {formatDate(article.published_date)}
           </span>
         </div>
         <div className="flex gap-4">

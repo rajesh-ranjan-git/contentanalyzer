@@ -216,7 +216,6 @@ async def fetch_article_content_api():
         return jsonify({"error": "URL is required"}), 400
     content = fetch_article_content_backend(url)
     # content = extract_elements_from_url(url)
-    logger.info(f"content : {content}")
     if content:
         return jsonify({"content": content})
     return jsonify({"error": "Could not fetch content from the URL : {url}"}), 500

@@ -13,19 +13,19 @@ const Overview = () => {
   // Filtered articles for display in the overview tab
   const filteredCompetitorArticles = (competitorId: string) => {
     const competitor = competitors.find((c) => c.id === competitorId);
-    if (!competitor || !competitor.articleList) return [];
+    if (!competitor || !competitor.sampleArticlesList) return [];
 
-    return competitor.articleList
+    return competitor.sampleArticlesList
       .filter((article) => {
-        const articleDate = new Date(article.publishedDate);
+        const articleDate = new Date(article.published_date);
         const cutoffDate = new Date();
         cutoffDate.setDate(cutoffDate.getDate() - parseInt(filters.dateRange));
         return articleDate >= cutoffDate;
       })
       .sort(
         (a, b) =>
-          new Date(b.publishedDate).getTime() -
-          new Date(a.publishedDate).getTime()
+          new Date(b.published_date).getTime() -
+          new Date(a.published_date).getTime()
       );
   };
 
@@ -77,7 +77,7 @@ const Overview = () => {
           <div className="p-2 px-4">
             <div className="flex justify-between items-center">
               <p className="mb-1 text-gray-700">
-                Domain:{" "}
+                <span className="font-semibold">Domain:{" "}</span>
                 <a
                   href={`https://${competitor.domain}`}
                   target="_blank"
@@ -90,21 +90,17 @@ const Overview = () => {
               <div className="flex gap-4">
                 <p className="mb-1 text-gray-700">
                   <span className="font-semibold">Total articles found :{" "}</span>
-                  {competitor.articles ? competitor.articles : 0}
+                  {competitor.totalArticlesCount ? competitor.totalArticlesCount : 0}
                 </p>
                 <p className="mb-1 text-gray-700">
                   <span className="font-semibold">(Sample :{" "}</span>
-                  {competitor.articleList ? competitor.articleList.length : 0}
+                  {competitor.sampleArticlesList ? competitor.sampleArticlesList.length : 0}
                   <span className="font-semibold">)</span>
                 </p>
               </div>
             </div>
             <h4 className="mb-1 font-medium text-gray-800 text-lg">
-              Sample Articles (Last{" "}
-              {filters.dateRange === "0"
-                ? "All Time"
-                : `${filters.dateRange} Days`}
-              )
+              Latest Articles
             </h4>
             <div className="relative [&::-webkit-scrollbar-thumb]:bg-gray-300 [&::-webkit-scrollbar-track]:bg-gray-100 pl-4 border-gray-200 border-l-2 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:rounded-full [&::-webkit-scrollbar]:w-2 max-h-40 overflow-y-auto">
               {filteredCompetitorArticles(competitor.id).length === 0 ? (
