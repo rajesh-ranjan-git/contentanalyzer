@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { Globe, RefreshCw, Search } from "lucide-react";
 import { API_CCA_URL, sitemapUrls } from "@/config/config";
-import { Article, CompetitorArticle } from "@/types/types";
+import { Article, Competitor, CompetitorArticle } from "@/types/types";
 import { useContentAnalyzerAppStore } from "@/store/store";
 import InputToggle from "@/components/leftContentAnalyzer/inputToggle";
 import InputField from "@/components/leftContentAnalyzer/inputField";
@@ -16,6 +16,9 @@ const LeftContainer = () => {
   const filters = useContentAnalyzerAppStore((state) => state.filters);
   const setIsAnalyzing = useContentAnalyzerAppStore(
     (state) => state.setIsAnalyzing
+  );
+  const setCountOfArticlesAnalyzing = useContentAnalyzerAppStore(
+    (state) => state.setCountOfArticlesAnalyzing
   );
   const loadingSitemaps = useContentAnalyzerAppStore(
     (state) => state.loadingSitemaps
@@ -171,7 +174,8 @@ const LeftContainer = () => {
         setIsAnalyzing(false);
         return; // Error message already set by fetchContentFromUrl
       }
-      mainContent = fetchedMainContent;
+      mainContent =
+        fetchedMainContent.article_heading + fetchedMainContent.article_body;
     }
     setMainArticleContent(mainContent); // Store the content for display/reuse
 
@@ -181,30 +185,7 @@ const LeftContainer = () => {
     );
 
     for (const competitor of selectedCompetitorObjects) {
-      const relevantArticles = competitor.allArticles.filter(
-        (article: CompetitorArticle) => {
-          const articleDate = new Date(article.published_date);
-          const cutoffDate = new Date(); // clone
-
-          const dateRangeValue = filters.dateRange.toString().toLowerCase(); // e.g., "1h", "3d"
-
-          if (dateRangeValue.endsWith("h")) {
-            // Hour-based filtering
-            const hours = parseInt(dateRangeValue);
-            cutoffDate.setHours(cutoffDate.getHours() - hours);
-          } else if (dateRangeValue.endsWith("d")) {
-            // Day-based filtering
-            const days = parseInt(dateRangeValue);
-            cutoffDate.setDate(cutoffDate.getDate() - days);
-          } else {
-            // Default fallback (assume days if no suffix)
-            const days = parseInt(dateRangeValue);
-            cutoffDate.setDate(cutoffDate.getDate() - days);
-          }
-
-          return articleDate >= cutoffDate;
-        }
-      );
+      const relevantArticles = getRelevantArticlesToAnalyze(competitor);
 
       const articlesWithSimilarity = [];
       for (const article of relevantArticles) {
@@ -213,7 +194,8 @@ const LeftContainer = () => {
         if (competitorArticleContent) {
           const similarity = await calculateSimilarity(
             mainContent,
-            competitorArticleContent
+            competitorArticleContent.article_heading +
+              competitorArticleContent.article_body
           );
           if (similarity >= filters.similarity) {
             articlesWithSimilarity.push({ ...article, similarity });
@@ -266,7 +248,7 @@ const LeftContainer = () => {
 
   const fetchContentFromUrl = useCallback(async (url: string) => {
     try {
-      const response = await fetch(`${API_CCA_URL}/fetch_article_content`, {
+      const response = await fetch(`${API_CCA_URL}/fetch_article_data`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -275,7 +257,7 @@ const LeftContainer = () => {
       });
       const data = await response.json();
       if (response.ok) {
-        return data.content;
+        return data;
       } else {
         throw new Error(data.error || `HTTP error! status: ${response.status}`);
       }
@@ -304,6 +286,50 @@ const LeftContainer = () => {
     setErrorMessage("");
     return true;
   };
+
+  const getRelevantArticlesToAnalyze = (competitor: Competitor) => {
+    return competitor.allArticles.filter((article: CompetitorArticle) => {
+      const articleDate = new Date(article.published_date);
+      const cutoffDate = new Date(); // clone
+
+      const dateRangeValue = filters.dateRange.toString().toLowerCase(); // e.g., "1h", "3d"
+
+      if (dateRangeValue.endsWith("h")) {
+        // Hour-based filtering
+        const hours = parseInt(dateRangeValue);
+        cutoffDate.setHours(cutoffDate.getHours() - hours);
+      } else if (dateRangeValue.endsWith("d")) {
+        // Day-based filtering
+        const days = parseInt(dateRangeValue);
+        cutoffDate.setDate(cutoffDate.getDate() - days);
+      } else {
+        // Default fallback (assume days if no suffix)
+        const days = parseInt(dateRangeValue);
+        cutoffDate.setDate(cutoffDate.getDate() - days);
+      }
+
+      return articleDate >= cutoffDate;
+    });
+  };
+
+  const getCountOfArticlesAnalyzing = () => {
+    const selectedCompetitorObjects = competitors.filter((competitor) =>
+      selectedCompetitors.includes(competitor.id)
+    );
+
+    let countOfRelevantArticles = 0;
+
+    for (const competitor of selectedCompetitorObjects) {
+      countOfRelevantArticles +=
+        getRelevantArticlesToAnalyze(competitor).length;
+    }
+
+    return countOfRelevantArticles;
+  };
+
+  useEffect(() => {
+    setCountOfArticlesAnalyzing(getCountOfArticlesAnalyzing());
+  }, [filters.dateRange]);
 
   useEffect(() => {
     fetchSitemapAndArticles();

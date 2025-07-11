@@ -1,12 +1,11 @@
-import os
 from quart import Blueprint, request, jsonify
-import xml.etree.ElementTree as ET
-import requests
-from bs4 import BeautifulSoup
 from sentence_transformers import SentenceTransformer, util
 import logging
 
-from backend.competitiveContentAnalyzer.utils import fetch_sitemap_urls, fetch_article_data
+from backend.competitiveContentAnalyzer.utils import (
+    fetch_sitemap_urls,
+    fetch_article_data,
+)
 
 competitive_content_analyzer = Blueprint("competitiveContentAnalyzer", __name__)
 
@@ -24,140 +23,6 @@ except Exception as e:
     logger.error(f"Error loading SentenceTransformer model: {e}")
     model = None
 
-# Define namespaces for XML parsing
-# 's' for standard sitemap, 'news' for Google News sitemap extension
-NAMESPACES = {
-    "s": "http://www.sitemaps.org/schemas/sitemap/0.9",
-    "news": "http://www.google.com/schemas/sitemap-news/0.9",
-}
-
-headers = {
-    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
-}
-
-
-def fetch_sitemap_urls_backend(sitemap_url):
-    """Fetches URLs and titles from a given sitemap URL."""
-    articles_data = []  # This will store dicts: {'url': '...', 'title': '...'}
-    try:
-        try:
-            response = requests.get(sitemap_url, timeout=10)
-            response.raise_for_status()  # Raise an exception for bad status codes
-        except requests.exceptions.RequestException as e:
-            logger.error(f"Error fetching sitemap {sitemap_url}: {e}")
-            logger.info("Retrying with headers...")
-            try:
-                response = requests.get(sitemap_url, timeout=10, headers=headers)
-                response.raise_for_status()  # Raise an exception for bad status codes
-            except requests.exceptions.RequestException as e_with_headers:
-                logger.error(
-                    f"Error fetching sitemap even with headers: {e_with_headers}"
-                )
-
-        root = ET.fromstring(response.content)
-
-        # Case 1: Standard sitemap with <url> elements
-        for url_element in root.findall("s:url", NAMESPACES):
-            loc_element = url_element.find("s:loc", NAMESPACES)
-            if loc_element is not None and loc_element.text:
-                url = loc_element.text.strip()
-                title = None
-
-                # Attempt to find <news:title> within <news:news> for Google News Sitemaps
-                news_element = url_element.find("news:news", NAMESPACES)
-                if news_element is not None:
-                    title_element = news_element.find("news:title", NAMESPACES)
-                    if title_element is not None and title_element.text:
-                        title = title_element.text.strip()
-
-                # Fallback if no news:title was found
-                if not title:
-                    # Simple heuristic: try to get a title from the URL path
-                    # This is a basic fallback and might not always be ideal.
-                    path = (
-                        os.path.basename(url.rstrip("/"))
-                        .replace("-", " ")
-                        .replace("_", " ")
-                        .strip()
-                    )
-                    if path:
-                        title = path.title()
-                    else:
-                        title = f"Article from {url.split('/')[2]}"  # Use domain as a last resort
-
-                articles_data.append({"url": url, "title": title})
-
-        # Case 2: Sitemap Index with <sitemap> elements (recursive fetching)
-        for sitemap_element in root.findall("s:sitemap", NAMESPACES):
-            loc_element = sitemap_element.find("s:loc", NAMESPACES)
-            if loc_element is not None and loc_element.text:
-                # Recursively fetch URLs from nested sitemaps
-                articles_data.extend(fetch_sitemap_urls_backend(loc_element.text))
-
-    except requests.exceptions.RequestException as e:
-        logger.error(f"Error fetching sitemap {sitemap_url}: {e}")
-    except ET.ParseError as e:
-        logger.error(f"Error parsing sitemap XML from {sitemap_url}: {e}")
-    except Exception as e:
-        logger.error(
-            f"An unexpected error occurred while processing sitemap {sitemap_url}: {e}"
-        )
-    return articles_data
-
-
-def fetch_article_content_backend(url):
-    """Fetches and extracts main text content from an article URL."""
-    try:
-        try:
-            response = requests.get(url, timeout=15)
-            response.raise_for_status()  # Raise an exception for bad status codes
-        except requests.exceptions.RequestException as e:
-            logger.error(f"Error fetching article {url}: {e}")
-            logger.info("Retrying with headers...")
-            try:
-                response = requests.get(url, timeout=15, headers=headers)
-                response.raise_for_status()  # Raise an exception for bad status codes
-            except requests.exceptions.RequestException as e_with_headers:
-                logger.error(f"Error fetching article even with headers {url}: {e}")
-
-        soup = BeautifulSoup(response.content, "html.parser")
-        article_text_elements = []
-
-        content_tags = [
-            "article",
-            "main",
-            "div",
-            "p",
-            "h1",
-            "h2",
-            "h3",
-            "h4",
-            "h5",
-            "h6",
-            "li",
-        ]
-
-        for tag in content_tags:
-            for element in soup.find_all(tag):
-                if element.get_text(separator=" ", strip=True) and not any(
-                    cls in element.get("class", [])
-                    for cls in ["nav", "header", "footer", "sidebar", "comment"]
-                ):
-                    article_text_elements.append(
-                        element.get_text(separator=" ", strip=True)
-                    )
-
-        full_text = " ".join(article_text_elements).strip()
-        if not full_text and soup.body:
-            full_text = soup.body.get_text(separator=" ", strip=True)
-        return full_text if full_text else None
-    except requests.exceptions.RequestException as e:
-        logger.error(f"Error fetching article {url}: {e}")
-        return None
-    except Exception as e:
-        logger.error(f"Error processing article content from {url}: {e}")
-        return None
-
 
 @competitive_content_analyzer.route("/fetch_sitemap_urls", methods=["POST"])
 async def fetch_sitemap_api():
@@ -167,9 +32,21 @@ async def fetch_sitemap_api():
     if not sitemap_url:
         return jsonify({"error": "sitemap_url is required"}), 400
 
-    # articles_info = fetch_sitemap_urls_backend(sitemap_url)
     articles_info = fetch_sitemap_urls(sitemap_url)
     return jsonify(articles_info)
+
+
+@competitive_content_analyzer.route("/fetch_article_data", methods=["POST"])
+async def fetch_article_data_api():
+    """API endpoint to fetch article data."""
+    data = await request.json
+    url = data.get("url")
+    if not url:
+        return jsonify({"error": "URL is required"}), 400
+    article_data = fetch_article_data(url)
+    if article_data:
+        return jsonify(article_data)
+    return jsonify({"error": "Could not fetch article data from the URL : {url}"}), 500
 
 
 @competitive_content_analyzer.route("/calculate_similarity", methods=["POST"])
@@ -205,33 +82,6 @@ async def calculate_similarity():
     except Exception as e:
         logger.error(f"Error during similarity calculation: {e}")
         return jsonify({"error": f"Failed to calculate similarity: {e}"}), 500
-
-
-@competitive_content_analyzer.route("/fetch_article_content", methods=["POST"])
-async def fetch_article_content_api():
-    """API endpoint to fetch article content."""
-    data = await request.json
-    url = data.get("url")
-    if not url:
-        return jsonify({"error": "URL is required"}), 400
-    content = fetch_article_content_backend(url)
-    # content = extract_elements_from_url(url)
-    if content:
-        return jsonify({"content": content})
-    return jsonify({"error": "Could not fetch content from the URL : {url}"}), 500
-
-
-@competitive_content_analyzer.route("/fetch_article_data", methods=["POST"])
-async def fetch_article_data_api():
-    """API endpoint to fetch article data."""
-    data = await request.json
-    url = data.get("url")
-    if not url:
-        return jsonify({"error": "URL is required"}), 400
-    article_data = fetch_article_data(url)
-    if article_data:
-        return jsonify(article_data)
-    return jsonify({"error": "Could not fetch article data from the URL : {url}"}), 500
 
 
 # --- Default Endpoint ---

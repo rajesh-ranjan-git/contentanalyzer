@@ -39,7 +39,17 @@ export type AnalysisResults = {
 
 export type Filters = {
   similarity: number;
-  dateRange: "1h" | "3h" | "5h" | "12h" | "0" | "1d" | "7d" | "30d" | "90d" | "365d";
+  dateRange:
+    | "1h"
+    | "3h"
+    | "5h"
+    | "12h"
+    | "0"
+    | "1d"
+    | "7d"
+    | "30d"
+    | "90d"
+    | "365d";
 };
 
 export type ContentType = {
@@ -81,6 +91,9 @@ export type ContentAnalyzerAppState = {
 
   isAnalyzing: boolean;
   setIsAnalyzing: (value: boolean) => void;
+
+  countOfArticlesAnalyzing: number;
+  setCountOfArticlesAnalyzing: (count: number) => void;
 
   results: AnalysisResults[] | null;
   setResults: (results: AnalysisResults[] | null) => void;

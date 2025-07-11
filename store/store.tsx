@@ -15,6 +15,9 @@ export const useContentAnalyzerAppStore = create<ContentAnalyzerAppState>(
     isAnalyzing: false,
     setIsAnalyzing: (value) => set({ isAnalyzing: value }),
 
+    countOfArticlesAnalyzing: 0,
+    setCountOfArticlesAnalyzing: (count) => set({ countOfArticlesAnalyzing: count }),
+
     results: null,
     setResults: (results) => set({ results }),
 

@@ -3,11 +3,14 @@ import { useContentAnalyzerAppStore } from "@/store/store";
 import SampleArticles from "@/components/rightContentAnalyzer/sampleArticles";
 
 const Results = () => {
+  const countOfArticlesAnalyzing = useContentAnalyzerAppStore((state) => state.countOfArticlesAnalyzing);
   const isAnalyzing = useContentAnalyzerAppStore((state) => state.isAnalyzing);
   const results = useContentAnalyzerAppStore((state) => state.results);
   const inputType = useContentAnalyzerAppStore((state) => state.inputType);
   const inputValue = useContentAnalyzerAppStore((state) => state.inputValue);
-  const mainArticleContent = useContentAnalyzerAppStore((state) => state.mainArticleContent);
+  const mainArticleContent = useContentAnalyzerAppStore(
+    (state) => state.mainArticleContent
+  );
 
   return (
     <div className="[&::-webkit-scrollbar-thumb]:bg-transparent [&::-webkit-scrollbar-track]:bg-transparent hover:[&::-webkit-scrollbar-thumb]:bg-gray-300 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:rounded-full [&::-webkit-scrollbar]:w-1 min-h-[75vh] overflow-y-auto transition-all ease-in-out">
@@ -18,7 +21,7 @@ const Results = () => {
       {isAnalyzing && (
         <div className="flex justify-center items-center p-4 text-blue-600">
           <RefreshCw className="mr-2 w-5 h-5 animate-spin" />
-          <p>Analyzing content and calculating similarities...</p>
+          <p>Analyzing {countOfArticlesAnalyzing} articles and calculating similarities...</p>
         </div>
       )}
 
