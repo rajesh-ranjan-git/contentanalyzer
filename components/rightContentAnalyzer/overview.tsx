@@ -24,7 +24,8 @@ const Overview = () => {
       })
       .sort(
         (a, b) =>
-          new Date(b.publishedDate).getTime() - new Date(a.publishedDate).getTime()
+          new Date(b.publishedDate).getTime() -
+          new Date(a.publishedDate).getTime()
       );
   };
 
@@ -69,7 +70,8 @@ const Overview = () => {
               {competitor.name}
             </h3>
             <span className="text-gray-600 text-sm">
-              <span className="font-bold">Last updated : </span>{formatDate(competitor.lastUpdated)}
+              <span className="font-bold">Last updated : </span>
+              {formatDate(competitor.lastUpdated)}
             </span>
           </div>
           <div className="p-2 px-4">
@@ -85,10 +87,17 @@ const Overview = () => {
                   {competitor.domain}
                 </a>
               </p>
-              <p className="mb-1 text-gray-700">
-                Total articles found (sample):{" "}
-                {competitor.articleList ? competitor.articleList.length : 0}
-              </p>
+              <div className="flex gap-4">
+                <p className="mb-1 text-gray-700">
+                  <span className="font-semibold">Total articles found :{" "}</span>
+                  {competitor.articles ? competitor.articles : 0}
+                </p>
+                <p className="mb-1 text-gray-700">
+                  <span className="font-semibold">(Sample :{" "}</span>
+                  {competitor.articleList ? competitor.articleList.length : 0}
+                  <span className="font-semibold">)</span>
+                </p>
+              </div>
             </div>
             <h4 className="mb-1 font-medium text-gray-800 text-lg">
               Sample Articles (Last{" "}

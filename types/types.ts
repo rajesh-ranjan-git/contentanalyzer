@@ -5,10 +5,10 @@ export type Article = {
   url: string;
   publishedDate: string;
   content: {
-    wordCount: number;
-    articleHeading: string;
-    articleBody: string;
-    dateModified: string;
+    word_count: number;
+    article_heading: string;
+    article_body: string;
+    date_modified: string;
   };
   similarity?: number;
 };

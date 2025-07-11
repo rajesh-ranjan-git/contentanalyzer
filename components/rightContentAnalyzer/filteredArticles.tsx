@@ -27,10 +27,10 @@ const FilteredArticles = ({ article }: SingleArticleProp) => {
         </div>
         <div className="flex gap-4">
           <p className="mb-1 text-gray-600 text-sm">
-            <span className="font-bold">Story Word Count : </span>
-            {article.content.wordCount}
+            <span className="font-semibold">Story Word Count : </span>
+            {article.content.word_count}
           </p>
-          <p className="mb-1 text-gray-600 text-sm"><span className="font-bold">Domain : </span>{article.domain}</p>
+          <p className="mb-1 text-gray-600 text-sm"><span className="font-semibold">Domain : </span>{article.domain}</p>
         </div>
       </div>
     </div>

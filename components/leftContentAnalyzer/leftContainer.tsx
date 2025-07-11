@@ -95,7 +95,7 @@ const LeftContainer = () => {
             id: domain,
             name: name,
             domain: domain,
-            articles: articles.length,
+            articles: fetchedArticlesResponse.length,
             lastUpdated: formatDate(new Date()),
             articleList: articles,
           });
@@ -174,8 +174,8 @@ const LeftContainer = () => {
     setUserContent(mainContent); // Store the content for display/reuse
 
     const analysisResults = [];
-    const selectedCompetitorObjects = competitors.filter((comp) =>
-      selectedCompetitors.includes(comp.id)
+    const selectedCompetitorObjects = competitors.filter((competitor) =>
+      selectedCompetitors.includes(competitor.id)
     );
 
     for (const competitor of selectedCompetitorObjects) {

@@ -34,22 +34,22 @@ const SelectCompetitors = () => {
           <p>Loading competitors...</p>
         </div>
       ) : (
-        competitors.map((comp) => (
+        competitors.map((competitor) => (
           <label
-            key={comp.id}
+            key={competitor.id}
             className="flex items-center bg-gray-50 hover:bg-gray-100 p-2 rounded-md transition-colors cursor-pointer"
           >
             <input
               type="checkbox"
               className="rounded focus:ring-blue-500 w-3 h-3 text-blue-600 accent-blue-600 form-checkbox"
-              checked={selectedCompetitors.includes(comp.id)}
-              onChange={() => handleCompetitorSelect(comp.id)}
+              checked={selectedCompetitors.includes(competitor.id)}
+              onChange={() => handleCompetitorSelect(competitor.id)}
             />
             <span className="ml-3 font-medium text-gray-800 text-sm">
-              {comp.name}
+              {competitor.name}
             </span>
             <span className="ml-auto text-gray-600 text-xs">
-              {comp.articles} articles
+              {competitor.articles} articles
             </span>
           </label>
         ))
