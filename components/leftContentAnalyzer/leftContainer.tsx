@@ -1,13 +1,14 @@
 import { useCallback, useEffect, useState } from "react";
 import { Globe, RefreshCw, Search } from "lucide-react";
 import { API_CCA_URL, sitemapUrls } from "@/config/config";
-import { Article } from "@/types/types";
+import { Article, ArticleSnakeCase } from "@/types/types";
 import { useContentAnalyzerAppStore } from "@/store/store";
 import InputToggle from "@/components/leftContentAnalyzer/inputToggle";
 import InputField from "@/components/leftContentAnalyzer/inputField";
 import SelectCompetitors from "@/components/leftContentAnalyzer/selectCompetitors";
 import Filters from "@/components/leftContentAnalyzer/filters";
 import Analyze from "@/components/leftContentAnalyzer/analyze";
+import { formatDate } from "@/helpers/helpers";
 
 const LeftContainer = () => {
   const inputValue = useContentAnalyzerAppStore((state) => state.inputValue);
@@ -61,45 +62,46 @@ const LeftContainer = () => {
       const name = domain.replace(".com", "").replace(".in", "").split(".")[0];
 
       try {
-        const response = await fetch(`${API_CCA_URL}/fetch_sitemap`, {
+        const response = await fetch(`${API_CCA_URL}/fetch_sitemap_urls`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({ sitemap_url: sitemapUrl }),
         });
-        // The backend now returns an array of objects {url: '...', title: '...'}
-        const fetchedArticlesData = await response.json();
+        // The backend now returns an array of objects {url: '...', title: '...', published_date: "..."}
+        const fetchedArticlesResponse = await response.json();
 
         if (response.ok) {
           // Take the first 10 articles (or adjust as needed) from the fetched data
+          const fetchedArticlesData = await Promise.allSettled(
+            fetchedArticlesResponse
+              .slice(0, 10)
+              .map(async (item: ArticleSnakeCase, index: number) => ({
+                id: `${domain}-${index}`,
+                title: item.title,
+                domain: domain,
+                url: item.url,
+                publishedDate: item.published_date,
+                content: await getArticleData(item),
+              }))
+          );
+
           const articles = fetchedArticlesData
-            .slice(0, 10)
-            .map((item: Article, index: number) => ({
-              id: `${domain}-${index}`,
-              title: item.title, // Use the actual title from the backend
-              domain: domain,
-              url: item.url,
-              // Assign a random publish date for demonstration (if not available from sitemap)
-              publishDate: new Date(
-                Date.now() - Math.random() * 365 * 24 * 60 * 60 * 1000
-              )
-                .toISOString()
-                .split("T")[0],
-              content: "", // Content will be fetched later
-            }));
+            .filter((result) => result.status === "fulfilled")
+            .map((result) => result.value);
 
           fetchedCompetitors.push({
             id: domain,
             name: name,
             domain: domain,
             articles: articles.length,
-            lastUpdated: "Just now",
+            lastUpdated: formatDate(new Date()),
             articleList: articles,
           });
         } else {
           throw new Error(
-            fetchedArticlesData.error || "Failed to fetch sitemap URLs."
+            fetchedArticlesResponse.error || "Failed to fetch sitemap URLs."
           );
         }
       } catch (error: any) {
@@ -112,6 +114,7 @@ const LeftContainer = () => {
         );
       }
     }
+
     setCompetitors(fetchedCompetitors);
     setLoadingSitemaps(false);
     if (initialTime) {
@@ -119,6 +122,29 @@ const LeftContainer = () => {
       setSitemapsLoadTime(endTime - initialTime);
     }
   }, [sitemapUrls]); // Keep this dependency if sitemapUrls can change. If truly static, [] is fine.
+
+  const getArticleData = async (article: ArticleSnakeCase) => {
+    try {
+      const articleResponse = await fetch(`${API_CCA_URL}/fetch_article_data`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ url: article?.url }),
+      });
+
+      const articleData = await articleResponse.json();
+
+      if (articleResponse.ok) {
+        return articleData;
+      }
+    } catch (error: any) {
+      console.error(
+        `Failed to fetch article data for url : ${article?.url}:`,
+        error
+      );
+    }
+  };
 
   const handleAnalyze = async () => {
     if (!validateInput()) {
@@ -155,7 +181,7 @@ const LeftContainer = () => {
     for (const competitor of selectedCompetitorObjects) {
       const relevantArticles = competitor.articleList.filter(
         (article: Article) => {
-          const articleDate = new Date(article.publishDate);
+          const articleDate = new Date(article.publishedDate);
           const cutoffDate = new Date();
           cutoffDate.setDate(
             cutoffDate.getDate() - parseInt(filters.dateRange)

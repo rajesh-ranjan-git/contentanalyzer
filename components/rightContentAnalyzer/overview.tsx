@@ -1,6 +1,7 @@
 import { AlertCircle, Eye, RefreshCw } from "lucide-react";
 import { useContentAnalyzerAppStore } from "@/store/store";
 import FilteredArticles from "@/components/rightContentAnalyzer/filteredArticles";
+import { formatDate } from "@/helpers/helpers";
 
 const Overview = () => {
   const filters = useContentAnalyzerAppStore((state) => state.filters);
@@ -16,14 +17,14 @@ const Overview = () => {
 
     return competitor.articleList
       .filter((article) => {
-        const articleDate = new Date(article.publishDate);
+        const articleDate = new Date(article.publishedDate);
         const cutoffDate = new Date();
         cutoffDate.setDate(cutoffDate.getDate() - parseInt(filters.dateRange));
         return articleDate >= cutoffDate;
       })
       .sort(
         (a, b) =>
-          new Date(b.publishDate).getTime() - new Date(a.publishDate).getTime()
+          new Date(b.publishedDate).getTime() - new Date(a.publishedDate).getTime()
       );
   };
 
@@ -68,7 +69,7 @@ const Overview = () => {
               {competitor.name}
             </h3>
             <span className="text-gray-600 text-sm">
-              Last updated: {competitor.lastUpdated}
+              <span className="font-bold">Last updated : </span>{formatDate(competitor.lastUpdated)}
             </span>
           </div>
           <div className="p-2 px-4">

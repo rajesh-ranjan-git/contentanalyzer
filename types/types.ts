@@ -3,16 +3,25 @@ export type Article = {
   title: string;
   domain: string;
   url: string;
-  publishDate: string;
-  content: string;
+  publishedDate: string;
+  content: {
+    wordCount: number;
+    articleHeading: string;
+    articleBody: string;
+    dateModified: string;
+  };
   similarity?: number;
+};
+
+export type ArticleSnakeCase = Omit<Article, 'publishedDate'> & {
+  published_date: string;
 };
 
 export type Competitor = {
   id: string;
   name: string;
   domain: string;
-  articles: string;
+  articles: number;
   lastUpdated: string;
   articleList: Article[];
 };

@@ -47,7 +47,7 @@ const RightTabs = () => {
         {activeTab === "overview" ? (
           loadingSitemaps ? (
             <div className="flex justify-center items-center gap-2 font-semibold text-blue-600 text-sm">
-              <span>Please be patient while we are fetching sitemaps</span>{" "}
+              <span>Fetching sitemaps with articles : </span>{" "}
               <RefreshCw
                 className={`w-4 h-4 ${loadingSitemaps ? "animate-spin" : ""}`}
               />
@@ -55,7 +55,7 @@ const RightTabs = () => {
           ) : sitemapsLoadTime ? (
             <div className="flex justify-center items-center gap-2 font-semibold text-blue-600 text-sm">
               <Timer className="w-4 h-4" />
-              Time taken to load articles :{" "}
+              Sitemap with articles loaded in :{" "}
               {(sitemapsLoadTime / 1000).toFixed(0)}s
             </div>
           ) : null
@@ -65,7 +65,7 @@ const RightTabs = () => {
           isAnalyzing ? (
             <div className="flex justify-center items-center gap-2 font-semibold text-blue-600 text-sm">
               <span>
-                Please be patient while we are fetching analysis results
+                Fetching analysis results
               </span>{" "}
               <RefreshCw
                 className={`w-4 h-4 ${isAnalyzing ? "animate-spin" : ""}`}
@@ -74,7 +74,7 @@ const RightTabs = () => {
           ) : analysisLoadTime ? (
             <div className="flex justify-center items-center gap-2 font-semibold text-blue-600 text-sm">
               <Timer className="w-4 h-4" />
-              Time taken to analyze : {(analysisLoadTime / 1000).toFixed(0)}s
+              Results analyzed in : {(analysisLoadTime / 1000).toFixed(0)}s
             </div>
           ) : null
         ) : null}

@@ -22,10 +22,16 @@ const FilteredArticles = ({ article }: SingleArticleProp) => {
             </h4>
           </a>
           <span className="text-gray-600 text-sm">
-            {formatDate(article.publishDate)}
+            {formatDate(article.publishedDate)}
           </span>
         </div>
-        <p className="mb-1 text-gray-600 text-sm">{article.domain}</p>
+        <div className="flex gap-4">
+          <p className="mb-1 text-gray-600 text-sm">
+            <span className="font-bold">Story Word Count : </span>
+            {article.content.wordCount}
+          </p>
+          <p className="mb-1 text-gray-600 text-sm"><span className="font-bold">Domain : </span>{article.domain}</p>
+        </div>
       </div>
     </div>
   );

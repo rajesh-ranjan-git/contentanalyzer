@@ -63,7 +63,7 @@ const RightTabs = () => {
         {activeTab === "summary" ? (
           isSummarizing ? (
             <div className="flex justify-center items-center gap-2 font-semibold text-blue-600 text-sm">
-              <span>Please be patient : </span>{" "}
+              <span>Analyzing Summary : </span>{" "}
               <RefreshCw
                 className={`w-4 h-4 ${isSummarizing ? "animate-spin" : ""}`}
               />
@@ -71,7 +71,7 @@ const RightTabs = () => {
           ) : summaryLoadTime ? (
             <div className="flex justify-center items-center gap-2 font-semibold text-blue-600 text-sm">
               <Timer className="w-4 h-4" />
-              Time taken :{" "}
+              Summary analyzed in :{" "}
               {(summaryLoadTime / 1000).toFixed(0)}s
             </div>
           ) : null
@@ -80,7 +80,7 @@ const RightTabs = () => {
         {activeTab === "sentiments" ? (
           isSummarizing ? (
             <div className="flex justify-center items-center gap-2 font-semibold text-blue-600 text-sm">
-              <span>Please be patient : </span>{" "}
+              <span>Analyzing Sentiments : </span>{" "}
               <RefreshCw
                 className={`w-4 h-4 ${isSummarizing ? "animate-spin" : ""}`}
               />
@@ -88,7 +88,7 @@ const RightTabs = () => {
           ) : summaryLoadTime ? (
             <div className="flex justify-center items-center gap-2 font-semibold text-blue-600 text-sm">
               <Timer className="w-4 h-4" />
-              Time taken :{" "}
+              Sentiments analyzed in :{" "}
               {(summaryLoadTime / 1000).toFixed(0)}s
             </div>
           ) : null
@@ -97,7 +97,7 @@ const RightTabs = () => {
         {activeTab === "theme" ? (
           isSummarizing ? (
             <div className="flex justify-center items-center gap-2 font-semibold text-blue-600 text-sm">
-              <span>Please be patient : </span>{" "}
+              <span>Analyzing theme : </span>{" "}
               <RefreshCw
                 className={`w-4 h-4 ${isSummarizing ? "animate-spin" : ""}`}
               />
@@ -105,7 +105,7 @@ const RightTabs = () => {
           ) : summaryLoadTime ? (
             <div className="flex justify-center items-center gap-2 font-semibold text-blue-600 text-sm">
               <Timer className="w-4 h-4" />
-              Time taken :{" "}
+              Theme analyzed in :{" "}
               {(summaryLoadTime / 1000).toFixed(0)}s
             </div>
           ) : null
@@ -114,7 +114,7 @@ const RightTabs = () => {
         {activeTab === "frequent-keywords" ? (
           isSummarizing ? (
             <div className="flex justify-center items-center gap-2 font-semibold text-blue-600 text-sm">
-              <span>Please be patient : </span>{" "}
+              <span>Fetching Frequent Keywords : </span>{" "}
               <RefreshCw
                 className={`w-4 h-4 ${isSummarizing ? "animate-spin" : ""}`}
               />
@@ -122,7 +122,7 @@ const RightTabs = () => {
           ) : summaryLoadTime ? (
             <div className="flex justify-center items-center gap-2 font-semibold text-blue-600 text-sm">
               <Timer className="w-4 h-4" />
-              Time taken :{" "}
+              Frequent Keywords analyzed in :{" "}
               {(summaryLoadTime / 1000).toFixed(0)}s
             </div>
           ) : null

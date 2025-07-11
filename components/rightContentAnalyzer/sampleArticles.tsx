@@ -22,7 +22,7 @@ const SampleArticles = ({ article }: SingleArticleProp) => {
             </h4>
           </a>
           <span className="text-gray-600 text-sm">
-            {formatDate(article.publishDate)}
+            {formatDate(article.publishedDate)}
           </span>
         </div>
         <p className="mb-1 text-gray-600 text-sm">{article.domain}</p>
