@@ -10,10 +10,9 @@ from w3lib.html import get_base_url
 from dateutil import parser
 from datetime import datetime
 from bs4 import BeautifulSoup
-from urllib.parse import urlparse
 
 # Local imports
-from backend.competitiveContentAnalyzer.config import NAMESPACES, headers
+from competitiveContentAnalyzer.config import NAMESPACES, headers
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
@@ -177,7 +176,13 @@ def fetch_sitemap_urls(sitemap_url):
                         )
 
                 articles_data.append(
-                    {"id": id, "url": url, "domain": domain, "title": title, "published_date": published_date}
+                    {
+                        "id": id,
+                        "url": url,
+                        "domain": domain,
+                        "title": title,
+                        "published_date": published_date,
+                    }
                 )
 
                 articles_data.sort(

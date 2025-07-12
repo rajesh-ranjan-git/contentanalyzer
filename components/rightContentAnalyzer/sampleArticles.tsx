@@ -1,4 +1,4 @@
-import { Clock, Link } from "lucide-react";
+import { Clock, Link, Info } from "lucide-react";
 import { SampleArticleProp } from "@/types/propTypes";
 import { formatDate, getSimilarityColor } from "@/helpers/helpers";
 
@@ -11,7 +11,7 @@ const SampleArticles = ({ article }: SampleArticleProp) => {
         <Clock className="w-4 h-4 text-white" />
       </div>
       <div className="flex-1 bg-gray-50 p-2 rounded-lg">
-        <div className="flex justify-between items-center mb-1">
+        <div className="flex justify-between items-center gap-2 mb-1">
           <a
             href={article.url}
             target="_blank"
@@ -19,11 +19,11 @@ const SampleArticles = ({ article }: SampleArticleProp) => {
             className="flex items-center text-blue-600"
           >
             <Link className="mr-1 w-4 h-4" />{" "}
-            <h4 className="font-medium text-gray-900 hover:text-blue-600 transition-all ease-in-out">
+            <h4 className="font-medium text-gray-900 hover:text-blue-600 text-sm transition-all ease-in-out">
               {article.title}
             </h4>
           </a>
-          <span className="min-w-20 text-gray-600 text-sm">
+          <span className="min-w-24 text-gray-600 text-sm text-right">
             {date[0]}, {date[1]}
           </span>
         </div>
@@ -36,12 +36,20 @@ const SampleArticles = ({ article }: SampleArticleProp) => {
             >
               {article.similarity}% similar
             </span>
+            <p className="flex items-center gap-2 mb-1 text-gray-600 text-sm">
+              <span className="font-semibold">Article's Word Count : </span>
+              {article.content && article.content?.word_count > 0 ? (
+                article.content?.word_count
+              ) : (
+                <Info className="w-3 h-3 text-red-600" />
+              )}
+            </p>
             <p className="mb-1 text-gray-600 text-sm">
               <span className="font-semibold">Domain : </span>
               {article.domain}
             </p>
           </div>
-          <span className="min-w-16 text-gray-600 text-sm">
+          <span className="min-w-16 text-gray-600 text-sm text-right">
             {date[date.length - 1]}
           </span>
         </div>

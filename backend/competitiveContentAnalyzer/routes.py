@@ -2,7 +2,7 @@ from quart import Blueprint, request, jsonify
 from sentence_transformers import SentenceTransformer, util
 import logging
 
-from backend.competitiveContentAnalyzer.utils import (
+from competitiveContentAnalyzer.utils import (
     fetch_sitemap_urls,
     fetch_article_data,
 )

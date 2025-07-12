@@ -1,4 +1,4 @@
-import { Clock, Link, RefreshCw } from "lucide-react";
+import { Clock, Link, RefreshCw, Info } from "lucide-react";
 import { FilteredArticlesProp } from "@/types/propTypes";
 import { formatDate } from "@/helpers/helpers";
 import { useContentAnalyzerAppStore } from "@/store/store";
@@ -16,7 +16,7 @@ const FilteredArticles = ({ article }: FilteredArticlesProp) => {
         <Clock className="w-4 h-4 text-white" />
       </div>
       <div className="flex-1 bg-gray-50 p-2 rounded-lg">
-        <div className="flex justify-between items-center mb-1">
+        <div className="flex justify-between items-center gap-2 mb-1">
           <a
             href={article.url}
             target="_blank"
@@ -28,7 +28,7 @@ const FilteredArticles = ({ article }: FilteredArticlesProp) => {
               {article.title}
             </h4>
           </a>
-          <span className="min-w-20 text-gray-600 text-sm">
+          <span className="min-w-24 text-gray-600 text-sm text-right">
             {date[0]}, {date[1]}
           </span>
         </div>
@@ -43,14 +43,16 @@ const FilteredArticles = ({ article }: FilteredArticlesProp) => {
                 </>
               ) : article.content && article.content?.word_count > 0 ? (
                 article.content?.word_count
-              ) : null}
+              ) : (
+                <Info className="w-3 h-3 text-red-600" />
+              )}
             </p>
             <p className="mb-1 text-gray-600 text-sm">
               <span className="font-semibold">Domain : </span>
               {article.domain}
             </p>
           </div>
-          <span className="min-w-16 text-gray-600 text-sm">
+          <span className="min-w-16 text-gray-600 text-sm text-right">
             {date[date.length - 1]}
           </span>
         </div>
