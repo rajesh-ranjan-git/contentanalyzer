@@ -1,7 +1,6 @@
 import { BarChart3, CheckCircle, Link, RefreshCw } from "lucide-react";
 import { useContentAnalyzerAppStore } from "@/store/store";
 import SampleArticles from "@/components/rightContentAnalyzer/sampleArticles";
-import { useEffect } from "react";
 
 const Results = () => {
   const countOfArticlesAnalyzing = useContentAnalyzerAppStore((state) => state.countOfArticlesAnalyzing);

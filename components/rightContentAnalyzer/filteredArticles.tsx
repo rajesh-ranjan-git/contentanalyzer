@@ -1,7 +1,7 @@
 import { Clock, Link, RefreshCw } from "lucide-react";
 import { FilteredArticlesProp } from "@/types/propTypes";
-import { useContentAnalyzerAppStore } from "@/store/store";
 import { formatDate } from "@/helpers/helpers";
+import { useContentAnalyzerAppStore } from "@/store/store";
 
 const FilteredArticles = ({ article }: FilteredArticlesProp) => {
   const isCalculatingWordCount = useContentAnalyzerAppStore(

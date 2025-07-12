@@ -1,4 +1,4 @@
-import { Article, Article } from "@/types/types";
+import { Article } from "@/types/types";
 
 export interface HeaderProps {
   title: { name: string; url: string };

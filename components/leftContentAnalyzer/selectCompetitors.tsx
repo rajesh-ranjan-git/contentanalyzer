@@ -1,5 +1,5 @@
-import { useContentAnalyzerAppStore } from "@/store/store";
 import { RefreshCw } from "lucide-react";
+import { useContentAnalyzerAppStore } from "@/store/store";
 
 const SelectCompetitors = () => {
   const loadingSitemaps = useContentAnalyzerAppStore(

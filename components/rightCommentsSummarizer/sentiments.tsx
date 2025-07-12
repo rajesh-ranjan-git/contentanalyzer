@@ -8,7 +8,7 @@ import {
   ShieldAlert,
 } from "lucide-react";
 import { useCommentsSummarizerAppStore } from "@/store/store";
-import ProgressBar from "./progressBar";
+import ProgressBar from "@/components/rightCommentsSummarizer/progressBar";
 
 const Sentiments = () => {
   const inputType = useCommentsSummarizerAppStore((state) => state.inputType);

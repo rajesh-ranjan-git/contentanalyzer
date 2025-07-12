@@ -1,7 +1,6 @@
 import {
   CheckCircle,
   RefreshCw,
-  Layers,
   Lightbulb,
   Hash,
   ShieldAlert,
