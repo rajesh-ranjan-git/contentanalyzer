@@ -215,14 +215,18 @@ const LeftContainer = () => {
       const articlesWithSimilarity = [];
       for (const article of relevantArticles) {
         // Fetch content for competitor article only when analyzing
-        const ArticleContent = await fetchContentFromUrl(article.url);
-        if (ArticleContent) {
+        const articleContent = await fetchContentFromUrl(article.url);
+        if (articleContent) {
           const similarity = await calculateSimilarity(
             mainContent,
-            ArticleContent.article_heading + ArticleContent.article_body
+            articleContent.article_heading + articleContent.article_body
           );
           if (similarity >= filters.similarity) {
-            articlesWithSimilarity.push({ ...article, similarity });
+            articlesWithSimilarity.push({
+              ...article,
+              content: articleContent,
+              similarity,
+            });
           }
         }
       }

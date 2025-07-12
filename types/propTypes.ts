@@ -8,11 +8,7 @@ export interface AnalyzeProps {
   handleAnalyze: () => void;
 }
 
-export interface FilteredArticlesProp {
-  article: Article;
-}
-
-export interface SampleArticleProp {
+export interface ArticlesProp {
   article: Article;
 }
 

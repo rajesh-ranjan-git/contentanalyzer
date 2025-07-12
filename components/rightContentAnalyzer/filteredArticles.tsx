@@ -1,14 +1,14 @@
-import { Clock, Link, RefreshCw, Info } from "lucide-react";
-import { FilteredArticlesProp } from "@/types/propTypes";
-import { formatDate } from "@/helpers/helpers";
-import { useContentAnalyzerAppStore } from "@/store/store";
+import { Clock, Link, Info } from "lucide-react";
+import { ArticlesProp } from "@/types/propTypes";
+import {
+  formatDate,
+  getSimilarityColor,
+} from "@/helpers/helpers";
 
-const FilteredArticles = ({ article }: FilteredArticlesProp) => {
-  const isCalculatingWordCount = useContentAnalyzerAppStore(
-    (state) => state.isCalculatingWordCount
-  );
-
+const FilteredArticles = ({ article }: ArticlesProp) => {
   const date = formatDate(article.published_date).split(", ");
+
+  console.log("article : ", article);
 
   return (
     <div className="relative flex items-center space-x-2 pb-1">
@@ -21,7 +21,7 @@ const FilteredArticles = ({ article }: FilteredArticlesProp) => {
             href={article.url}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center text-blue-600 text-sm"
+            className="flex items-center text-blue-600"
           >
             <Link className="mr-1 w-4 h-4" />{" "}
             <h4 className="font-medium text-gray-900 hover:text-blue-600 text-sm transition-all ease-in-out">
@@ -32,16 +32,18 @@ const FilteredArticles = ({ article }: FilteredArticlesProp) => {
             {date[0]}, {date[1]}
           </span>
         </div>
-        <div className="flex justify-between items-center gap-4">
-          <div className="flex gap-4">
+        <div className="flex justify-between items-center">
+          <div className="flex items-center gap-4">
+            <span
+              className={`inline-flex px-2 py-1 rounded-full text-xs font-medium ${
+                article.similarity && getSimilarityColor(article.similarity)
+              }`}
+            >
+              {article.similarity}% similar
+            </span>
             <p className="flex items-center gap-2 mb-1 text-gray-600 text-sm">
               <span className="font-semibold">Article's Word Count : </span>
-              {isCalculatingWordCount ? (
-                <>
-                  <RefreshCw className="w-3 h-3 text-blue-600 animate-spin" />{" "}
-                  <span className="text-blue-600">Calculating...</span>
-                </>
-              ) : article.content && article.content?.word_count > 0 ? (
+              {article.content && article.content?.word_count > 0 ? (
                 article.content?.word_count
               ) : (
                 <Info className="w-3 h-3 text-red-600" />
