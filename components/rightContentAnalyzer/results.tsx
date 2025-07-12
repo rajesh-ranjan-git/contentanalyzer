@@ -3,7 +3,9 @@ import { useContentAnalyzerAppStore } from "@/store/store";
 import SampleArticles from "@/components/rightContentAnalyzer/sampleArticles";
 
 const Results = () => {
-  const countOfArticlesAnalyzing = useContentAnalyzerAppStore((state) => state.countOfArticlesAnalyzing);
+  const countOfArticlesAnalyzing = useContentAnalyzerAppStore(
+    (state) => state.countOfArticlesAnalyzing
+  );
   const isAnalyzing = useContentAnalyzerAppStore((state) => state.isAnalyzing);
   const results = useContentAnalyzerAppStore((state) => state.results);
   const inputType = useContentAnalyzerAppStore((state) => state.inputType);
@@ -21,7 +23,10 @@ const Results = () => {
       {isAnalyzing && (
         <div className="flex justify-center items-center p-4 text-blue-600">
           <RefreshCw className="mr-2 w-5 h-5 animate-spin" />
-          <p>Analyzing {countOfArticlesAnalyzing} articles and calculating similarities...</p>
+          <p>
+            Analyzing {countOfArticlesAnalyzing} articles and calculating
+            similarities...
+          </p>
         </div>
       )}
 
